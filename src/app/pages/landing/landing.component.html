@@ -4,7 +4,7 @@
 <mat-toolbar class="mat-elevation-z4" color="primary">
   <span class="toolbar-branding">{{ branding }}</span>
   <span class="spacer"></span>
-  <button mat-button class="font-light">Login</button>
+  <button mat-button class="font-light" (click)="onLoginClick()">Login</button>
 </mat-toolbar>
 
 <div class="container mt-5">
@@ -17,7 +17,7 @@
       <div class="w-100">
         <p class="main-branding">{{ branding }}</p>
         <p class="motto font-light">{{ motto }}</p>
-        <button class="main-login" mat-raised-button color="primary">Login</button>
+        <button class="main-login" mat-raised-button color="primary" (click)="onLoginClick()">Login</button>
       </div>
     </div>
     <div class="text-center col-lg-6 col-md-8 col-sm-12">

@@ -3,7 +3,13 @@ import { Injectable } from '@angular/core';
 import { firstValueFrom } from 'rxjs';
 
 export interface IConfig {
-  key: string;
+  oauth: {
+    redirectURL: string;
+    googleAuthURL: string;
+    googleTokenURL: string;
+    googleScope: string;
+    googleClientID: string;
+  };
 }
 
 @Injectable()

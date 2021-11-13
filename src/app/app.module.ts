@@ -4,6 +4,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterModule, Routes } from '@angular/router';
 
 import { AppComponent } from './app.component';
+import { OAuthModule } from './client/oauth/oauth.module';
 import { ConfigModule } from './common/config/config.module';
 import { MaterialModule } from './common/material/material.module';
 import { OnlyLoggedInGuard } from './guards/only-logged-in.guard';
@@ -38,7 +39,7 @@ const routes: Routes = [
 
 @NgModule({
   declarations: [AppComponent, LandingComponent, HomeComponent, ChatListComponent, ChatComponent],
-  imports: [BrowserAnimationsModule, BrowserModule, ConfigModule, MaterialModule, RouterModule.forRoot(routes)],
+  imports: [BrowserAnimationsModule, BrowserModule, ConfigModule, MaterialModule, OAuthModule, RouterModule.forRoot(routes)],
   providers: [],
   bootstrap: [AppComponent],
 })
