@@ -8,6 +8,6 @@ export class OnlyLoggedOutGuard implements CanActivate {
   constructor() {}
 
   async canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Promise<boolean> {
-    throw new Error('implement me');
+    return true;
   }
 }
