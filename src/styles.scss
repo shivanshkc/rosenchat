@@ -1,10 +1,47 @@
-/* You can add global styles to this file, and also import other style files */
-
 html,
 body {
   height: 100%;
 }
+
 body {
   margin: 0;
   font-family: Roboto, 'Helvetica Neue', sans-serif;
+}
+
+// Makes the font thinner.
+.font-light {
+  font-weight: lighter;
+}
+
+// Vertically centers the child (use with only one child).
+.align-vertical {
+  display: flex;
+  align-items: center;
+}
+
+// Centers all children.
+.text-center {
+  text-align: center;
+}
+
+// For small screens (< 768px).
+@media only screen and (max-width: 768px) {
+  .text-center-sm {
+    // Text will be centered for small screens.
+    text-align: center;
+  }
+}
+
+/* Styles below are for dev usage. */
+
+.bg-1 {
+  background: lightblue;
+}
+
+.bg-2 {
+  background: lightpink;
+}
+
+.bg-3 {
+  background: lightsalmon;
 }
