@@ -4,7 +4,7 @@ import jwtDecode from 'jwt-decode';
 import { firstValueFrom } from 'rxjs';
 
 import { ConfigService } from '../../common/config/config.service';
-import { IOAuthService, IUserInfo } from './oauth.interface';
+import { IOAuthService, UserInfoDTO } from './oauth.interface';
 
 @Injectable()
 export class OAuthGoogleService implements IOAuthService {
@@ -40,7 +40,7 @@ export class OAuthGoogleService implements IOAuthService {
       `client_id=${oauth.googleClientID}`;
   }
 
-  async token2UserInfo(token: string): Promise<IUserInfo> {
+  async token2UserInfo(token: string): Promise<UserInfoDTO> {
     // Todo: Check the authenticity of this token with Google's public key.
     const decodedToken = jwtDecode(token) as {
       email: string;
@@ -53,7 +53,7 @@ export class OAuthGoogleService implements IOAuthService {
       email: decodedToken.email,
       firstName: decodedToken.given_name,
       lastName: decodedToken.family_name,
-      photoURL: decodedToken.picture,
+      picture: decodedToken.picture,
     };
   }
 }
