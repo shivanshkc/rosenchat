@@ -11,7 +11,7 @@ export class OnlyLoggedInGuard implements CanActivate {
 
   async canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Promise<boolean> {
     // Allow if the session is valid.
-    if (this.sessionService.isSessionValid()) {
+    if (await this.sessionService.isSessionValid()) {
       return true;
     }
 

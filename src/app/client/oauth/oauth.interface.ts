@@ -7,6 +7,7 @@ export interface IOAuthService {
   redirect(): Promise<void>;
   code2Token(code: string): Promise<string>;
   token2UserInfo(token: string): Promise<UserInfoDTO>;
+  isTokenValid(token: string): Promise<boolean>;
 }
 
 /**

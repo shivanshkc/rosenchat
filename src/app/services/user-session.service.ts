@@ -1,5 +1,8 @@
 import { Injectable } from '@angular/core';
 
+import { IOAuthService } from '../client/oauth/oauth.interface';
+import { OAuthGoogleService } from '../client/oauth/oauth-google.service';
+
 export interface UserSessionDTO {
   // Identifier.
   email: string;
@@ -9,7 +12,8 @@ export interface UserSessionDTO {
   lastName: string;
   picture: string;
 
-  // Crypto info.
+  // Auth info.
+  provider: string;
   accessToken: string;
 }
 
@@ -18,6 +22,8 @@ export interface UserSessionDTO {
 })
 export class UserSessionService {
   private readonly userInfoKey = 'user_info';
+
+  constructor(private readonly oAuthGoogle: OAuthGoogleService) {}
 
   public putSessionInfo(info: UserSessionDTO): void {
     localStorage.setItem(this.userInfoKey, JSON.stringify(info));
@@ -40,7 +46,19 @@ export class UserSessionService {
     localStorage.removeItem(this.userInfoKey);
   }
 
-  public isSessionValid(): boolean {
-    return false;
+  public async isSessionValid(): Promise<boolean> {
+    const info = this.getSessionInfo();
+    if (!info) {
+      return false;
+    }
+
+    let oAuthHandler: IOAuthService;
+    if (info.provider === this.oAuthGoogle.providerName) {
+      oAuthHandler = this.oAuthGoogle;
+    } else {
+      return false;
+    }
+
+    return oAuthHandler.isTokenValid(info.accessToken);
   }
 }

@@ -3,6 +3,7 @@
     "googleRedirectURL": "auth/google/callback",
     "googleAuthURL": "https://accounts.google.com/o/oauth2/v2/auth",
     "googleTokenURL": "https://oauth2.googleapis.com/token",
+    "googlePublicKeyURL": "https://www.googleapis.com/oauth2/v1/certs",
     "googleScope": "https://www.googleapis.com/auth/userinfo.email+https://www.googleapis.com/auth/userinfo.profile",
     "googleClientID": "223690733187-hh0i4q939oh4ror36r3drpkn1v8vdo6b.apps.googleusercontent.com"
   }

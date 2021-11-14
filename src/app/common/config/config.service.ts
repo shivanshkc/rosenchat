@@ -7,6 +7,7 @@ export interface IConfig {
     googleRedirectURL: string;
     googleAuthURL: string;
     googleTokenURL: string;
+    googlePublicKeyURL: string;
     googleScope: string;
     googleClientID: string;
   };

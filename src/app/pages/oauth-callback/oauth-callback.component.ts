@@ -33,26 +33,24 @@ export class OauthCallbackComponent implements OnInit {
       return;
     }
 
+    let oAuthHandler: IOAuthService;
+    if (provider === this.oAuthGoogle.providerName) {
+      oAuthHandler = this.oAuthGoogle;
+    } else {
+      await this.router.navigate(['/landing']);
+      return;
+    }
+
     const authCode = queryParams['code'];
     if (!authCode) {
       await this.router.navigate(['/landing']);
       return;
     }
 
-    let oAuthHandler: IOAuthService;
-    switch (provider) {
-      case this.oAuthGoogle.providerName:
-        oAuthHandler = this.oAuthGoogle;
-        break;
-      default:
-        await this.router.navigate(['/landing']);
-        return;
-    }
+    const accessToken = await oAuthHandler.code2Token(authCode);
+    const userInfo = await oAuthHandler.token2UserInfo(accessToken);
 
-    const token = await oAuthHandler.code2Token(authCode);
-    const userInfo = await oAuthHandler.token2UserInfo(token);
-
-    this.sessionService.putSessionInfo({ accessToken: token, ...userInfo });
+    this.sessionService.putSessionInfo({ provider, accessToken, ...userInfo });
     await this.router.navigate(['/home']);
   }
 }

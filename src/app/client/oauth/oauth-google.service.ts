@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import jwtDecode from 'jwt-decode';
+import * as jwt from 'jsrsasign';
 import { firstValueFrom } from 'rxjs';
 
 import { ConfigService } from '../../common/config/config.service';
@@ -11,7 +11,10 @@ export class OAuthGoogleService implements IOAuthService {
   public readonly providerName = 'google';
 
   // Todo: This parameter should not be hardcoded.
-  private static readonly googleCS = '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';
+  private static readonly cs = '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';
+
+  private static publicKeyJSON: Record<string, string> = {};
+  private static publicKeyExpires = Date.now() / 1000;
 
   constructor(private conf: ConfigService, private http: HttpClient) {}
 
@@ -22,7 +25,7 @@ export class OAuthGoogleService implements IOAuthService {
     const body = {
       code,
       client_id: oauth.googleClientID,
-      client_secret: OAuthGoogleService.googleCS,
+      client_secret: OAuthGoogleService.cs,
       redirect_uri: redirectURL,
       grant_type: 'authorization_code',
     };
@@ -46,7 +49,8 @@ export class OAuthGoogleService implements IOAuthService {
 
   async token2UserInfo(token: string): Promise<UserInfoDTO> {
     // Todo: Check the authenticity of this token with Google's public key.
-    const decodedToken = jwtDecode(token) as {
+    const decoded = jwt.KJUR.jws.JWS.parse(token);
+    const payload = decoded.payloadObj as {
       email: string;
       given_name: string;
       family_name: string;
@@ -54,10 +58,49 @@ export class OAuthGoogleService implements IOAuthService {
     };
 
     return {
-      email: decodedToken.email,
-      firstName: decodedToken.given_name,
-      lastName: decodedToken.family_name,
-      picture: decodedToken.picture,
+      email: payload.email,
+      firstName: payload.given_name,
+      lastName: payload.family_name,
+      picture: payload.picture,
     };
+  }
+
+  async isTokenValid(token: string): Promise<boolean> {
+    if (OAuthGoogleService.publicKeyExpires <= Date.now()) {
+      await this.refreshPublicKey();
+    }
+
+    const decoded = jwt.KJUR.jws.JWS.parse(token);
+    const kID = (decoded?.headerObj as { kid?: string })?.kid;
+    if (!kID) {
+      throw new Error();
+    }
+
+    const publicKeyStr = OAuthGoogleService.publicKeyJSON[kID];
+    const publicKey = jwt.KEYUTIL.getKey(publicKeyStr);
+
+    return jwt.KJUR.jws.JWS.verifyJWT(token, publicKey as jwt.RSAKey, { alg: ['RS256'] });
+  }
+
+  private async refreshPublicKey(): Promise<void> {
+    const { oauth } = await this.conf.get();
+
+    const response = await firstValueFrom(this.http.get(oauth.googlePublicKeyURL, { observe: 'response' }));
+    if (!response) {
+      throw new Error();
+    }
+
+    OAuthGoogleService.publicKeyJSON = response.body as Record<string, string>;
+    const cacheControl = response.headers.get('cache-control');
+    if (!cacheControl) {
+      // Todo: warning.
+      return;
+    }
+
+    const maxAgeNumStart = cacheControl.indexOf('max-age=') + 'max-age='.length;
+    const maxAgeNumStr = cacheControl.slice(maxAgeNumStart);
+
+    const maxAge = parseInt(maxAgeNumStr, 10);
+    OAuthGoogleService.publicKeyExpires = Date.now() + maxAge - 300;
   }
 }
