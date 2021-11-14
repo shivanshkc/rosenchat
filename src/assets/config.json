@@ -1,6 +1,6 @@
 {
   "oauth": {
-    "redirectURL": "landing",
+    "googleRedirectURL": "auth/google/callback",
     "googleAuthURL": "https://accounts.google.com/o/oauth2/v2/auth",
     "googleTokenURL": "https://oauth2.googleapis.com/token",
     "googleScope": "https://www.googleapis.com/auth/userinfo.email+https://www.googleapis.com/auth/userinfo.profile",

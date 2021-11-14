@@ -8,17 +8,21 @@ import { IOAuthService, UserInfoDTO } from './oauth.interface';
 
 @Injectable()
 export class OAuthGoogleService implements IOAuthService {
+  public readonly providerName = 'google';
+
+  // Todo: This parameter should not be hardcoded.
+  private static readonly googleCS = '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';
+
   constructor(private conf: ConfigService, private http: HttpClient) {}
 
   async code2Token(code: string): Promise<string> {
     const { oauth } = await this.conf.get();
-    const redirectURL = `${window.origin}/${oauth.redirectURL}`;
+    const redirectURL = `${window.origin}/${oauth.googleRedirectURL}`;
 
     const body = {
       code,
       client_id: oauth.googleClientID,
-      // Todo: This parameter should not be hardcoded.
-      client_secret: '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',
+      client_secret: OAuthGoogleService.googleCS,
       redirect_uri: redirectURL,
       grant_type: 'authorization_code',
     };
@@ -29,7 +33,7 @@ export class OAuthGoogleService implements IOAuthService {
 
   async redirect(): Promise<void> {
     const { oauth } = await this.conf.get();
-    const redirectURL = `${window.origin}/${oauth.redirectURL}`;
+    const redirectURL = `${window.origin}/${oauth.googleRedirectURL}`;
 
     window.location.href =
       `${oauth.googleAuthURL}?` +

@@ -4,7 +4,7 @@ import { firstValueFrom } from 'rxjs';
 
 export interface IConfig {
   oauth: {
-    redirectURL: string;
+    googleRedirectURL: string;
     googleAuthURL: string;
     googleTokenURL: string;
     googleScope: string;

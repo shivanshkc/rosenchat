@@ -2,6 +2,8 @@
  * @description Any class that implements this interface can be used as an OAuth provider.
  */
 export interface IOAuthService {
+  providerName: string;
+
   redirect(): Promise<void>;
   code2Token(code: string): Promise<string>;
   token2UserInfo(token: string): Promise<UserInfoDTO>;
