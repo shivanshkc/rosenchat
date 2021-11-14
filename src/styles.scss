@@ -15,7 +15,7 @@ body {
 
 // Vertically centers the child (use with only one child).
 .align-vertical {
-  display: flex;
+  display: flex !important;
   align-items: center;
 }
 
@@ -44,4 +44,8 @@ body {
 
 .bg-3 {
   background: lightsalmon;
+}
+
+.bg-4 {
+  background: lightcoral;
 }

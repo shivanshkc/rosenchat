@@ -1,1 +1,28 @@
-<p>home works!</p>
+<!-- This image has to be at the top so that it does not render above the other elements. -->
+<img class="background" src="assets/svg/main-waves.svg" alt="waves" />
+
+<div class="align-vertical h-100">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-xl-2 col-lg-1 col-md-1"></div>
+      <div class="col-xl-8 col-lg-10 col-md-10 col-sm-12">
+        <mat-card class="align-vertical mat-elevation-z8 home-card">
+          <div class="container-fluid main-container bg-4">
+            <div class="row upper-row">
+              <div class="col-4 bg-1">
+                <app-chat-list></app-chat-list>
+              </div>
+              <div class="col-8 bg-2">
+                <app-chat></app-chat>
+              </div>
+            </div>
+            <div class="row lower-row">
+              <app-input class="bg-3"></app-input>
+            </div>
+          </div>
+        </mat-card>
+      </div>
+      <div class="col-xl-2 col-lg-1 col-md-1"></div>
+    </div>
+  </div>
+</div>

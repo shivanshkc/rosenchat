@@ -1,3 +1,11 @@
+// For the image background.
+.background {
+  // Putting the image in the background.
+  position: fixed;
+  // Positioning it correctly.
+  top: -100px;
+}
+
 // For the toolbar branding.
 .toolbar-branding {
   // Cool font for branding.
@@ -39,12 +47,4 @@
     // Adding space between the branding and main image.
     margin-bottom: 50px;
   }
-}
-
-// For the image background.
-.background {
-  // Putting the image in the background.
-  position: fixed;
-  // Positioning it correctly.
-  top: -100px;
 }

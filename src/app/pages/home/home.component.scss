@@ -1,0 +1,48 @@
+// For the image background.
+.background {
+  // Putting the image in the background.
+  position: fixed;
+  // Positioning it correctly.
+  top: -100px;
+}
+
+// For all row children.
+.row > * {
+  // No padding.
+  padding: 0;
+}
+
+// For the home card.
+.home-card {
+  // Takes 90% of all height.
+  height: 90vh;
+  // Removes the padding.
+  padding: 5px;
+  // Curved corners.
+  border-radius: 10px;
+}
+
+// For the main container inside the home-card.
+.main-container {
+  // Takes all height-width.
+  height: 100%;
+  width: 100%;
+
+  // No padding, margins.
+  padding: 0;
+  margin: 0;
+}
+
+// For the upper row, containing the chat list and chat box.
+.upper-row {
+  height: 90%;
+  width: 100%;
+  margin: 0;
+}
+
+// For the lower row, containing input.
+.lower-row {
+  height: 10%;
+  width: 100%;
+  margin: 0;
+}
