@@ -71,8 +71,6 @@
     "func-call-spacing": ["error", "never"],
     /* Functions should be declared as expressions. */
     "func-style": ["error", "expression"],
-    /* Maximum number of params in a function. */
-    "max-params": ["error", 4],
     /* Duplicate else-if not allowed. */
     "no-dupe-else-if": "error",
     /* Duplicate case not allowed. */

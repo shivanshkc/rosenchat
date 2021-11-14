@@ -7,6 +7,7 @@ import { AppComponent } from './app.component';
 import { OAuthModule } from './client/oauth/oauth.module';
 import { ConfigModule } from './common/config/config.module';
 import { MaterialModule } from './common/material/material.module';
+import { SnackbarComponent } from './components/snackbar/snackbar.component';
 import { OnlyLoggedInGuard } from './guards/only-logged-in.guard';
 import { OnlyLoggedOutGuard } from './guards/only-logged-out.guard';
 import { ChatComponent } from './pages/chat/chat.component';
@@ -54,7 +55,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  declarations: [AppComponent, LandingComponent, HomeComponent, ChatListComponent, ChatComponent, OauthCallbackComponent],
+  declarations: [AppComponent, LandingComponent, HomeComponent, ChatListComponent, ChatComponent, OauthCallbackComponent, SnackbarComponent],
   imports: [BrowserAnimationsModule, BrowserModule, ConfigModule, MaterialModule, OAuthModule, RouterModule.forRoot(routes)],
   providers: [],
   bootstrap: [AppComponent],

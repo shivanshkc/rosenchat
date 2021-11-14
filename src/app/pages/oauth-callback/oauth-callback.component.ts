@@ -4,7 +4,9 @@ import { firstValueFrom } from 'rxjs';
 
 import { IOAuthService } from '../../client/oauth/oauth.interface';
 import { OAuthGoogleService } from '../../client/oauth/oauth-google.service';
+import { SnackbarService } from '../../services/snackbar.service';
 import { UserSessionService } from '../../services/user-session.service';
+import { tc } from '../../utils';
 
 @Component({
   selector: 'app-oauth-callback',
@@ -17,20 +19,24 @@ export class OauthCallbackComponent implements OnInit {
     private activatedRoute: ActivatedRoute,
     private oAuthGoogle: OAuthGoogleService,
     private sessionService: UserSessionService,
+    private snack: SnackbarService,
   ) {}
 
   async ngOnInit(): Promise<void> {
-    await this.handleOAuthRedirect();
+    const [err] = await tc(this.handleOAuthRedirect());
+    if (err) {
+      this.snack.error(err);
+    }
   }
 
   private async handleOAuthRedirect(): Promise<void> {
     const routeParams = await firstValueFrom(this.activatedRoute.params);
     const queryParams = await firstValueFrom(this.activatedRoute.queryParams);
 
-    const provider = routeParams['provider'];
+    const { provider } = routeParams;
     if (!provider) {
       await this.router.navigate(['/landing']);
-      return;
+      throw new Error('No OAuth provider found.');
     }
 
     let oAuthHandler: IOAuthService;
@@ -38,13 +44,13 @@ export class OauthCallbackComponent implements OnInit {
       oAuthHandler = this.oAuthGoogle;
     } else {
       await this.router.navigate(['/landing']);
-      return;
+      throw new Error('Unknown OAuth provider.');
     }
 
     const authCode = queryParams['code'];
     if (!authCode) {
       await this.router.navigate(['/landing']);
-      return;
+      throw new Error('Authentication code not present.');
     }
 
     const accessToken = await oAuthHandler.code2Token(authCode);
@@ -52,5 +58,7 @@ export class OauthCallbackComponent implements OnInit {
 
     this.sessionService.putSessionInfo({ provider, accessToken, ...userInfo });
     await this.router.navigate(['/home']);
+
+    this.snack.success('Logged in.');
   }
 }

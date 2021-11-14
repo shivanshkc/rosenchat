@@ -4,6 +4,7 @@ import * as jwt from 'jsrsasign';
 import { firstValueFrom } from 'rxjs';
 
 import { ConfigService } from '../../common/config/config.service';
+import { SnackbarService } from '../../services/snackbar.service';
 import { IOAuthService, UserInfoDTO } from './oauth.interface';
 
 @Injectable()
@@ -16,7 +17,7 @@ export class OAuthGoogleService implements IOAuthService {
   private static publicKeyJSON: Record<string, string> = {};
   private static publicKeyExpires = Date.now() / 1000;
 
-  constructor(private conf: ConfigService, private http: HttpClient) {}
+  constructor(private conf: ConfigService, private http: HttpClient, private snack: SnackbarService) {}
 
   async code2Token(code: string): Promise<string> {
     const { oauth } = await this.conf.get();
@@ -38,6 +39,8 @@ export class OAuthGoogleService implements IOAuthService {
     const { oauth } = await this.conf.get();
     const redirectURL = `${window.origin}/${oauth.googleRedirectURL}`;
 
+    this.snack.info('Redirecting to Google...');
+
     window.location.href =
       `${oauth.googleAuthURL}?` +
       `scope=${oauth.googleScope}&` +
@@ -48,7 +51,10 @@ export class OAuthGoogleService implements IOAuthService {
   }
 
   async token2UserInfo(token: string): Promise<UserInfoDTO> {
-    // Todo: Check the authenticity of this token with Google's public key.
+    if (!(await this.isTokenValid(token))) {
+      throw new Error('Looks like you need to login again.');
+    }
+
     const decoded = jwt.KJUR.jws.JWS.parse(token);
     const payload = decoded.payloadObj as {
       email: string;
@@ -93,7 +99,7 @@ export class OAuthGoogleService implements IOAuthService {
     OAuthGoogleService.publicKeyJSON = response.body as Record<string, string>;
     const cacheControl = response.headers.get('cache-control');
     if (!cacheControl) {
-      // Todo: warning.
+      this.snack.warn('No cache-control header was present in the Google public-key API response.');
       return;
     }
 
@@ -101,6 +107,11 @@ export class OAuthGoogleService implements IOAuthService {
     const maxAgeNumStr = cacheControl.slice(maxAgeNumStart);
 
     const maxAge = parseInt(maxAgeNumStr, 10);
+    if (isNaN(maxAge)) {
+      this.snack.warn('Failed to get Google public-key age from response headers.');
+      return;
+    }
+
     OAuthGoogleService.publicKeyExpires = Date.now() + maxAge - 300;
   }
 }

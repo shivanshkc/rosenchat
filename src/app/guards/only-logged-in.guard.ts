@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot } from '@angular/router';
+import { CanActivate, Router } from '@angular/router';
 
 import { UserSessionService } from '../services/user-session.service';
 
@@ -9,7 +9,7 @@ import { UserSessionService } from '../services/user-session.service';
 export class OnlyLoggedInGuard implements CanActivate {
   constructor(private router: Router, private sessionService: UserSessionService) {}
 
-  async canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Promise<boolean> {
+  async canActivate(): Promise<boolean> {
     // Allow if the session is valid.
     if (await this.sessionService.isSessionValid()) {
       return true;
