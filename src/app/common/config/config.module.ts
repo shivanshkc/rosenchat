@@ -1,7 +1,7 @@
-import { HttpClientModule } from "@angular/common/http";
-import { NgModule } from "@angular/core";
+import { HttpClientModule } from '@angular/common/http';
+import { NgModule } from '@angular/core';
 
-import { ConfigService } from "./config.service";
+import { ConfigService } from './config.service';
 
 @NgModule({
   imports: [HttpClientModule],
