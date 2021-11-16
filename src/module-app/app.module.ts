@@ -3,9 +3,9 @@ import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterModule, Routes } from '@angular/router';
 
+import { ConfigModule } from '../module-config/config.module';
+import { MaterialModule } from '../module-material/material.module';
 import { AppComponent } from './app.component';
-import { ConfigModule } from './common/config/config.module';
-import { MaterialModule } from './common/material/material.module';
 
 const routes: Routes = [];
 
