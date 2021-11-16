@@ -19,9 +19,11 @@ export class ConfigService {
       this.configs = await firstValueFrom(this.http.get<IConfig>(this.CONFIG_URL));
       this.isLoaded = true;
     }
+
     if (this.configs === undefined) {
       throw new Error('Failed to load the configs.');
     }
+
     return this.configs;
   }
 }
