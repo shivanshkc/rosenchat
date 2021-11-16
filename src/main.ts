@@ -3,11 +3,17 @@ import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
 
 import { environment } from './environments/environment';
 import { AppModule } from './module-app/app.module';
+import { tc } from './utils';
 
-if (environment.production) {
-  enableProdMode();
-}
+(async (): Promise<void> => {
+  const isProduction = environment.production;
+  if (isProduction) {
+    enableProdMode();
+  }
 
-platformBrowserDynamic()
-  .bootstrapModule(AppModule)
-  .catch((err) => console.error(err));
+  const pbDynamic = platformBrowserDynamic();
+  const [err] = await tc(pbDynamic.bootstrapModule(AppModule));
+  if (err) {
+    console.error(err);
+  }
+})();
