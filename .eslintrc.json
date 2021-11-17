@@ -11,7 +11,7 @@
     "node": true,
     "jest": true
   },
-  "ignorePatterns": [".eslintrc.json", "environment.prod.ts"],
+  "ignorePatterns": [".eslintrc.json", "environment.prod.ts", "dist/**"],
   "rules": {
     /* Functions should always have a return type, even for void. */
     "@typescript-eslint/explicit-function-return-type": "error",
