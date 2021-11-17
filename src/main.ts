@@ -2,8 +2,8 @@ import { enableProdMode } from '@angular/core';
 import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
 
 import { environment } from './environments/environment';
-import { AppModule } from './module-app/app.module';
-import { tc } from './utils';
+import { RootModule } from './modules/root/root.module';
+import { tc } from './shared/utils';
 
 (async (): Promise<void> => {
   const isProduction = environment.production;
@@ -12,7 +12,7 @@ import { tc } from './utils';
   }
 
   const pbDynamic = platformBrowserDynamic();
-  const [err] = await tc(pbDynamic.bootstrapModule(AppModule));
+  const [err] = await tc(pbDynamic.bootstrapModule(RootModule));
   if (err) {
     console.error(err);
   }
