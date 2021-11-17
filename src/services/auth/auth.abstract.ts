@@ -1,8 +1,8 @@
-import { OAuthProvider } from '../../shared/enums';
-import { SessionInfoDTO } from '../../shared/models';
+import { OAuthProvider } from '../../core/enums';
+import { SessionInfoDTO } from '../../core/models';
 
 /**
- * @description IAuthService represents an abstract Authentication Service.
+ * @description AbstractAuthService represents an abstract Authentication Service.
  */
 export abstract class AbstractAuthService {
   /**
@@ -11,7 +11,7 @@ export abstract class AbstractAuthService {
    *
    * @param provider Provider is the name of the OAuth Provider.
    */
-  abstract startLogin(provider: OAuthProvider): Promise<void>;
+  public abstract startLogin(provider: OAuthProvider): Promise<void>;
 
   /**
    * @description finishLogin completes the login process by
@@ -21,21 +21,21 @@ export abstract class AbstractAuthService {
    * @param idToken ID token is the JWT that the provider issues
    * after successful login.
    */
-  abstract finishLogin(provider: OAuthProvider, idToken: string): Promise<void>;
+  public abstract finishLogin(provider: OAuthProvider, idToken: string): Promise<void>;
 
   /**
    * @description isLoggedIn returns true if there is a valid session.
    */
-  abstract isLoggedIn(): Promise<boolean>;
+  public abstract isLoggedIn(): Promise<boolean>;
 
   /**
    * @description logout destroys the current session and takes the
    * user back to the login screen.
    */
-  abstract logout(): Promise<void>;
+  public abstract logout(): Promise<void>;
 
   /**
    * @description getSessionInfo provides the info on the current session.
    */
-  abstract getSessionInfo(): Promise<SessionInfoDTO>;
+  public abstract getSessionInfo(): Promise<SessionInfoDTO>;
 }

@@ -1,3 +1,5 @@
+import { ThemePalette } from '@angular/material/core';
+
 import { OAuthProvider } from '../enums';
 
 /**
@@ -15,4 +17,20 @@ export interface SessionInfoDTO {
   // Auth info.
   provider: OAuthProvider;
   idToken: string;
+}
+
+/**
+ * @description LoggingOptionsDTO is the schema for logging options.
+ */
+export interface LoggingOptionsDTO {
+  /**
+   * @description If true, shows a snackbar.
+   */
+  snack: boolean;
+}
+
+export interface SnackBarDataDTO {
+  message: string;
+  color: ThemePalette;
+  icon: string;
 }
