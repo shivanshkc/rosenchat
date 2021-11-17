@@ -9,20 +9,14 @@ import { SharedModule } from '../shared/shared.module';
 import { RootComponent } from './root.component';
 import { routes } from './root.router';
 
+const serviceWorkerModule = ServiceWorkerModule.register('ngsw-worker.js', {
+  enabled: environment.production,
+  registrationStrategy: 'registerWhenStable:30000',
+});
+
 @NgModule({
   declarations: [RootComponent],
-  imports: [
-    BrowserAnimationsModule,
-    BrowserModule,
-    RouterModule.forRoot(routes),
-    SharedModule,
-    ServiceWorkerModule.register('ngsw-worker.js', {
-      enabled: environment.production,
-      // Register the ServiceWorker as soon as the app is stable
-      // or after 30 seconds (whichever comes first).
-      registrationStrategy: 'registerWhenStable:30000',
-    }),
-  ],
+  imports: [BrowserAnimationsModule, BrowserModule, RouterModule.forRoot(routes), SharedModule, serviceWorkerModule],
   providers: [],
   bootstrap: [RootComponent],
 })
