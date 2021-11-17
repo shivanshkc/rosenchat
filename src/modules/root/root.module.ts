@@ -1,13 +1,12 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { RouterModule, Routes } from '@angular/router';
+import { RouterModule } from '@angular/router';
 
 import { ConfigModule } from '../config/config.module';
 import { MaterialModule } from '../material/material.module';
 import { RootComponent } from './root.component';
-
-const routes: Routes = [];
+import { routes } from './root.router';
 
 @NgModule({
   declarations: [RootComponent],
