@@ -7,3 +7,39 @@ body {
   margin: 0;
   font-family: Roboto, 'Helvetica Neue', sans-serif;
 }
+
+// Makes the font thinner.
+.font-light {
+  font-weight: lighter;
+}
+
+// Vertically centers the child (use with only one child).
+.align-vertical {
+  display: flex !important;
+  align-items: center;
+}
+
+// For small screens (< 768px).
+@media only screen and (max-width: 768px) {
+  .text-center-sm {
+    text-align: center;
+  }
+}
+
+/* Styles below are for dev usage. */
+
+.bg-1 {
+  background: lightblue;
+}
+
+.bg-2 {
+  background: lightpink;
+}
+
+.bg-3 {
+  background: lightsalmon;
+}
+
+.bg-4 {
+  background: lightcoral;
+}

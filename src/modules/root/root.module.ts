@@ -3,14 +3,13 @@ import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterModule } from '@angular/router';
 
-import { ConfigModule } from '../config/config.module';
-import { MaterialModule } from '../material/material.module';
+import { SharedModule } from '../shared/shared.module';
 import { RootComponent } from './root.component';
 import { routes } from './root.router';
 
 @NgModule({
   declarations: [RootComponent],
-  imports: [BrowserAnimationsModule, BrowserModule, ConfigModule, MaterialModule, RouterModule.forRoot(routes)],
+  imports: [BrowserAnimationsModule, BrowserModule, RouterModule.forRoot(routes), SharedModule],
   providers: [],
   bootstrap: [RootComponent],
 })

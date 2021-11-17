@@ -1,0 +1,55 @@
+// For the image background.
+.background {
+  // Putting the image in the background.
+  position: fixed;
+  // Positioning it correctly.
+  bottom: 0;
+}
+
+// For the toolbar branding.
+.toolbar-branding {
+  // Cool font for branding.
+  font-family: 'Major Mono Display', monospace;
+}
+
+// For the spacer between toolbar title and toolbar buttons.
+.spacer {
+  // Adds space between the toolbar title and toolbar buttons.
+  flex: 1 1 auto;
+}
+
+// For the container that contains the main landing page content.
+.main-container {
+  margin-top: 5%;
+}
+
+// For the main branding.
+.main-branding {
+  // Making the font bigger and responsive..
+  font-size: calc(1vw + 25px);
+  // Cool font for branding.
+  font-family: 'Major Mono Display', monospace;
+}
+
+// For the motto line below the main branding.
+.motto {
+  // Making the font size bigger and responsive.
+  font-size: calc(0.5vw + 10px);
+  // Increasing the top margin.
+  margin-top: 4%;
+}
+
+// For the main login button.
+.main-login {
+  // Increasing the top margin.
+  margin-top: 5px;
+}
+
+// For small screens (< 768px).
+@media only screen and (max-width: 768px) {
+  // For the main image/SVG.
+  .main-img {
+    // Adding space between the branding and main image.
+    margin-bottom: 50px;
+  }
+}
