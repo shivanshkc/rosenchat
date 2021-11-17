@@ -8,13 +8,12 @@ import { AbstractAuthService } from './auth.interface';
   providedIn: 'root',
 })
 export class AuthService implements AbstractAuthService {
-  async finishLogin(provider: OAuthProvider, idToken: string): Promise<void> {
-    console.debug('Inside AuthService.finishLogin with provider:', provider, 'and ID token:', idToken);
+  async startLogin(provider: OAuthProvider): Promise<void> {
+    console.debug('Inside AuthService.provider with provider:', provider);
   }
 
-  async getSessionInfo(): Promise<SessionInfoDTO> {
-    console.debug('Inside AuthService.getSessionInfo');
-    throw new Error('implement me');
+  async finishLogin(provider: OAuthProvider, idToken: string): Promise<void> {
+    console.debug('Inside AuthService.finishLogin with provider:', provider, 'and ID token:', idToken);
   }
 
   async isLoggedIn(): Promise<boolean> {
@@ -26,7 +25,8 @@ export class AuthService implements AbstractAuthService {
     console.debug('Inside AuthService.logout');
   }
 
-  async startLogin(provider: OAuthProvider): Promise<void> {
-    console.debug('Inside AuthService.provider with provider:', provider);
+  async getSessionInfo(): Promise<SessionInfoDTO> {
+    console.debug('Inside AuthService.getSessionInfo');
+    throw new Error('implement me');
   }
 }
