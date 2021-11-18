@@ -1,12 +1,12 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'app-input',
   templateUrl: './input.component.html',
   styleUrls: ['./input.component.scss'],
 })
-export class InputComponent implements OnInit {
-  constructor() {}
+export class InputComponent {
+  public mainInput = '';
 
-  ngOnInit(): void {}
+  public onEnter(): void {}
 }

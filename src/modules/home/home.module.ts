@@ -1,5 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 
 import { AbstractChatMetaStoreService } from '../../services/chat-meta-store/chat-meta-store.abstract';
@@ -15,7 +16,7 @@ import { routes } from './home.router';
 
 @NgModule({
   declarations: [HomeComponent, ChatListComponent, ChatBoxComponent, InputComponent],
-  imports: [CommonModule, MaterialModule, RouterModule.forChild(routes)],
+  imports: [CommonModule, FormsModule, MaterialModule, RouterModule.forChild(routes)],
   providers: [
     { provide: AbstractChatMetaStoreService, useClass: ChatMetaStoreService },
     { provide: AbstractProfileStoreService, useClass: ProfileStoreService },
