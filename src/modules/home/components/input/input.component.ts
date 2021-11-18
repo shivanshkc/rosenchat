@@ -37,7 +37,7 @@ export class InputComponent {
     };
 
     // The mainInput is reset immediately. If there's any error,
-    // it should be shown beside the message-card itself.
+    // it should be shown elsewhere and not in the input field.
     this.mainInput = '';
 
     const [err] = await tc(this._cachedRosenBridge.send(message));
