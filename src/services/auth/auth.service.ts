@@ -25,7 +25,7 @@ export class AuthService implements AbstractAuthService {
     console.debug('Inside AuthService.logout');
   }
 
-  public async getSessionInfo(): Promise<SessionInfoDTO> {
+  public getSessionInfo(): SessionInfoDTO {
     console.debug('Inside AuthService.getSessionInfo');
     throw new Error('implement me');
   }
