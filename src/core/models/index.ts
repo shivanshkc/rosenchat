@@ -6,17 +6,21 @@ import { OAuthProvider } from '../enums';
  * @description SessionInfoDTO is the schema for a user's session info.
  */
 export interface SessionInfoDTO {
-  // Identifier info.
+  email: string;
+  provider: OAuthProvider;
+  idToken: string;
+}
+
+/**
+ * @description ProfileInfoDTO is the schema for a user's profile info.
+ */
+export interface ProfileInfoDTO {
+  id: string;
   email: string;
 
-  // Display info.
   firstName: string;
   lastName: string;
   pictureLink: string;
-
-  // Auth info.
-  provider: OAuthProvider;
-  idToken: string;
 }
 
 /**
@@ -29,6 +33,10 @@ export interface LoggingOptionsDTO {
   snack: boolean;
 }
 
+/**
+ * @description SnackBarDataDTO is the schema of the data required to
+ * launch a snackBar.
+ */
 export interface SnackBarDataDTO {
   message: string;
   color: ThemePalette;
