@@ -36,12 +36,13 @@ export class InputComponent {
       sentAtMS: Date.now(),
     };
 
+    // The mainInput is reset immediately. If there's any error,
+    // it should be shown beside the message-card itself.
+    this.mainInput = '';
+
     const [err] = await tc(this._cachedRosenBridge.send(message));
     if (err) {
       this._log.error({ snack: true }, err.message);
-      return;
     }
-
-    this.mainInput = '';
   }
 }
