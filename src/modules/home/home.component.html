@@ -1,1 +1,20 @@
-<p>home works!</p>
+<!-- This image has to be at the top so that it does not render above the other elements. -->
+<img class="background" src="assets/svg/waves.svg" alt="waves" />
+
+<!-- This div takes the whole page and puts the home card in vertical center. -->
+<div class="align-vertical vh-100">
+  <div class="container outer-container">
+    <div class="row h-100">
+      <mat-card class="home-card" [ngClass]="isSmallScreen() ? '' : 'mat-elevation-z10'">
+        <!-- This container contains all three components. -->
+        <div class="container-fluid inner-container">
+          <div class="row first-row">
+            <div class="chat-list-wrapper" [@chatListOpenClose]="getLayoutMode()"></div>
+            <div class="chat-box-wrapper" [@chatBoxOpenClose]="getLayoutMode()"></div>
+          </div>
+          <div class="row second-row"></div>
+        </div>
+      </mat-card>
+    </div>
+  </div>
+</div>

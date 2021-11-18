@@ -1,0 +1,107 @@
+// For the image background.
+.background {
+  // Putting the image in the background.
+  position: fixed;
+  // Positioning it correctly.
+  bottom: 0;
+}
+
+// For the outer container div that has the home-card.
+.outer-container {
+  // Takes most of the viewport height.
+  height: 90vh;
+}
+
+// For the home card, that contains basically everything.
+.home-card {
+  // Removes the padding.
+  padding: 5px;
+  // Curved corners.
+  border-radius: 10px;
+}
+
+// For the inner container that contains the three components.
+.inner-container {
+  // Takes all height-width.
+  height: 100%;
+  width: 100%;
+
+  // No padding, margins.
+  padding: 0;
+  margin: 0;
+}
+
+.row > * {
+  padding: 0;
+}
+
+// For the row that contains the chat-list and chat-box.
+.first-row {
+  // Take all height except for what is required by the input.
+  height: calc(100% - 69px);
+  // Take full width.
+  width: 100%;
+  // No margins.
+  margin: 0;
+  // Scroll vertical overflow.
+  overflow-y: auto;
+}
+
+// For the row that contains input.
+.lower-row {
+  // Take whatever height required.
+  height: fit-content;
+  // Take full width.
+  width: 100%;
+  // No margins.
+  margin: 0;
+}
+
+// For the div that wraps the chat-list component.
+.chat-list-wrapper {
+  // Flex part of Bootstrap's col-4, width part will be attached by the animation.
+  flex: 0 0 auto;
+
+  // Right clearance.
+  padding-right: 5px !important;
+}
+
+// For the div that wraps the chat-box component.
+.chat-box-wrapper {
+  // Flex part of Bootstrap's col-4, width part will be attached by the animation.
+  flex: 0 0 auto;
+
+  // Left clearance.
+  padding-left: 5px !important;
+}
+
+// For small screens (width < 768px).
+@media only screen and (max-width: 768px) {
+  .outer-container {
+    // Takes all of the viewport height.
+    height: 100vh;
+  }
+
+  .home-card {
+    // No curving corners on small screens.
+    border-radius: 0;
+  }
+
+  .chat-list-wrapper {
+    // No padding on small devices.
+    padding-right: 0 !important;
+  }
+
+  .chat-box-wrapper {
+    // No padding on small devices.
+    padding-left: 0 !important;
+  }
+}
+
+// For short screens (height < 600px) or phone landscape modes.
+@media only screen and (max-height: 600px) {
+  .outer-container {
+    // Takes full height on short screens.
+    height: 100vh;
+  }
+}
