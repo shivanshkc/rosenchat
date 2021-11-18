@@ -9,10 +9,16 @@
         <!-- This container contains all three components. -->
         <div class="container-fluid inner-container">
           <div class="row first-row">
-            <div class="chat-list-wrapper" [@chatListOpenClose]="getLayoutMode()"></div>
-            <div class="chat-box-wrapper" [@chatBoxOpenClose]="getLayoutMode()"></div>
+            <div class="chat-list-wrapper" [@chatListOpenClose]="getLayoutMode()">
+              <app-chat-list></app-chat-list>
+            </div>
+            <div class="chat-box-wrapper" [@chatBoxOpenClose]="getLayoutMode()">
+              <app-chat-box></app-chat-box>
+            </div>
           </div>
-          <div class="row second-row"></div>
+          <div class="row second-row">
+            <app-input class="w-100"></app-input>
+          </div>
         </div>
       </mat-card>
     </div>
