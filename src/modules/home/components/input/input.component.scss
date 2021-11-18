@@ -1,0 +1,22 @@
+// For mat-form-field insides.
+::ng-deep .mat-form-field-wrapper {
+  // Magically removed the bottom space from mat-form-field on small screens.
+  margin-bottom: -1.25em !important;
+  padding-bottom: 0;
+}
+
+// For mat-form-field.
+mat-form-field {
+  // Takes full height of underlying input.
+  height: 100%;
+  // Clearance from button.
+  margin-right: 10px;
+  // Width as per margin and button width.
+  width: calc(100% - 56px - 10px);
+}
+
+// For the input inside the mat-form-field.
+input {
+  // Manually increasing the height.
+  height: 25px;
+}

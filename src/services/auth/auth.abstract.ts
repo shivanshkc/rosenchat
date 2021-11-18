@@ -37,5 +37,5 @@ export abstract class AbstractAuthService {
   /**
    * @description getSessionInfo provides the info on the current session.
    */
-  public abstract getSessionInfo(): Promise<SessionInfoDTO>;
+  public abstract getSessionInfo(): SessionInfoDTO;
 }
