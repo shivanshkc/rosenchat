@@ -11,7 +11,7 @@ export class ChatMetaStoreService implements AbstractChatMetaStoreService {
     throw new Error('implement me');
   }
 
-  public setCurrentActiveChat(id: string): string {
+  public setCurrentActiveChat(id: string): void {
     console.debug('Inside ChatMetaStoreService.setCurrentActiveChat with ID:', id);
     throw new Error('implement me');
   }

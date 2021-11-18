@@ -14,7 +14,7 @@ export abstract class AbstractChatMetaStoreService {
    *
    * @param id - The ID of the user whose chat is to be set as active.
    */
-  public abstract setCurrentActiveChat(id: string): string;
+  public abstract setCurrentActiveChat(id: string): void;
 
   /**
    * @description getUnreadCount provides the number of unread messages for
