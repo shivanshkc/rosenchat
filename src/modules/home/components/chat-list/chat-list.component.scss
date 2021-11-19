@@ -1,0 +1,53 @@
+// For the photo frame.
+.photo-frame {
+  // Adding height and width for even border-radius.
+  width: 50px;
+  min-width: 50px;
+  height: auto;
+
+  // Making the circular frame.
+  border-radius: 50%;
+  // The image overflowing the frame will not be visible.
+  overflow: hidden;
+}
+
+// For the photo.
+.photo-frame img {
+  // Putting image in the middle of the frame.
+  margin-left: auto;
+  margin-right: auto;
+
+  // Full height and width.
+  height: 100%;
+  width: 100%;
+}
+
+// For the title on the toolbar.
+.toolbar-title {
+  // Cool font for title.
+  font-family: 'Major Mono Display', monospace;
+  // Distance from the image.
+  margin-left: 15px;
+}
+
+// For the spacer between toolbar title and toolbar buttons.
+.spacer {
+  // Adds space between the toolbar title and toolbar buttons.
+  flex: 1 1 auto;
+}
+
+// For the div that wraps the search input.
+.search-input-wrapper {
+  // Take full width.
+  width: 100%;
+  // Padding on all sides.
+  padding: 10px;
+}
+
+// For the search input's mat-form-field.
+.search-input-wrapper mat-form-field {
+  // Distance from the side button.
+  margin-right: 10px;
+  // Width as per button's size and margin.
+  width: calc(100% - 40px - 10px);
+}

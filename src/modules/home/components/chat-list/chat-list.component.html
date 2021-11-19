@@ -1,1 +1,23 @@
-<p>chat-list works!</p>
+<!-- This toolbar's border radius and color changes as per screen size. -->
+<mat-toolbar class="mat-elevation-z2">
+  <div class="photo-frame">
+    <img src="https://picsum.photos/200/200" alt="photo" />
+  </div>
+
+  <span class="toolbar-title">{{ title }}</span>
+  <span class="spacer"></span>
+
+  <button mat-icon-button>
+    <mat-icon>logout</mat-icon>
+  </button>
+</mat-toolbar>
+
+<div class="search-input-wrapper align-vertical">
+  <mat-form-field>
+    <input matInput autocomplete="off" placeholder="Search or start a new chat." />
+  </mat-form-field>
+
+  <button mat-mini-fab color="">
+    <mat-icon>add</mat-icon>
+  </button>
+</div>
