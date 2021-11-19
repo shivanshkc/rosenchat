@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { ProfileInfoDTO } from '../../../../core/models';
 import { tc } from '../../../../core/utils';
 import { AbstractAuthService } from '../../../../services/auth/auth.abstract';
+import { AbstractCachedRosenBridgeService } from '../../../../services/cached-rosen-bridge/cached-rosen-bridge.abstract';
 import { AbstractLoggerService } from '../../../../services/logger/logger.abstract';
 import { AbstractRosenchatService } from '../../../../services/rosenchat/rosenchat.abstract';
 
@@ -19,6 +20,7 @@ export class ChatListComponent implements OnInit {
 
   constructor(
     private readonly _authService: AbstractAuthService,
+    public readonly rosenBridge: AbstractCachedRosenBridgeService,
     private readonly _rosenchat: AbstractRosenchatService,
     private readonly _log: AbstractLoggerService,
   ) {}

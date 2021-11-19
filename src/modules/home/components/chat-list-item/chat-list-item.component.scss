@@ -1,0 +1,37 @@
+// The whole chat-list-item.
+:host {
+  // Defining width and height for scrollable UI.
+  width: 100%;
+  height: 90px;
+
+  // Children in vertical middle.
+  display: flex;
+  align-items: center;
+
+  // Sideways overflow will not be seen.
+  overflow-x: hidden;
+}
+
+// For the photo frame.
+.photo-frame {
+  // Adding height and width for even border-radius.
+  width: 60px;
+  min-width: 60px;
+  height: auto;
+
+  // Making the circular frame.
+  border-radius: 50%;
+  // The image overflowing the frame will not be visible.
+  overflow: hidden;
+}
+
+// For the photo.
+.photo-frame img {
+  // Putting image in the middle of the frame.
+  margin-left: auto;
+  margin-right: auto;
+
+  // Full height and width.
+  height: 100%;
+  width: 100%;
+}

@@ -26,7 +26,7 @@ export class CachedRosenBridgeService implements AbstractCachedRosenBridgeServic
 
   public getAllChats(): string[] {
     console.debug('Inside CachedRosenBridgeService.getAllChats');
-    return [];
+    return ['a', 'b', 'c'];
   }
 
   public async connect(address: string, userID: string): Promise<void> {

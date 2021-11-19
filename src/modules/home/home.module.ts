@@ -18,12 +18,13 @@ import { RosenchatService } from '../../services/rosenchat/rosenchat.service';
 import { MaterialModule } from '../material/material.module';
 import { ChatBoxComponent } from './components/chat-box/chat-box.component';
 import { ChatListComponent } from './components/chat-list/chat-list.component';
+import { ChatListItemComponent } from './components/chat-list-item/chat-list-item.component';
 import { InputComponent } from './components/input/input.component';
 import { HomeComponent } from './home.component';
 import { routes } from './home.router';
 
 @NgModule({
-  declarations: [HomeComponent, ChatListComponent, ChatBoxComponent, InputComponent],
+  declarations: [HomeComponent, ChatListComponent, ChatBoxComponent, InputComponent, ChatListItemComponent],
   imports: [CommonModule, FormsModule, MaterialModule, RouterModule.forChild(routes)],
   providers: [
     { provide: AbstractAuthService, useClass: AuthService },
