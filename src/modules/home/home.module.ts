@@ -13,6 +13,8 @@ import { AbstractLoggerService } from '../../services/logger/logger.abstract';
 import { LoggerService } from '../../services/logger/logger.service';
 import { AbstractRosenBridgeService } from '../../services/rosen-bridge/rosen-bridge.abstract';
 import { RosenBridgeService } from '../../services/rosen-bridge/rosen-bridge.service';
+import { AbstractRosenchatService } from '../../services/rosenchat/rosenchat.abstract';
+import { RosenchatService } from '../../services/rosenchat/rosenchat.service';
 import { MaterialModule } from '../material/material.module';
 import { ChatBoxComponent } from './components/chat-box/chat-box.component';
 import { ChatListComponent } from './components/chat-list/chat-list.component';
@@ -28,6 +30,7 @@ import { routes } from './home.router';
     { provide: AbstractChatMetaStoreService, useClass: ChatMetaStoreService },
     { provide: AbstractLoggerService, useClass: LoggerService },
     { provide: AbstractRosenBridgeService, useClass: RosenBridgeService },
+    { provide: AbstractRosenchatService, useClass: RosenchatService },
     { provide: AbstractCachedRosenBridgeService, useClass: CachedRosenBridgeService },
   ],
 })

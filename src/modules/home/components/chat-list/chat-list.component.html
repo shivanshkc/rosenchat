@@ -1,23 +1,25 @@
 <!-- This toolbar's border radius and color changes as per screen size. -->
 <mat-toolbar class="mat-elevation-z2">
   <div class="photo-frame">
-    <img src="https://picsum.photos/200/200" alt="photo" />
+    <img [src]="selfProfileInfo?.pictureLink || 'assets/png/profile-photo-ph.png'" alt="photo" />
   </div>
 
   <span class="toolbar-title">{{ title }}</span>
   <span class="spacer"></span>
 
-  <button mat-icon-button>
+  <button mat-icon-button (click)="onLogoutClick()">
     <mat-icon>logout</mat-icon>
   </button>
 </mat-toolbar>
 
 <div class="search-input-wrapper align-vertical">
   <mat-form-field>
-    <input matInput autocomplete="off" placeholder="Search or start a new chat." />
+    <input matInput [(ngModel)]="searchOrAddInput" (keyup.enter)="onAddClick()" autocomplete="off" placeholder="Search or start a new chat." />
   </mat-form-field>
 
-  <button mat-mini-fab color="">
+  <button mat-mini-fab color="" (click)="onAddClick()">
     <mat-icon>add</mat-icon>
   </button>
 </div>
+
+<div class="chat-list-wrapper"></div>

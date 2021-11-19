@@ -19,6 +19,16 @@ export class CachedRosenBridgeService implements AbstractCachedRosenBridgeServic
     throw new Error('implement me');
   }
 
+  public addChat(userID: string): void {
+    console.debug('Inside CachedRosenBridgeService.addChat with userID:', userID);
+    throw new Error('implement me');
+  }
+
+  public getAllChats(): string[] {
+    console.debug('Inside CachedRosenBridgeService.getAllChats');
+    return [];
+  }
+
   public async connect(address: string, userID: string): Promise<void> {
     return this._rosenBridge.connect(address, userID);
   }
