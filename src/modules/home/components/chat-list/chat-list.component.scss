@@ -56,6 +56,24 @@
 .chat-list-wrapper {
   // Take full width.
   width: 100%;
+  // Height as per the toolbar and search bar.
+  height: calc(100% - 55px - 64px);
+  // Scroll the chats.
+  overflow-y: auto;
+}
+
+// For the chat-list scrollbar.
+.chat-list-wrapper::-webkit-scrollbar {
+  // Making the background invisible and thinner.
+  background: white;
+  width: 4px;
+}
+
+// For the chat-list scrollbar.
+.chat-list-wrapper::-webkit-scrollbar-thumb {
+  // Making the scroller prettier.
+  background: whitesmoke;
+  border-radius: 2px;
 }
 
 // For the mat-dividers below the app-chat-list-items.
@@ -70,5 +88,11 @@
     // Adding height and width for even border-radius.
     width: 45px;
     min-width: 45px;
+  }
+
+  // For the div that wraps the chat-list items.
+  .chat-list-wrapper {
+    // Adjusting height as per the toolbar height.
+    height: calc(100% - 55px - 56px);
   }
 }

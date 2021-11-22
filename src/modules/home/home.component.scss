@@ -14,6 +14,8 @@
 
 // For the home card, that contains basically everything.
 .home-card {
+  // Take full height of parent, no less, no more.
+  height: 100%;
   // Removes the padding.
   padding: 0;
   // Curved corners.
@@ -67,6 +69,8 @@
 .chat-list-wrapper {
   // Flex part of Bootstrap's col-4, width part will be attached by the animation.
   flex: 0 0 auto;
+  // Takes full height of parent.
+  height: 100%;
   // Right clearance.
   padding-right: 5px !important;
   // Contents will be hidden if width is 0.
