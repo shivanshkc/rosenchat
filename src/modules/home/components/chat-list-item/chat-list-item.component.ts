@@ -7,6 +7,7 @@ import { AbstractCachedRosenBridgeService } from '../../../../services/cached-ro
 import { AbstractChatMetaStoreService } from '../../../../services/chat-meta-store/chat-meta-store.abstract';
 import { AbstractLoggerService } from '../../../../services/logger/logger.abstract';
 import { AbstractRosenchatService } from '../../../../services/rosenchat/rosenchat.abstract';
+import { TimeFormatterService } from '../../../../services/time-formatter/time-formatter.service';
 
 @Component({
   selector: 'app-chat-list-item',
@@ -24,6 +25,7 @@ export class ChatListItemComponent implements OnInit {
     public readonly rosenBridge: AbstractCachedRosenBridgeService,
     private readonly _rosenchat: AbstractRosenchatService,
     private readonly _log: AbstractLoggerService,
+    private readonly _timeFormatter: TimeFormatterService,
   ) {}
 
   async ngOnInit(): Promise<void> {
@@ -33,6 +35,14 @@ export class ChatListItemComponent implements OnInit {
   public wasLastMessageOutgoing(): boolean {
     const { senderID } = this.rosenBridge.getLastMessage(this.userID);
     return senderID === this._authService.getSessionInfo().id;
+  }
+
+  public formatTime(): string {
+    const lastMessageDate = new Date(this.rosenBridge.getLastMessage(this.userID).sentAtMS);
+    const formatted = this._timeFormatter.fmt(lastMessageDate);
+    console.info('Date:', lastMessageDate, 'got:', formatted);
+
+    return formatted;
   }
 
   private async _pullProfileInfo(): Promise<void> {

@@ -47,7 +47,7 @@
   // Spacing from the photo-frame.
   padding-left: 15px;
   // Width as per the photo-frame and right div.
-  width: calc(100% - 60px - 50px);
+  width: calc(100% - 60px - 100px);
 }
 
 // For the the div that contains only contact's name.
@@ -61,11 +61,11 @@
   // Mid align elements.
   text-align: center;
   // Fixed width.
-  width: 50px;
+  width: 100px;
 }
 
 // For mat-badge, used for unread message count.
 span.mat-badge-content {
   // Positioning the badge correctly.
-  right: 20px !important;
+  right: 0 !important;
 }

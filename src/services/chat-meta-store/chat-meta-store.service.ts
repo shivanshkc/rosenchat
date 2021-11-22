@@ -6,13 +6,16 @@ import { AbstractChatMetaStoreService } from './chat-meta-store.abstract';
   providedIn: 'root',
 })
 export class ChatMetaStoreService implements AbstractChatMetaStoreService {
+  private _tempVar = '';
+
   public getCurrentActiveChat(): string {
     console.debug('Inside ChatMetaStoreService.getCurrentActiveChat');
-    return '';
+    return this._tempVar;
   }
 
   public setCurrentActiveChat(id: string): void {
     console.debug('Inside ChatMetaStoreService.setCurrentActiveChat with ID:', id);
+    this._tempVar = id;
   }
 
   public getUnreadCount(id: string): number {
