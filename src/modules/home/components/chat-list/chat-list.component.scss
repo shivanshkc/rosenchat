@@ -40,8 +40,8 @@
 .search-input-wrapper {
   // Take full width.
   width: 100%;
-  // Padding on all sides.
-  padding: 10px;
+  // Paddings.
+  padding: 10px 5px 5px 10px;
 }
 
 // For the search input's mat-form-field.
@@ -50,4 +50,25 @@
   margin-right: 10px;
   // Width as per button's size and margin.
   width: calc(100% - 40px - 10px);
+}
+
+// For the div that wraps the chat-list items.
+.chat-list-wrapper {
+  // Take full width.
+  width: 100%;
+}
+
+// For the mat-dividers below the app-chat-list-items.
+.ng-for-div mat-divider {
+  // Avoid divider's overflow.
+  position: relative;
+}
+
+// For small screens (width < 768px).
+@media only screen and (max-width: 768px) {
+  .photo-frame {
+    // Adding height and width for even border-radius.
+    width: 45px;
+    min-width: 45px;
+  }
 }

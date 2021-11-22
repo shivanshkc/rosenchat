@@ -8,6 +8,13 @@ body {
   font-family: Roboto, 'Helvetica Neue', sans-serif;
 }
 
+// Adds ellipsis to overflowing text.
+.ellipsis {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
 // Makes the font thinner.
 .font-light {
   font-weight: lighter;

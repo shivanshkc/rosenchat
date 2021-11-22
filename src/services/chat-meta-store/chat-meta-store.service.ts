@@ -8,17 +8,16 @@ import { AbstractChatMetaStoreService } from './chat-meta-store.abstract';
 export class ChatMetaStoreService implements AbstractChatMetaStoreService {
   public getCurrentActiveChat(): string {
     console.debug('Inside ChatMetaStoreService.getCurrentActiveChat');
-    throw new Error('implement me');
+    return '';
   }
 
   public setCurrentActiveChat(id: string): void {
     console.debug('Inside ChatMetaStoreService.setCurrentActiveChat with ID:', id);
-    throw new Error('implement me');
   }
 
   public getUnreadCount(id: string): number {
     console.debug('Inside ChatMetaStoreService.getUnreadCount with ID:', id);
-    throw new Error('implement me');
+    return 12;
   }
 
   public incrementUnreadCount(id: string, amount: number): void {

@@ -23,5 +23,8 @@
 </div>
 
 <div class="chat-list-wrapper">
-  <app-chat-list-item *ngFor="let userID of rosenBridge.getAllChats()" [userID]="userID"></app-chat-list-item>
+  <div class="ng-for-div" *ngFor="let userID of rosenBridge.getAllChats()">
+    <app-chat-list-item matRipple [userID]="userID"></app-chat-list-item>
+    <mat-divider></mat-divider>
+  </div>
 </div>

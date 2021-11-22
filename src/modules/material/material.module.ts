@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { MatBadgeModule } from '@angular/material/badge';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
+import { MatRippleModule } from '@angular/material/core';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
@@ -20,6 +21,7 @@ import { MatToolbarModule } from '@angular/material/toolbar';
     MatInputModule,
     MatBadgeModule,
     MatDividerModule,
+    MatRippleModule,
   ],
   exports: [
     MatToolbarModule,
@@ -31,6 +33,7 @@ import { MatToolbarModule } from '@angular/material/toolbar';
     MatInputModule,
     MatBadgeModule,
     MatDividerModule,
+    MatRippleModule,
   ],
 })
 export class MaterialModule {}
