@@ -60,16 +60,20 @@
   height: calc(100% - 55px - 64px);
   // Scroll the chats.
   overflow-y: auto;
+
+  // Scrollbar styling for firefox.
+  scrollbar-color: whitesmoke white;
+  scrollbar-width: thin;
 }
 
-// For the chat-list scrollbar.
+// For the chat-list scrollbar in browsers other than firefox.
 .chat-list-wrapper::-webkit-scrollbar {
   // Making the background invisible and thinner.
   background: white;
   width: 4px;
 }
 
-// For the chat-list scrollbar.
+// For the chat-list scrollbar in browsers other than firefox.
 .chat-list-wrapper::-webkit-scrollbar-thumb {
   // Making the scroller prettier.
   background: whitesmoke;
