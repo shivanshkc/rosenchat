@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, HostListener, OnInit } from '@angular/core';
 
 import { ProfileInfoDTO } from '../../../../core/models';
 import { tc } from '../../../../core/utils';
@@ -19,6 +19,8 @@ export class ChatListComponent implements OnInit {
   public searchOrAddInput = '';
   public selfProfileInfo: ProfileInfoDTO | undefined;
 
+  private _screenWidth: number = window.screen.width;
+
   constructor(
     private readonly _authService: AbstractAuthService,
     public readonly rosenBridge: AbstractCachedRosenBridgeService,
@@ -29,6 +31,15 @@ export class ChatListComponent implements OnInit {
 
   async ngOnInit(): Promise<void> {
     await this._pullProfileInfo();
+  }
+
+  @HostListener('window:resize', ['$event'])
+  public onResize(event: Event): void {
+    this._screenWidth = (event.target as Window).screen.width;
+  }
+
+  public isSmallScreen(): boolean {
+    return this._screenWidth <= 991;
   }
 
   public onAddClick(): void {}

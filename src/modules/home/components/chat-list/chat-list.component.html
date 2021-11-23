@@ -1,5 +1,5 @@
 <!-- This toolbar's border radius and color changes as per screen size. -->
-<mat-toolbar class="mat-elevation-z2">
+<mat-toolbar class="mat-elevation-z2" [color]="isSmallScreen() ? 'primary' : undefined">
   <div class="photo-frame">
     <img [src]="selfProfileInfo?.pictureLink || 'assets/png/profile-photo-ph.png'" alt="photo" />
   </div>
@@ -12,7 +12,7 @@
   </button>
 </mat-toolbar>
 
-<div class="search-input-wrapper">
+<div class="search-input-wrapper mat-elevation-z2">
   <mat-form-field appearance="outline" class="w-100">
     <input matInput [(ngModel)]="searchOrAddInput" (keyup.enter)="onAddClick()" autocomplete="off" placeholder="Search or start a new chat." />
     <button matSuffix mat-icon-button (click)="onAddClick()">
