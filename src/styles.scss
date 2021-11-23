@@ -32,11 +32,6 @@ body {
   align-items: flex-end;
 }
 
-// Gives full viewport height.
-.vh-100 {
-  height: 100vh;
-}
-
 // For small screens (width < 768px).
 @media only screen and (max-width: 768px) {
   .text-center-sm {

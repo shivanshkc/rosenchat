@@ -9,7 +9,7 @@
 // For the outer container div that has the home-card.
 .outer-container {
   // Takes most of the viewport height.
-  height: 90vh;
+  height: 90%;
 }
 
 // For the home card, that contains basically everything.
@@ -91,7 +91,7 @@
 @media only screen and (max-width: 768px) {
   .outer-container {
     // Takes all of the viewport height.
-    height: 100vh;
+    height: 100%;
   }
 
   .home-card {
@@ -114,6 +114,6 @@
 @media only screen and (max-height: 600px) {
   .outer-container {
     // Takes full height on short screens.
-    height: 100vh;
+    height: 100%;
   }
 }
