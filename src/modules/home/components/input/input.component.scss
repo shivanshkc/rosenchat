@@ -1,24 +1,22 @@
-:host {
-  // Makes the button and input align (don't know why)
-  display: flex !important;
-}
-
 // For mat-form-field insides.
 ::ng-deep .mat-form-field-wrapper {
   // Magically removed the bottom space from mat-form-field on small screens.
   margin-bottom: -1.25em !important;
-  // No extra bottom padding.
   padding-bottom: 0;
-  // No transparent backgrounds.
-  background: white;
 }
 
 // For mat-form-field.
 mat-form-field {
-  // Left spacing.
-  margin-left: 5px;
-  // Right spacing from the button.
-  margin-right: 5px;
-  // Width as per margins and button width.
-  width: calc(100% - 5px - 5px - 56px - 5px);
+  // Takes full height of underlying input.
+  height: 100%;
+  // Clearance from button.
+  margin-right: 10px;
+  // Width as per margin and button width.
+  width: calc(100% - 56px - 10px);
+}
+
+// For the input inside the mat-form-field.
+input {
+  // Manually increasing the height.
+  height: 25px;
 }
