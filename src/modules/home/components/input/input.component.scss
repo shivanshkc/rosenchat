@@ -10,9 +10,9 @@ mat-form-field {
   // Takes full height of underlying input.
   height: 100%;
   // Clearance from button.
-  margin-right: 10px;
+  margin-right: 5px;
   // Width as per margin and button width.
-  width: calc(100% - 56px - 10px);
+  width: calc(100% - 56px - 5px);
 }
 
 // For the input inside the mat-form-field.

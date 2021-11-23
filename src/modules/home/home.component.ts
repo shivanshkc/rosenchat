@@ -38,7 +38,7 @@ export class HomeComponent {
   }
 
   public isSmallScreen(): boolean {
-    return this._screenWidth <= 768;
+    return this._screenWidth <= 991;
   }
 
   public getLayoutMode(): LayoutMode {

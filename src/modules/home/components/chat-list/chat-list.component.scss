@@ -86,8 +86,8 @@
   position: relative;
 }
 
-// For small screens (width < 768px).
-@media only screen and (max-width: 768px) {
+// For small screens (width < 991px).
+@media only screen and (max-width: 991px) {
   .photo-frame {
     // Adding height and width for even border-radius.
     width: 45px;

@@ -32,8 +32,8 @@ body {
   align-items: flex-end;
 }
 
-// For small screens (width < 768px).
-@media only screen and (max-width: 768px) {
+// For small screens (width < 991px).
+@media only screen and (max-width: 991px) {
   .text-center-sm {
     text-align: center;
   }
