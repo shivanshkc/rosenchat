@@ -46,7 +46,7 @@
 // For the row that contains the chat-list and chat-box.
 .first-row {
   // Take all height except for what is required by the input.
-  height: calc(100% - 70px);
+  height: calc(100% - 60px);
   // Take full width.
   width: 100%;
   // No margins.
@@ -56,7 +56,7 @@
 // For the row that contains input.
 .second-row {
   // Take whatever height required.
-  height: 70px;
+  height: 60px;
   // Take full width.
   width: 100%;
   // No margins.
