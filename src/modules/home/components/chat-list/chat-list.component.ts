@@ -18,19 +18,21 @@ export class ChatListComponent implements OnInit {
 
   public searchOrAddInput = '';
   public selfProfileInfo: ProfileInfoDTO | undefined;
+  public chatListData: ProfileInfoDTO[] = [];
 
   private _screenWidth: number = window.screen.width;
 
   constructor(
     private readonly _authService: AbstractAuthService,
-    public readonly rosenBridge: AbstractCachedRosenBridgeService,
+    private readonly _rosenBridge: AbstractCachedRosenBridgeService,
     public readonly chatMeta: AbstractChatMetaStoreService,
     private readonly _rosenchat: AbstractRosenchatService,
     private readonly _log: AbstractLoggerService,
   ) {}
 
   async ngOnInit(): Promise<void> {
-    await this._pullProfileInfo();
+    this._setSelfProfileInfo();
+    this._setChatListData();
   }
 
   @HostListener('window:resize', ['$event'])
@@ -46,7 +48,7 @@ export class ChatListComponent implements OnInit {
 
   public onLogoutClick(): void {}
 
-  private async _pullProfileInfo(): Promise<void> {
+  private async _setSelfProfileInfo(): Promise<void> {
     const { id: userID } = this._authService.getSessionInfo();
 
     const [err, profileInfo] = await tc(this._rosenchat.getProfileInfo(userID));
@@ -56,5 +58,20 @@ export class ChatListComponent implements OnInit {
     }
 
     this.selfProfileInfo = profileInfo;
+  }
+
+  private async _setChatListData(): Promise<void> {
+    const promises: Promise<ProfileInfoDTO>[] = [];
+    this._rosenBridge.getAllChats().forEach((userID: string) => {
+      promises.push(this._rosenchat.getProfileInfo(userID));
+    });
+
+    const [err, allProfiles] = await tc(Promise.all(promises));
+    if (err || !allProfiles) {
+      this._log.error({ snack: true }, err?.message || 'Failed to load profiles.');
+      return;
+    }
+
+    this.chatListData = allProfiles;
   }
 }

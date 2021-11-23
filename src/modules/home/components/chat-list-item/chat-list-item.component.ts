@@ -1,12 +1,9 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input } from '@angular/core';
 
 import { ProfileInfoDTO } from '../../../../core/models';
-import { tc } from '../../../../core/utils';
 import { AbstractAuthService } from '../../../../services/auth/auth.abstract';
 import { AbstractCachedRosenBridgeService } from '../../../../services/cached-rosen-bridge/cached-rosen-bridge.abstract';
 import { AbstractChatMetaStoreService } from '../../../../services/chat-meta-store/chat-meta-store.abstract';
-import { AbstractLoggerService } from '../../../../services/logger/logger.abstract';
-import { AbstractRosenchatService } from '../../../../services/rosenchat/rosenchat.abstract';
 import { TimeFormatterService } from '../../../../services/time-formatter/time-formatter.service';
 
 @Component({
@@ -14,44 +11,31 @@ import { TimeFormatterService } from '../../../../services/time-formatter/time-f
   templateUrl: './chat-list-item.component.html',
   styleUrls: ['./chat-list-item.component.scss'],
 })
-export class ChatListItemComponent implements OnInit {
-  @Input() userID = '';
-
-  public profileInfo: ProfileInfoDTO | undefined;
+export class ChatListItemComponent {
+  @Input() profileInfo: ProfileInfoDTO | undefined;
 
   constructor(
     private readonly _authService: AbstractAuthService,
     public readonly chatMeta: AbstractChatMetaStoreService,
     public readonly rosenBridge: AbstractCachedRosenBridgeService,
-    private readonly _rosenchat: AbstractRosenchatService,
-    private readonly _log: AbstractLoggerService,
     private readonly _timeFormatter: TimeFormatterService,
   ) {}
 
-  async ngOnInit(): Promise<void> {
-    await this._pullProfileInfo();
-  }
-
   public wasLastMessageOutgoing(): boolean {
-    const { senderID } = this.rosenBridge.getLastMessage(this.userID);
+    if (!this.profileInfo) {
+      return false;
+    }
+
+    const { senderID } = this.rosenBridge.getLastMessage(this.profileInfo.id);
     return senderID === this._authService.getSessionInfo().id;
   }
 
   public formatTime(): string {
-    const lastMessageDate = new Date(this.rosenBridge.getLastMessage(this.userID).sentAtMS);
-    const formatted = this._timeFormatter.fmt(lastMessageDate);
-    console.info('Date:', lastMessageDate, 'got:', formatted);
-
-    return formatted;
-  }
-
-  private async _pullProfileInfo(): Promise<void> {
-    const [err, profileInfo] = await tc(this._rosenchat.getProfileInfo(this.userID));
-    if (err) {
-      this._log.error({ snack: true }, err.message);
-      return;
+    if (!this.profileInfo) {
+      return '...';
     }
 
-    this.profileInfo = profileInfo;
+    const lastMessageDate = new Date(this.rosenBridge.getLastMessage(this.profileInfo.id).sentAtMS);
+    return this._timeFormatter.fmt(lastMessageDate);
   }
 }

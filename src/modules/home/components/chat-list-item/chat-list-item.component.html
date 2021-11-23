@@ -6,7 +6,7 @@
 <div class="middle-div">
   <div class="name-div ellipsis font-light">{{ profileInfo?.firstName || profileInfo?.email || 'Loading...' }}</div>
   <div class="last-message-div ellipsis font-light">
-    {{ (wasLastMessageOutgoing() ? 'You: ' : '') + (rosenBridge.getLastMessage(userID).content || '') }}
+    {{ (wasLastMessageOutgoing() ? 'You: ' : '') + (profileInfo ? rosenBridge.getLastMessage(profileInfo.id).content : '') }}
   </div>
 </div>
 
@@ -16,8 +16,8 @@
   <div
     class="badge-div"
     matBadgeColor="accent"
-    [matBadge]="chatMeta.getUnreadCount(userID)"
-    [matBadgeHidden]="chatMeta.getUnreadCount(userID) === 0"
+    [matBadge]="profileInfo ? chatMeta.getUnreadCount(profileInfo.id) : 0"
+    [matBadgeHidden]="profileInfo ? chatMeta.getUnreadCount(profileInfo.id) === 0 : true"
     matBadgePosition="below after"
   ></div>
 </div>

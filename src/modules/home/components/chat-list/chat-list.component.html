@@ -22,8 +22,8 @@
 </div>
 
 <div class="chat-list-wrapper">
-  <div class="ng-for-div" *ngFor="let userID of rosenBridge.getAllChats()">
-    <app-chat-list-item matRipple [userID]="userID" (click)="chatMeta.setCurrentActiveChat(userID)"></app-chat-list-item>
+  <div class="ng-for-div" *ngFor="let info of chatListData | chatListFilter: searchOrAddInput">
+    <app-chat-list-item matRipple [profileInfo]="info" (click)="chatMeta.setCurrentActiveChat(info.id)"></app-chat-list-item>
     <mat-divider></mat-divider>
   </div>
 </div>
