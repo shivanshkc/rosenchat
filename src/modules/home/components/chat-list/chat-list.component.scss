@@ -41,7 +41,7 @@
   // Take full width.
   width: 100%;
   // Paddings.
-  padding: 10px 5px 5px 10px;
+  padding: 10px 5px 0 10px;
 }
 
 // For the search input's mat-form-field.
@@ -57,9 +57,11 @@
   // Take full width.
   width: 100%;
   // Height as per the toolbar and search bar.
-  height: calc(100% - 55px - 64px);
+  height: calc(100% - 72px - 64px);
   // Scroll the chats.
   overflow-y: auto;
+  // Bottom padding equal to the height of one chat-list-item.
+  padding-bottom: 85px;
 
   // Scrollbar styling for firefox.
   scrollbar-color: whitesmoke white;

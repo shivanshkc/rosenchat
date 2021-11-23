@@ -35,16 +35,10 @@
   margin: 0;
 }
 
-// For row children.
-.inner-container .row > * {
-  // No padding.
-  padding: 0;
-}
-
 // For the row that contains the chat-list and chat-box.
-.first-row {
+.inner-container .row {
   // Take all height except for what is required by the input.
-  height: calc(100% - 70px);
+  height: 100%;
   // Take full width.
   width: 100%;
   // No margins.
@@ -53,16 +47,23 @@
   overflow-y: auto;
 }
 
-// For the row that contains input.
-.second-row {
-  // Take whatever height required.
-  height: 70px;
-  // Take full width.
+// For inner-container's row's children.
+.inner-container .row > * {
+  // No padding.
+  padding: 0;
+}
+
+// For the div that wraps the input.
+.input-wrapper {
+  // Positioning it at the bottom.
+  position: absolute;
+  bottom: 5px;
+
+  height: 60px;
+  // Takes full width.
   width: 100%;
-  // No margins.
-  margin: 0;
-  // Sideways padding for input component.
-  padding: 0 5px;
+  // Renders above other components.
+  z-index: 1;
 }
 
 // For the div that wraps the chat-list component.
@@ -81,6 +82,8 @@
 .chat-box-wrapper {
   // Flex part of Bootstrap's col-4, width part will be attached by the animation.
   flex: 0 0 auto;
+  // Takes full height of parent.
+  height: 100%;
   // Left clearance.
   padding-left: 5px !important;
   // Contents will be hidden if width is 0.
