@@ -54,3 +54,26 @@ export interface SnackBarDataDTO {
   color: ThemePalette;
   icon: string;
 }
+
+/**
+ * @description AddUserDialogDataDTO is the data required by the AddUserDialog.
+ */
+export interface AddUserDialogDataDTO {
+  profile: ProfileInfoDTO;
+  callback: (reply: boolean) => void;
+}
+
+/**
+ * @description ConfirmDialogDataDTO is the data required by the ConfirmDialog.
+ */
+export interface ConfirmDialogDataDTO {
+  message?: string;
+
+  okButtonText?: string;
+  okButtonColor?: ThemePalette;
+
+  cancelButtonText?: string;
+  cancelButtonColor?: ThemePalette;
+
+  callback?: (ok: boolean) => void;
+}

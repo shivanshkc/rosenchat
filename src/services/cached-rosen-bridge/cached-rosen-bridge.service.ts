@@ -16,7 +16,16 @@ export class CachedRosenBridgeService implements AbstractCachedRosenBridgeServic
 
   public getLastMessage(userID: string): RosenBridgeMessageDTO {
     console.debug('Inside CachedRosenBridgeService.getLastMessage with userID:', userID);
-    throw new Error('implement me');
+    return { content: 'Dummy content', senderID: 'a', sentAtMS: Date.now(), receiverIDs: ['dummy ID'] };
+  }
+
+  public addChat(userID: string): void {
+    console.debug('Inside CachedRosenBridgeService.addChat with userID:', userID);
+  }
+
+  public getAllChats(): string[] {
+    console.debug('Inside CachedRosenBridgeService.getAllChats');
+    return ['a', 'b', 'c', 'a', 'b', 'c', 'a', 'b', 'c', 'a', 'b', 'c'];
   }
 
   public async connect(address: string, userID: string): Promise<void> {

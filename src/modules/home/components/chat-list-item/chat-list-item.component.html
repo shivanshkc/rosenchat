@@ -1,0 +1,21 @@
+<app-round-photo [src]="profileInfo?.pictureLink || 'assets/png/profile-photo-ph.png'" alt="photo" size="55px"></app-round-photo>
+
+<!-- Todo: If the name or the last message is too long, then they push the right-div further right even after adding ellipsis. -->
+<div class="middle-div">
+  <div class="name-div ellipsis font-light">{{ profileInfo?.firstName || profileInfo?.email || 'Loading...' }}</div>
+  <div class="last-message-div ellipsis font-light">
+    {{ (wasLastMessageOutgoing() ? 'You: ' : '') + (profileInfo ? rosenBridge.getLastMessage(profileInfo.id).content : '') }}
+  </div>
+</div>
+
+<div class="right-div">
+  <div class="time-div font-light text-end">{{ formatTime() }}</div>
+  <br />
+  <div
+    class="badge-div"
+    matBadgeColor="accent"
+    [matBadge]="profileInfo ? chatMeta.getUnreadCount(profileInfo.id) : 0"
+    [matBadgeHidden]="profileInfo ? chatMeta.getUnreadCount(profileInfo.id) === 0 : true"
+    matBadgePosition="below after"
+  ></div>
+</div>

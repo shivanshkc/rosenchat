@@ -20,6 +20,19 @@ export abstract class AbstractCachedRosenBridgeService implements AbstractRosenB
    */
   public abstract getLastMessage(userID: string): RosenBridgeMessageDTO;
 
+  /**
+   * @description getAllChats provides the IDs of all users that the currently
+   * logged in user is chatting with.
+   */
+  public abstract getAllChats(): string[];
+
+  /**
+   * @description addChat adds a new user ID to the logged in user's chatting list.
+   *
+   * @param userID - User ID is the user to be added in the chat list.
+   */
+  public abstract addChat(userID: string): void;
+
   /* Methods below are for standard RosenBridge operations. */
 
   public abstract connect(address: string, userID: string): Promise<void>;

@@ -8,6 +8,13 @@ body {
   font-family: Roboto, 'Helvetica Neue', sans-serif;
 }
 
+// Adds ellipsis to overflowing text.
+.ellipsis {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
 // Makes the font thinner.
 .font-light {
   font-weight: lighter;
@@ -25,13 +32,14 @@ body {
   align-items: flex-end;
 }
 
-// Gives full viewport height.
-.vh-100 {
-  height: 100vh;
+// Right aligns all children.
+.align-right {
+  display: flex !important;
+  justify-content: flex-end;
 }
 
-// For small screens (width < 768px).
-@media only screen and (max-width: 768px) {
+// For small screens (width < 991px).
+@media only screen and (max-width: 991px) {
   .text-center-sm {
     text-align: center;
   }

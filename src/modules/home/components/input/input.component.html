@@ -1,7 +1,6 @@
-<div class="w-100 h-100 align-vertical">
-  <mat-form-field appearance="outline">
-    <input matInput autocomplete="off" placeholder="Commands and messages go here." [(ngModel)]="mainInput" (keyup.enter)="onEnter()" />
-  </mat-form-field>
-
-  <button mat-fab color="primary" (click)="onEnter()">Go</button>
-</div>
+<mat-form-field appearance="outline" class="w-100">
+  <input matInput autocomplete="off" placeholder="Commands and messages go here." [(ngModel)]="mainInput" (keyup.enter)="onEnter()" />
+  <button matSuffix mat-icon-button (click)="onEnter()">
+    <mat-icon>send</mat-icon>
+  </button>
+</mat-form-field>
