@@ -2,7 +2,8 @@ import { Component, HostListener, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 
 import { AddUserDialogComponent } from '../../../../core/components/add-user-dialog/add-user-dialog.component';
-import { AddUserDialogDataDTO, ProfileInfoDTO } from '../../../../core/models';
+import { ConfirmDialogComponent } from '../../../../core/components/confirm-dialog/confirm-dialog.component';
+import { AddUserDialogDataDTO, ConfirmDialogDataDTO, ProfileInfoDTO } from '../../../../core/models';
 import { tc } from '../../../../core/utils';
 import { AbstractAuthService } from '../../../../services/auth/auth.abstract';
 import { AbstractCachedRosenBridgeService } from '../../../../services/cached-rosen-bridge/cached-rosen-bridge.abstract';
@@ -71,7 +72,18 @@ export class ChatListComponent implements OnInit {
     this.searchOrAddInput = '';
   }
 
-  public onLogoutClick(): void {}
+  public async onLogoutClick(): Promise<void> {
+    const isPositive = await new Promise<boolean>((resolve) => {
+      const data: ConfirmDialogDataDTO = { callback: resolve, message: 'Please confirm logout.' };
+      this._dialog.open(ConfirmDialogComponent, { data, width: '400px' });
+    });
+
+    if (!isPositive) {
+      return;
+    }
+
+    await this._authService.logout();
+  }
 
   private async _setSelfProfileInfo(): Promise<void> {
     const { id: userID } = this._authService.getSessionInfo();

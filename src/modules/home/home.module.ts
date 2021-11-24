@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 
 import { AddUserDialogComponent } from '../../core/components/add-user-dialog/add-user-dialog.component';
+import { ConfirmDialogComponent } from '../../core/components/confirm-dialog/confirm-dialog.component';
 import { RoundPhotoComponent } from '../../core/components/round-photo/round-photo.component';
 import { ChatListFilterPipe } from '../../pipes/chat-list-filter.pipe';
 import { AbstractAuthService } from '../../services/auth/auth.abstract';
@@ -36,6 +37,7 @@ import { routes } from './home.router';
     ChatListFilterPipe,
     AddUserDialogComponent,
     RoundPhotoComponent,
+    ConfirmDialogComponent,
   ],
   imports: [CommonModule, FormsModule, MaterialModule, RouterModule.forChild(routes)],
   providers: [
