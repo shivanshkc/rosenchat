@@ -13,9 +13,7 @@ export class RosenchatService implements AbstractRosenchatService {
 
     await sleep(500);
 
-    const names = ['Shivansh', 'Mayank', 'Vyom', 'Vidit', 'Sagar'];
-    const randomName = names[Math.floor(Math.random() * names.length)];
-
-    return { id: userID, email: 'shivanshbox@gmail.com', firstName: randomName, lastName: 'Kuchchal', pictureLink: 'https://picsum.photos/200/200' };
+    const name = userID.slice(0, userID.length - 2);
+    return { id: userID, email: `${name}@gmail.com`, firstName: name, lastName: 'Doe', pictureLink: 'https://picsum.photos/200/200' };
   }
 }

@@ -1,6 +1,7 @@
 import { Component, HostListener, Input } from '@angular/core';
 
 import { ProfileInfoDTO } from '../../../../core/models';
+import { AbstractCachedRosenBridgeService } from '../../../../services/cached-rosen-bridge/cached-rosen-bridge.abstract';
 import { AbstractChatMetaStoreService } from '../../../../services/chat-meta-store/chat-meta-store.abstract';
 
 @Component({
@@ -11,7 +12,7 @@ import { AbstractChatMetaStoreService } from '../../../../services/chat-meta-sto
 export class ChatBoxComponent {
   @Input() public profileInfo: ProfileInfoDTO | undefined;
 
-  constructor(public readonly chatMeta: AbstractChatMetaStoreService) {}
+  constructor(public readonly chatMeta: AbstractChatMetaStoreService, public readonly rosenBridge: AbstractCachedRosenBridgeService) {}
 
   public onBackClick(): void {
     this.chatMeta.setCurrentActiveChat('');

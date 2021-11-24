@@ -106,7 +106,7 @@ export class ChatListComponent implements OnInit {
 
   private async _setChatListData(): Promise<void> {
     const promises: Promise<ProfileInfoDTO>[] = [];
-    this._rosenBridge.getAllChats().forEach((userID: string) => {
+    this._rosenBridge.getChatList().forEach((userID: string) => {
       promises.push(this._rosenchat.getProfileInfo(userID));
     });
 

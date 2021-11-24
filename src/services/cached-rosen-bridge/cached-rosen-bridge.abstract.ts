@@ -21,10 +21,19 @@ export abstract class AbstractCachedRosenBridgeService implements AbstractRosenB
   public abstract getLastMessage(userID: string): RosenBridgeMessageDTO;
 
   /**
-   * @description getAllChats provides the IDs of all users that the currently
+   * @description getChatList provides the IDs of all users that the currently
    * logged in user is chatting with.
    */
-  public abstract getAllChats(): string[];
+  public abstract getChatList(): string[];
+
+  /**
+   * @description getChatMessages provides all chat messages in order for the
+   * provided user ID.
+   *
+   * @param userID User ID is the ID of the user for whom the chat messages
+   *  will be fetched.
+   */
+  public abstract getChatMessages(userID: string): RosenBridgeMessageDTO[];
 
   /**
    * @description addChat adds a new user ID to the logged in user's chatting list.
@@ -37,6 +46,6 @@ export abstract class AbstractCachedRosenBridgeService implements AbstractRosenB
 
   public abstract connect(address: string, userID: string): Promise<void>;
   public abstract disconnect(): Promise<void>;
-  public abstract listen(handler: (message: RosenBridgeMessageDTO) => Promise<void>): Promise<void>;
+  public abstract listen(handler: (message: RosenBridgeMessageDTO) => Promise<void>): void;
   public abstract send(message: RosenBridgeMessageDTO): Promise<void>;
 }

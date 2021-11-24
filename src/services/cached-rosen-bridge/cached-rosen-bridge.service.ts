@@ -8,7 +8,16 @@ import { AbstractCachedRosenBridgeService } from './cached-rosen-bridge.abstract
   providedIn: 'root',
 })
 export class CachedRosenBridgeService implements AbstractCachedRosenBridgeService {
+  private tempChatMessages: Record<string, RosenBridgeMessageDTO[]> = {
+    VyomID: [{ content: 'Hi there', senderID: 'VyomID', sentAtMS: Date.now(), receiverIDs: ['ShivanshID'] }],
+  };
+
   constructor(private readonly _rosenBridge: AbstractRosenBridgeService) {}
+
+  public getChatMessages(userID: string): RosenBridgeMessageDTO[] {
+    console.debug('Inside CachedRosenBridgeService.getChatMessages with userID:', userID);
+    return this.tempChatMessages[userID];
+  }
 
   public clearCache(): void {
     console.debug('Inside CachedRosenBridgeService.clearCache');
@@ -16,16 +25,16 @@ export class CachedRosenBridgeService implements AbstractCachedRosenBridgeServic
 
   public getLastMessage(userID: string): RosenBridgeMessageDTO {
     console.debug('Inside CachedRosenBridgeService.getLastMessage with userID:', userID);
-    return { content: 'Dummy content', senderID: 'a', sentAtMS: Date.now(), receiverIDs: ['dummy ID'] };
+    return { content: 'Dummy content', senderID: userID, sentAtMS: Date.now(), receiverIDs: ['shivanshID'] };
   }
 
   public addChat(userID: string): void {
     console.debug('Inside CachedRosenBridgeService.addChat with userID:', userID);
   }
 
-  public getAllChats(): string[] {
+  public getChatList(): string[] {
     console.debug('Inside CachedRosenBridgeService.getAllChats');
-    return ['a', 'b', 'c', 'a', 'b', 'c', 'a', 'b', 'c', 'a', 'b', 'c'];
+    return ['VyomID', 'SagarID', 'ViditID', 'MayankID', 'AnkushID', 'PriyaID', 'SwapnilID', 'MittalID'];
   }
 
   public async connect(address: string, userID: string): Promise<void> {
@@ -36,11 +45,12 @@ export class CachedRosenBridgeService implements AbstractCachedRosenBridgeServic
     return this._rosenBridge.disconnect();
   }
 
-  public async listen(handler: (message: RosenBridgeMessageDTO) => Promise<void>): Promise<void> {
+  public listen(handler: (message: RosenBridgeMessageDTO) => Promise<void>): void {
     return this._rosenBridge.listen(handler);
   }
 
   public async send(message: RosenBridgeMessageDTO): Promise<void> {
+    this.tempChatMessages[message.receiverIDs[0]].push(message);
     return this._rosenBridge.send(message);
   }
 }

@@ -36,6 +36,16 @@ export class ChatListItemComponent {
     }
 
     const lastMessageDate = new Date(this.rosenBridge.getLastMessage(this.profileInfo.id).sentAtMS);
-    return this._timeFormatter.fmt(lastMessageDate);
+    return this._timeFormatter.elapsedTimePretty(lastMessageDate);
+  }
+
+  public temp(): boolean {
+    if (!this.profileInfo) {
+      return true;
+    }
+
+    const unreadCount = this.chatMeta.getUnreadCount(this.profileInfo.id);
+    console.log('Count:', this.profileInfo.id, unreadCount, typeof unreadCount);
+    return this.profileInfo ? unreadCount === 0 : true;
   }
 }

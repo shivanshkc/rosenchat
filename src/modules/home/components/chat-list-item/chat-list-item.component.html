@@ -15,7 +15,7 @@
     class="badge-div"
     matBadgeColor="accent"
     [matBadge]="profileInfo ? chatMeta.getUnreadCount(profileInfo.id) : 0"
-    [matBadgeHidden]="profileInfo ? chatMeta.getUnreadCount(profileInfo.id) === 0 : true"
+    [matBadgeHidden]="temp()"
     matBadgePosition="below after"
   ></div>
 </div>
