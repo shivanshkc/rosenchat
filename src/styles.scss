@@ -32,6 +32,12 @@ body {
   align-items: flex-end;
 }
 
+// Right aligns all children.
+.align-right {
+  display: flex !important;
+  justify-content: flex-end;
+}
+
 // For small screens (width < 991px).
 @media only screen and (max-width: 991px) {
   .text-center-sm {

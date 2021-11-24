@@ -54,3 +54,11 @@ export interface SnackBarDataDTO {
   color: ThemePalette;
   icon: string;
 }
+
+/**
+ * @description AddUserDialogDataDTO is the data required by the AddUserDialog.
+ */
+export interface AddUserDialogDataDTO {
+  profile: ProfileInfoDTO;
+  callback: (reply: boolean) => void;
+}

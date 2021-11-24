@@ -1,6 +1,8 @@
 import { Component, HostListener, OnInit } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 
-import { ProfileInfoDTO } from '../../../../core/models';
+import { AddUserDialogComponent } from '../../../../core/components/add-user-dialog/add-user-dialog.component';
+import { AddUserDialogDataDTO, ProfileInfoDTO } from '../../../../core/models';
 import { tc } from '../../../../core/utils';
 import { AbstractAuthService } from '../../../../services/auth/auth.abstract';
 import { AbstractCachedRosenBridgeService } from '../../../../services/cached-rosen-bridge/cached-rosen-bridge.abstract';
@@ -27,6 +29,7 @@ export class ChatListComponent implements OnInit {
     public readonly chatMeta: AbstractChatMetaStoreService,
     private readonly _rosenchat: AbstractRosenchatService,
     private readonly _log: AbstractLoggerService,
+    private readonly _dialog: MatDialog,
   ) {}
 
   async ngOnInit(): Promise<void> {
@@ -35,7 +38,34 @@ export class ChatListComponent implements OnInit {
     this.isLoading = false;
   }
 
-  public onAddClick(): void {}
+  public async onAddClick(): Promise<void> {
+    if (!this.searchOrAddInput) {
+      return;
+    }
+
+    const userID = this.searchOrAddInput;
+    this.searchOrAddInput = '';
+
+    this.isLoading = true;
+    const [errProfile, profile] = await tc(this._rosenchat.getProfileInfo(userID));
+    this.isLoading = false;
+    if (errProfile || !profile) {
+      this._log.error({ snack: true }, errProfile?.message || 'Failed to load user profile.');
+      return;
+    }
+
+    const isPositive = await new Promise<boolean>((resolve) => {
+      const data: AddUserDialogDataDTO = { profile, callback: resolve };
+      this._dialog.open(AddUserDialogComponent, { data, width: '400px' });
+    });
+
+    if (!isPositive) {
+      return;
+    }
+
+    this._rosenBridge.addChat(this.searchOrAddInput);
+    this.searchOrAddInput = '';
+  }
 
   public onLogoutClick(): void {}
 

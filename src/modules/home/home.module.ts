@@ -3,6 +3,8 @@ import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 
+import { AddUserDialogComponent } from '../../core/components/add-user-dialog/add-user-dialog.component';
+import { RoundPhotoComponent } from '../../core/components/round-photo/round-photo.component';
 import { ChatListFilterPipe } from '../../pipes/chat-list-filter.pipe';
 import { AbstractAuthService } from '../../services/auth/auth.abstract';
 import { AuthService } from '../../services/auth/auth.service';
@@ -25,7 +27,16 @@ import { HomeComponent } from './home.component';
 import { routes } from './home.router';
 
 @NgModule({
-  declarations: [HomeComponent, ChatListComponent, ChatBoxComponent, InputComponent, ChatListItemComponent, ChatListFilterPipe],
+  declarations: [
+    HomeComponent,
+    ChatListComponent,
+    ChatBoxComponent,
+    InputComponent,
+    ChatListItemComponent,
+    ChatListFilterPipe,
+    AddUserDialogComponent,
+    RoundPhotoComponent,
+  ],
   imports: [CommonModule, FormsModule, MaterialModule, RouterModule.forChild(routes)],
   providers: [
     { provide: AbstractAuthService, useClass: AuthService },

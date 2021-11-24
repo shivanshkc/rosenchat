@@ -11,7 +11,7 @@ export class RosenchatService implements AbstractRosenchatService {
   public async getProfileInfo(userID: string): Promise<ProfileInfoDTO> {
     console.debug('Inside RosenchatService.getProfileInfo with User ID:', userID);
 
-    await sleep(2000);
+    await sleep(500);
 
     const names = ['Shivansh', 'Mayank', 'Vyom', 'Vidit', 'Sagar'];
     const randomName = names[Math.floor(Math.random() * names.length)];
