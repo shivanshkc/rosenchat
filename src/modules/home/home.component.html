@@ -10,10 +10,10 @@
         <div class="container-fluid inner-container">
           <div class="row first-row">
             <div class="chat-list-wrapper" [@chatListOpenClose]="getLayoutMode()">
-              <app-chat-list></app-chat-list>
+              <app-chat-list (chatSelect)="currentProfileInfo = $event"></app-chat-list>
             </div>
             <div class="chat-box-wrapper" [@chatBoxOpenClose]="getLayoutMode()">
-              <app-chat-box></app-chat-box>
+              <app-chat-box [profileInfo]="currentProfileInfo"></app-chat-box>
             </div>
           </div>
           <div class="row second-row mat-elevation-z8">

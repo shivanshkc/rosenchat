@@ -1,0 +1,11 @@
+// For the title on the toolbar.
+.toolbar-title {
+  // Distance from the image.
+  margin-left: 15px;
+}
+
+// For the spacer between toolbar title and toolbar buttons.
+.spacer {
+  // Adds space between the toolbar title and toolbar buttons.
+  flex: 1 1 auto;
+}

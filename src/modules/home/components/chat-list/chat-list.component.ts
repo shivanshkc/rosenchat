@@ -1,4 +1,4 @@
-import { Component, HostListener, OnInit } from '@angular/core';
+import { Component, EventEmitter, HostListener, OnInit, Output } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 
 import { AddUserDialogComponent } from '../../../../core/components/add-user-dialog/add-user-dialog.component';
@@ -23,6 +23,8 @@ export class ChatListComponent implements OnInit {
   public searchOrAddInput = '';
   public selfProfileInfo: ProfileInfoDTO | undefined;
   public chatListData: ProfileInfoDTO[] = [];
+
+  @Output() chatSelect = new EventEmitter<ProfileInfoDTO>();
 
   constructor(
     private readonly _authService: AbstractAuthService,
@@ -83,6 +85,11 @@ export class ChatListComponent implements OnInit {
     }
 
     await this._authService.logout();
+  }
+
+  public onChatClick(info: ProfileInfoDTO): void {
+    this.chatMeta.setCurrentActiveChat(info.id);
+    this.chatSelect.emit(info);
   }
 
   private async _setSelfProfileInfo(): Promise<void> {
