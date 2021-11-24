@@ -28,9 +28,18 @@ import { AbstractChatMetaStoreService } from '../../services/chat-meta-store/cha
   ],
 })
 export class HomeComponent {
-  private _screenWidth: number = window.screen.width;
-
   constructor(private readonly _chatMetaStore: AbstractChatMetaStoreService) {}
+
+  public getLayoutMode(): LayoutMode {
+    if (!this.isSmallScreen()) {
+      return LayoutMode.BothOpen;
+    }
+    const isAnyChatSelected = !!this._chatMetaStore.getCurrentActiveChat();
+    return isAnyChatSelected ? LayoutMode.ChatBoxOpen : LayoutMode.ChatListOpen;
+  }
+
+  // Below members are to get screen resize updates.
+  private _screenWidth: number = window.screen.width;
 
   @HostListener('window:resize', ['$event'])
   public onResize(event: Event): void {
@@ -39,13 +48,5 @@ export class HomeComponent {
 
   public isSmallScreen(): boolean {
     return this._screenWidth <= 991;
-  }
-
-  public getLayoutMode(): LayoutMode {
-    if (!this.isSmallScreen()) {
-      return LayoutMode.BothOpen;
-    }
-    const isAnyChatSelected = !!this._chatMetaStore.getCurrentActiveChat();
-    return isAnyChatSelected ? LayoutMode.ChatBoxOpen : LayoutMode.ChatListOpen;
   }
 }

@@ -21,8 +21,6 @@ export class ChatListComponent implements OnInit {
   public selfProfileInfo: ProfileInfoDTO | undefined;
   public chatListData: ProfileInfoDTO[] = [];
 
-  private _screenWidth: number = window.screen.width;
-
   constructor(
     private readonly _authService: AbstractAuthService,
     private readonly _rosenBridge: AbstractCachedRosenBridgeService,
@@ -35,15 +33,6 @@ export class ChatListComponent implements OnInit {
     this.isLoading = true;
     await Promise.all([this._setSelfProfileInfo(), this._setChatListData()]);
     this.isLoading = false;
-  }
-
-  @HostListener('window:resize', ['$event'])
-  public onResize(event: Event): void {
-    this._screenWidth = (event.target as Window).screen.width;
-  }
-
-  public isSmallScreen(): boolean {
-    return this._screenWidth <= 991;
   }
 
   public onAddClick(): void {}
@@ -75,5 +64,17 @@ export class ChatListComponent implements OnInit {
     }
 
     this.chatListData = allProfiles;
+  }
+
+  // Below members are to get screen resize updates.
+  private _screenWidth: number = window.screen.width;
+
+  @HostListener('window:resize', ['$event'])
+  public onResize(event: Event): void {
+    this._screenWidth = (event.target as Window).screen.width;
+  }
+
+  public isSmallScreen(): boolean {
+    return this._screenWidth <= 991;
   }
 }
