@@ -12,6 +12,8 @@
   </button>
 </mat-toolbar>
 
+<mat-progress-bar mode="indeterminate" color="accent" *ngIf="isLoading"></mat-progress-bar>
+
 <div class="search-input-wrapper mat-elevation-z2">
   <mat-form-field appearance="outline" class="w-100">
     <input matInput [(ngModel)]="searchOrAddInput" (keyup.enter)="onAddClick()" autocomplete="off" placeholder="Search or start a new chat." />

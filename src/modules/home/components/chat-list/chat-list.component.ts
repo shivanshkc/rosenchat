@@ -16,6 +16,7 @@ import { AbstractRosenchatService } from '../../../../services/rosenchat/rosench
 export class ChatListComponent implements OnInit {
   public title = 'rosenchat';
 
+  public isLoading = false;
   public searchOrAddInput = '';
   public selfProfileInfo: ProfileInfoDTO | undefined;
   public chatListData: ProfileInfoDTO[] = [];
@@ -31,8 +32,9 @@ export class ChatListComponent implements OnInit {
   ) {}
 
   async ngOnInit(): Promise<void> {
-    this._setSelfProfileInfo();
-    this._setChatListData();
+    this.isLoading = true;
+    await Promise.all([this._setSelfProfileInfo(), this._setChatListData()]);
+    this.isLoading = false;
   }
 
   @HostListener('window:resize', ['$event'])
