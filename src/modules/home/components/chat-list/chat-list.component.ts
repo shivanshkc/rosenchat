@@ -49,8 +49,12 @@ export class ChatListComponent implements OnInit {
     this.isLoading = true;
     const [errProfile, profile] = await tc(this._rosenchat.getProfileInfo(userID));
     this.isLoading = false;
-    if (errProfile || !profile) {
-      this._log.error({ snack: true }, errProfile?.message || 'Failed to load user profile.');
+    if (errProfile) {
+      this._log.error({ snack: true }, errProfile?.message);
+      return;
+    }
+    if (!profile) {
+      this._log.warn({ snack: true }, 'This user does not exist in our records.');
       return;
     }
 
