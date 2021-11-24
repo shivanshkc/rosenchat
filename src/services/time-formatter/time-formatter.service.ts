@@ -9,7 +9,7 @@ export class TimeFormatterService {
   private readonly _oneDayMS = 24 * this._oneHourMS;
   private readonly _oneMonthMS = 30 * this._oneDayMS;
 
-  public fmt(time: Date): string {
+  public elapsedTimePretty(time: Date): string {
     const currentTime = new Date();
     const passedTimeMS = currentTime.getTime() - time.getTime();
 
@@ -64,6 +64,10 @@ export class TimeFormatterService {
     }
 
     return time.toLocaleString('en-US', { month: 'short', year: 'numeric' });
+  }
+
+  public twelveHourPretty(time: Date): string {
+    return time.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
   }
 
   private static _ms2Minutes(ms: number): number {

@@ -2,6 +2,7 @@ import { animate, state, style, transition, trigger } from '@angular/animations'
 import { Component, HostListener } from '@angular/core';
 
 import { HomeComponentLayoutMode as LayoutMode } from '../../core/enums';
+import { ProfileInfoDTO } from '../../core/models';
 import { AbstractChatMetaStoreService } from '../../services/chat-meta-store/chat-meta-store.abstract';
 
 @Component({
@@ -28,7 +29,10 @@ import { AbstractChatMetaStoreService } from '../../services/chat-meta-store/cha
   ],
 })
 export class HomeComponent {
-  constructor(private readonly _chatMetaStore: AbstractChatMetaStoreService) {}
+  // This variable is assigned when the chatSelect event is received from the ChatList component.
+  public currentProfileInfo: ProfileInfoDTO | undefined;
+
+  constructor(public readonly _chatMetaStore: AbstractChatMetaStoreService) {}
 
   public getLayoutMode(): LayoutMode {
     if (!this.isSmallScreen()) {

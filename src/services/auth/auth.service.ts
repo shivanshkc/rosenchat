@@ -27,6 +27,6 @@ export class AuthService implements AbstractAuthService {
 
   public getSessionInfo(): SessionInfoDTO {
     console.debug('Inside AuthService.getSessionInfo');
-    return { id: 'randomID', idToken: 'abc', provider: OAuthProvider.Google, email: 'ramdom@mail.com' };
+    return { id: 'ShivanshID', idToken: 'abc', provider: OAuthProvider.Google, email: 'shivansh@gmail.com' };
   }
 }

@@ -36,6 +36,6 @@ export class ChatListItemComponent {
     }
 
     const lastMessageDate = new Date(this.rosenBridge.getLastMessage(this.profileInfo.id).sentAtMS);
-    return this._timeFormatter.fmt(lastMessageDate);
+    return this._timeFormatter.elapsedTimePretty(lastMessageDate);
   }
 }

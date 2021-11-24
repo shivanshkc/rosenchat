@@ -1,9 +1,9 @@
-<!-- This toolbar's border radius and color changes as per screen size. -->
+<!-- This toolbar's color changes as per screen size. -->
 <mat-toolbar class="mat-elevation-z2" [color]="isSmallScreen() ? 'primary' : undefined">
   <app-round-photo
     [src]="selfProfileInfo?.pictureLink || 'assets/png/profile-photo-ph.png'"
     alt="photo"
-    [size]="isSmallScreen() ? '45px' : '50px'"
+    [size]="isSmallScreen() ? '40px' : '50px'"
   ></app-round-photo>
 
   <span class="toolbar-title">{{ title }}</span>
@@ -27,7 +27,7 @@
 
 <div class="chat-list-wrapper">
   <div class="ng-for-div" *ngFor="let info of chatListData | chatListFilter: searchOrAddInput">
-    <app-chat-list-item matRipple [profileInfo]="info" (click)="chatMeta.setCurrentActiveChat(info.id)"></app-chat-list-item>
+    <app-chat-list-item matRipple [profileInfo]="info" (click)="onChatClick(info)"></app-chat-list-item>
     <mat-divider></mat-divider>
   </div>
 </div>
