@@ -3,6 +3,7 @@ import { Component, HostListener, Input } from '@angular/core';
 import { ProfileInfoDTO } from '../../../../core/models';
 import { AbstractCachedRosenBridgeService } from '../../../../services/cached-rosen-bridge/cached-rosen-bridge.abstract';
 import { AbstractChatMetaStoreService } from '../../../../services/chat-meta-store/chat-meta-store.abstract';
+import { AbstractLoggerService } from '../../../../services/logger/logger.abstract';
 
 @Component({
   selector: 'app-chat-box',
@@ -12,10 +13,18 @@ import { AbstractChatMetaStoreService } from '../../../../services/chat-meta-sto
 export class ChatBoxComponent {
   @Input() public profileInfo: ProfileInfoDTO | undefined;
 
-  constructor(public readonly chatMeta: AbstractChatMetaStoreService, public readonly rosenBridge: AbstractCachedRosenBridgeService) {}
+  constructor(
+    public readonly chatMeta: AbstractChatMetaStoreService,
+    public readonly rosenBridge: AbstractCachedRosenBridgeService,
+    private readonly _log: AbstractLoggerService,
+  ) {}
 
   public onBackClick(): void {
     this.chatMeta.setCurrentActiveChat('');
+  }
+
+  public onMenuClick(): void {
+    this._log.info({ snack: true }, 'Features coming soon...');
   }
 
   // Below members are to get screen resize updates.

@@ -13,7 +13,7 @@
   <span class="toolbar-title font-light">{{ profileInfo?.firstName || 'Select a person to talk to them.' }}</span>
   <span class="spacer"></span>
 
-  <button mat-icon-button>
+  <button mat-icon-button (click)="onMenuClick()">
     <mat-icon>more_vert</mat-icon>
   </button>
 </mat-toolbar>
