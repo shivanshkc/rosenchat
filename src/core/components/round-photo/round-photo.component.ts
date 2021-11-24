@@ -8,4 +8,5 @@ import { Component, Input } from '@angular/core';
 export class RoundPhotoComponent {
   @Input() src = '';
   @Input() alt = '';
+  @Input() size = '50px';
 }

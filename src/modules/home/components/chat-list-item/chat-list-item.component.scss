@@ -17,32 +17,6 @@
   padding-right: 10px;
 }
 
-// For the photo frame.
-.photo-frame {
-  // Adding height and width for even border-radius.
-  width: 55px;
-  min-width: 55px;
-
-  // Height adjusts as per width.
-  height: auto;
-
-  // Making the circular frame.
-  border-radius: 50%;
-  // The image overflowing the frame will not be visible.
-  overflow: hidden;
-}
-
-// For the photo.
-.photo-frame img {
-  // Putting image in the middle of the frame.
-  margin-left: auto;
-  margin-right: auto;
-
-  // Full height and width.
-  height: 100%;
-  width: 100%;
-}
-
 // For the middle div.
 .middle-div {
   // Spacing from the photo-frame.
