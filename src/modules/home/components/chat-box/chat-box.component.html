@@ -1,0 +1,28 @@
+<!-- This toolbar's color changes as per screen size. -->
+<mat-toolbar class="mat-elevation-z2" [color]="isSmallScreen() ? 'primary' : undefined">
+  <button mat-icon-button *ngIf="isSmallScreen()" (click)="onBackClick()">
+    <mat-icon>arrow_back</mat-icon>
+  </button>
+
+  <app-round-photo
+    [src]="profileInfo?.pictureLink || 'assets/png/profile-photo-ph.png'"
+    alt="photo"
+    [size]="isSmallScreen() ? '40px' : '50px'"
+  ></app-round-photo>
+
+  <span class="toolbar-title font-light">{{ profileInfo?.firstName || 'Select a person to talk to them.' }}</span>
+  <span class="spacer"></span>
+
+  <button mat-icon-button (click)="onMenuClick()">
+    <mat-icon>more_vert</mat-icon>
+  </button>
+</mat-toolbar>
+
+<div class="chat-area">
+  <div class="message-card-wrapper" *ngFor="let message of rosenBridge.getChatMessages(profileInfo?.id || '')">
+    <app-single-message-card
+      [message]="message"
+      [ngClass]="message.senderID === profileInfo?.id || '' ? 'message-by-contact' : 'message-by-me'"
+    ></app-single-message-card>
+  </div>
+</div>

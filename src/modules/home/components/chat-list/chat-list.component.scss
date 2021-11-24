@@ -1,0 +1,76 @@
+// For the title on the toolbar.
+.toolbar-title {
+  // Cool font for title.
+  font-family: 'Major Mono Display', monospace;
+  // Distance from the image.
+  margin-left: 15px;
+}
+
+// For the spacer between toolbar title and toolbar buttons.
+.spacer {
+  // Adds space between the toolbar title and toolbar buttons.
+  flex: 1 1 auto;
+}
+
+// For the div that wraps the search input.
+.search-input-wrapper {
+  // Take full width.
+  width: 100%;
+  // Take enough height to contain the mat-input.
+  height: 65px;
+  // Paddings.
+  padding: 5px 5px 5px 5px;
+}
+
+// For the search input's mat-form-field.
+.search-input-wrapper mat-form-field {
+  // Distance from the side button.
+  margin-right: 10px;
+  // Width as per button's size and margin.
+  width: calc(100% - 40px - 10px);
+}
+
+// For the div that wraps the chat-list items.
+.chat-list-wrapper {
+  // Take full width.
+  width: 100%;
+  // Height as per the toolbar and search bar.
+  height: calc(100% - 65px - 64px);
+  // Scroll the chats.
+  overflow-y: auto;
+  // For some extra scrolling space.
+  padding-bottom: 40px;
+
+  // Scrollbar styling for firefox.
+  scrollbar-color: whitesmoke white;
+  scrollbar-width: thin;
+}
+
+// For the chat-list scrollbar in browsers other than firefox.
+.chat-list-wrapper::-webkit-scrollbar {
+  // Making the background invisible and thinner.
+  background: white;
+  width: 4px;
+}
+
+// For the chat-list scrollbar in browsers other than firefox.
+.chat-list-wrapper::-webkit-scrollbar-thumb {
+  // Making the scroller prettier.
+  background: whitesmoke;
+  border-radius: 2px;
+}
+
+// For the mat-dividers below the app-chat-list-items.
+.ng-for-div mat-divider {
+  // Avoid divider's overflow.
+  position: relative;
+}
+
+// For small screens (width < 991px).
+@media only screen and (max-width: 991px) {
+  // For the div that wraps the chat-list items.
+  .chat-list-wrapper {
+    // Adjusting height as per the toolbar height.
+    height: calc(100% - 55px - 56px);
+  }
+}
