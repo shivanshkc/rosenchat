@@ -7,6 +7,10 @@ import { ProfileInfoDTO } from '../core/models';
 })
 export class ChatListFilterPipe implements PipeTransform {
   transform(value: ProfileInfoDTO[], arg: string): ProfileInfoDTO[] {
+    if (!arg) {
+      return value;
+    }
+
     return value.filter((elem) => {
       return (
         elem.email.toLowerCase().indexOf(arg) !== -1 ||

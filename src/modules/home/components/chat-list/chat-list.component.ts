@@ -23,7 +23,7 @@ export class ChatListComponent implements OnInit {
   public title = 'rosenchat';
 
   public isLoading = false;
-  public searchOrAddInput = 'shivanshbox@gmail.com';
+  public searchOrAddInput = '';
   public selfProfileInfo: ProfileInfoDTO | undefined;
   public chatListData: ProfileInfoDTO[] = [];
 
@@ -42,6 +42,24 @@ export class ChatListComponent implements OnInit {
     this.isLoading = true;
     await Promise.all([this._setSelfProfileInfo(), this._setChatListData()]);
     this.isLoading = false;
+
+    this._rosenBridge.listen(async (message) => {
+      const sender = message.senderID;
+      for (const profile of this.chatListData) {
+        if (profile.id === sender) {
+          return;
+        }
+      }
+
+      const [err, profile] = await tc(this._rosenchat.getProfileInfo(sender));
+      if (err || !profile) {
+        this._log.error({ snack: true }, err?.message || 'Failed to fetch user info.');
+        this.chatListData.push({ id: sender, pictureLink: '', lastName: 'Unknown', firstName: sender, email: '' });
+        return;
+      }
+
+      this.chatListData.push(profile);
+    });
   }
 
   public async onAddClick(): Promise<void> {
@@ -75,7 +93,7 @@ export class ChatListComponent implements OnInit {
     }
 
     await this._rosenBridge.addChat(userID);
-    this.searchOrAddInput = '';
+    this.chatListData.push(profile);
   }
 
   public async onLogoutClick(): Promise<void> {

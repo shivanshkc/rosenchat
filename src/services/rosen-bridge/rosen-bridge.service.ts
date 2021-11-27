@@ -13,6 +13,7 @@ export class RosenBridgeService implements AbstractRosenBridgeService {
   private _conn: WebSocketSubject<RosenBridgeMessageDTO> | undefined;
   private _isConnected = false;
   private _pingInterval: NodeJS.Timeout | undefined;
+  private _pingIntervalMS = 55000;
   private _handlers: ((message: RosenBridgeMessageDTO) => void)[] = [];
 
   constructor(private readonly _log: AbstractLoggerService) {}
@@ -47,11 +48,13 @@ export class RosenBridgeService implements AbstractRosenBridgeService {
 
       console.info('RosenBridge connection in progress...');
       this._conn = webSocket(options);
+
       this._pingInterval = setInterval(() => {
-        this._conn?.next('PING' as unknown as RosenBridgeMessageDTO);
-      }, 3000);
+        this._conn?.next({} as unknown as RosenBridgeMessageDTO);
+      }, this._pingIntervalMS);
 
       this._conn.subscribe((message) => {
+        console.info('Message from RosenBridge:', message);
         this._handlers.forEach((h) => h(message));
       });
     });
@@ -84,6 +87,8 @@ export class RosenBridgeService implements AbstractRosenBridgeService {
 
   public async send(message: RosenBridgeMessageDTO): Promise<void> {
     console.info('Sending to Rosen:', message);
-    this._conn?.next(JSON.stringify({ message: message, receivers: message.receiverIDs }) as unknown as RosenBridgeMessageDTO);
+
+    const messageObj = { message: JSON.stringify(message), receivers: message.receiverIDs };
+    this._conn?.next(messageObj as unknown as RosenBridgeMessageDTO);
   }
 }

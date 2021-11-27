@@ -12,7 +12,15 @@ import { AbstractCachedRosenBridgeService } from './cached-rosen-bridge.abstract
 export class CachedRosenBridgeService implements AbstractCachedRosenBridgeService {
   private readonly _chatStorageKeyPrefix = 'chatStorage';
 
-  constructor(private readonly _rosenBridge: AbstractRosenBridgeService, private readonly _storage: StorageMap) {}
+  constructor(private readonly _rosenBridge: AbstractRosenBridgeService, private readonly _storage: StorageMap) {
+    // This listener caches the incoming messages.
+    this._rosenBridge.listen(async (message) => {
+      const key = `${this._chatStorageKeyPrefix}${message.senderID}`;
+      const chatMessages = ((await firstValueFrom(this._storage.get(key))) as RosenBridgeMessageDTO[]) || [];
+      chatMessages.push(message);
+      await firstValueFrom(this._storage.set(key, chatMessages));
+    });
+  }
 
   public async getChatMessages(userID: string): Promise<RosenBridgeMessageDTO[]> {
     const key = `${this._chatStorageKeyPrefix}${userID}`;
@@ -57,14 +65,7 @@ export class CachedRosenBridgeService implements AbstractCachedRosenBridgeServic
   }
 
   public listen(handler: (message: RosenBridgeMessageDTO) => void): void {
-    return this._rosenBridge.listen(async (message) => {
-      const key = `${this._chatStorageKeyPrefix}${message.senderID}`;
-      const chatMessages = ((await firstValueFrom(this._storage.get(key))) as RosenBridgeMessageDTO[]) || [];
-      chatMessages.push(message);
-      await firstValueFrom(this._storage.set(key, chatMessages));
-
-      handler(message);
-    });
+    return this._rosenBridge.listen(handler);
   }
 
   public async send(message: RosenBridgeMessageDTO): Promise<void> {
