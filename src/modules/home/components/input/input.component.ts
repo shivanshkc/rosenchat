@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Output } from '@angular/core';
 
 import { RosenBridgeMessageDTO } from '../../../../core/models';
 import { tc } from '../../../../core/utils';
@@ -14,6 +14,7 @@ import { AbstractLoggerService } from '../../../../services/logger/logger.abstra
 })
 export class InputComponent {
   public mainInput = '';
+  @Output() send = new EventEmitter();
 
   constructor(
     private readonly _log: AbstractLoggerService,
@@ -40,6 +41,7 @@ export class InputComponent {
     // it should be shown elsewhere and not in the input field.
     this.mainInput = '';
 
+    this.send.emit(message);
     const [err] = await tc(this._cachedRosenBridge.send(message));
     if (err) {
       this._log.error({ snack: true }, err.message);

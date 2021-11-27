@@ -1,5 +1,8 @@
 {
   "backend": {
     "baseURL": "http://rc.ledgerkeep.com"
+  },
+  "bridge": {
+    "baseURL": "ws://rb.ledgerkeep.com"
   }
 }

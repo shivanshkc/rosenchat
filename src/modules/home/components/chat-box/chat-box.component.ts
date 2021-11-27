@@ -1,6 +1,7 @@
-import { Component, HostListener, Input } from '@angular/core';
+import { Component, HostListener, Input, OnInit } from '@angular/core';
+import { Subject } from 'rxjs';
 
-import { ProfileInfoDTO } from '../../../../core/models';
+import { ProfileInfoDTO, RosenBridgeMessageDTO } from '../../../../core/models';
 import { AbstractCachedRosenBridgeService } from '../../../../services/cached-rosen-bridge/cached-rosen-bridge.abstract';
 import { AbstractChatMetaStoreService } from '../../../../services/chat-meta-store/chat-meta-store.abstract';
 import { AbstractLoggerService } from '../../../../services/logger/logger.abstract';
@@ -10,14 +11,33 @@ import { AbstractLoggerService } from '../../../../services/logger/logger.abstra
   templateUrl: './chat-box.component.html',
   styleUrls: ['./chat-box.component.scss'],
 })
-export class ChatBoxComponent {
+export class ChatBoxComponent implements OnInit {
   @Input() public profileInfo: ProfileInfoDTO | undefined;
+  @Input() inputEvents: Subject<RosenBridgeMessageDTO> | undefined;
+  @Input() chatSelectEvents: Subject<ProfileInfoDTO> | undefined;
+
+  public allMessages: RosenBridgeMessageDTO[] = [];
 
   constructor(
     public readonly chatMeta: AbstractChatMetaStoreService,
-    public readonly rosenBridge: AbstractCachedRosenBridgeService,
+    private readonly _rosenBridge: AbstractCachedRosenBridgeService,
     private readonly _log: AbstractLoggerService,
   ) {}
+
+  async ngOnInit(): Promise<void> {
+    this.chatSelectEvents?.subscribe(async (profile) => {
+      this.profileInfo = profile;
+
+      this.allMessages = await this._rosenBridge.getChatMessages(this.profileInfo.id);
+      this._rosenBridge.listen((message) => {
+        this.allMessages.push(message);
+      });
+
+      this.inputEvents?.subscribe(async (message) => {
+        this.allMessages.push(message);
+      });
+    });
+  }
 
   public onBackClick(): void {
     this.chatMeta.setCurrentActiveChat('');

@@ -40,8 +40,8 @@ export abstract class AbstractAuthService {
   public abstract getSessionInfo(): Promise<SessionInfoDTO>;
 
   /**
-   * @description sha256Hex provides a SHA256 hash in hex form of the provided string.
-   * @param input - String to be hashed.
+   * @description genID generates userID from Email.
+   * @param email - Email of the user.
    */
-  public abstract sha256Hex(input: string): Promise<string>;
+  public abstract genID(email: string): Promise<string>;
 }

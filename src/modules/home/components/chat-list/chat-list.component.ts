@@ -1,9 +1,10 @@
-import { Component, EventEmitter, HostListener, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, HostListener, Input, OnInit, Output } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
+import { Subject } from 'rxjs';
 
 import { AddUserDialogComponent } from '../../../../core/components/add-user-dialog/add-user-dialog.component';
 import { ConfirmDialogComponent } from '../../../../core/components/confirm-dialog/confirm-dialog.component';
-import { AddUserDialogDataDTO, ConfirmDialogDataDTO, ProfileInfoDTO } from '../../../../core/models';
+import { AddUserDialogDataDTO, ConfirmDialogDataDTO, ProfileInfoDTO, RosenBridgeMessageDTO } from '../../../../core/models';
 import { tc } from '../../../../core/utils';
 import { AbstractAuthService } from '../../../../services/auth/auth.abstract';
 import { AbstractCachedRosenBridgeService } from '../../../../services/cached-rosen-bridge/cached-rosen-bridge.abstract';
@@ -17,10 +18,12 @@ import { AbstractRosenchatService } from '../../../../services/rosenchat/rosench
   styleUrls: ['./chat-list.component.scss'],
 })
 export class ChatListComponent implements OnInit {
+  @Input() inputEvents: Subject<RosenBridgeMessageDTO> | undefined;
+
   public title = 'rosenchat';
 
   public isLoading = false;
-  public searchOrAddInput = '';
+  public searchOrAddInput = 'shivanshbox@gmail.com';
   public selfProfileInfo: ProfileInfoDTO | undefined;
   public chatListData: ProfileInfoDTO[] = [];
 
@@ -48,7 +51,7 @@ export class ChatListComponent implements OnInit {
 
     const userEmail = this.searchOrAddInput;
     this.searchOrAddInput = '';
-    const userID = await this._authService.sha256Hex(userEmail);
+    const userID = await this._authService.genID(userEmail);
 
     this.isLoading = true;
     const [errProfile, profile] = await tc(this._rosenchat.getProfileInfo(userID));
@@ -71,7 +74,7 @@ export class ChatListComponent implements OnInit {
       return;
     }
 
-    this._rosenBridge.addChat(this.searchOrAddInput);
+    await this._rosenBridge.addChat(userID);
     this.searchOrAddInput = '';
   }
 
@@ -107,7 +110,7 @@ export class ChatListComponent implements OnInit {
 
   private async _setChatListData(): Promise<void> {
     const promises: Promise<ProfileInfoDTO>[] = [];
-    this._rosenBridge.getChatList().forEach((userID: string) => {
+    (await this._rosenBridge.getChatList()).forEach((userID: string) => {
       promises.push(this._rosenchat.getProfileInfo(userID));
     });
 

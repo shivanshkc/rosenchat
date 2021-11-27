@@ -25,7 +25,7 @@ export abstract class AbstractRosenBridgeService {
    * @param handler - Handler is a function that can handle an incoming
    * RosenBridge message.
    */
-  public abstract listen(handler: (message: RosenBridgeMessageDTO) => Promise<void>): void;
+  public abstract listen(handler: (message: RosenBridgeMessageDTO) => void): void;
 
   /**
    * @description send sends a message to RosenBridge.

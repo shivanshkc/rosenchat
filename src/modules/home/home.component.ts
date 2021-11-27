@@ -1,9 +1,15 @@
 import { animate, state, style, transition, trigger } from '@angular/animations';
-import { Component, HostListener } from '@angular/core';
+import { Component, HostListener, OnInit } from '@angular/core';
+import { Subject } from 'rxjs';
 
 import { HomeComponentLayoutMode as LayoutMode } from '../../core/enums';
-import { ProfileInfoDTO } from '../../core/models';
+import { ProfileInfoDTO, RosenBridgeMessageDTO } from '../../core/models';
+import { tc } from '../../core/utils';
+import { AbstractAuthService } from '../../services/auth/auth.abstract';
+import { AbstractCachedRosenBridgeService } from '../../services/cached-rosen-bridge/cached-rosen-bridge.abstract';
 import { AbstractChatMetaStoreService } from '../../services/chat-meta-store/chat-meta-store.abstract';
+import { LoggerService } from '../../services/logger/logger.service';
+import { ConfigService } from '../config/config.service';
 
 @Component({
   selector: 'app-home',
@@ -28,11 +34,29 @@ import { AbstractChatMetaStoreService } from '../../services/chat-meta-store/cha
     ]),
   ],
 })
-export class HomeComponent {
+export class HomeComponent implements OnInit {
   // This variable is assigned when the chatSelect event is received from the ChatList component.
   public currentProfileInfo: ProfileInfoDTO | undefined;
+  public inputEvents: Subject<RosenBridgeMessageDTO> = new Subject<RosenBridgeMessageDTO>();
+  public chatSelectEvents: Subject<ProfileInfoDTO> = new Subject<ProfileInfoDTO>();
 
-  constructor(public readonly _chatMetaStore: AbstractChatMetaStoreService) {}
+  constructor(
+    private readonly _conf: ConfigService,
+    private readonly _log: LoggerService,
+    private readonly _authService: AbstractAuthService,
+    private readonly _chatMetaStore: AbstractChatMetaStoreService,
+    private readonly _rosenbridge: AbstractCachedRosenBridgeService,
+  ) {}
+
+  async ngOnInit(): Promise<void> {
+    const { bridge } = await this._conf.get();
+    const sessionInfo = await this._authService.getSessionInfo();
+
+    const [err] = await tc(this._rosenbridge.connect(bridge.baseURL, sessionInfo.id));
+    if (err) {
+      this._log.error({ snack: true }, err?.message || err);
+    }
+  }
 
   public getLayoutMode(): LayoutMode {
     if (!this.isSmallScreen()) {
@@ -40,6 +64,15 @@ export class HomeComponent {
     }
     const isAnyChatSelected = !!this._chatMetaStore.getCurrentActiveChat();
     return isAnyChatSelected ? LayoutMode.ChatBoxOpen : LayoutMode.ChatListOpen;
+  }
+
+  public onChatSelect(selected: ProfileInfoDTO): void {
+    this.currentProfileInfo = selected;
+    this.chatSelectEvents.next(selected);
+  }
+
+  public onSendEvent(message: RosenBridgeMessageDTO): void {
+    this.inputEvents.next(message);
   }
 
   // Below members are to get screen resize updates.

@@ -1,4 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { Subject } from 'rxjs';
 
 import { ProfileInfoDTO, RosenBridgeMessageDTO } from '../../../../core/models';
 import { AbstractAuthService } from '../../../../services/auth/auth.abstract';
@@ -13,8 +14,8 @@ import { TimeFormatterService } from '../../../../services/time-formatter/time-f
 })
 export class ChatListItemComponent implements OnInit {
   @Input() profileInfo: ProfileInfoDTO | undefined;
+  @Input() inputEvents: Subject<RosenBridgeMessageDTO> | undefined;
 
-  public allMessages: RosenBridgeMessageDTO[] = [];
   public lastMessagePreview = '';
   public lastMessageTime = '';
   public unreadCount = 0;
@@ -32,43 +33,34 @@ export class ChatListItemComponent implements OnInit {
     }
 
     const otherID = this.profileInfo.id;
-    this.allMessages.push(...this._rosenBridge.getChatMessages(otherID));
+    const allMessages = await this._rosenBridge.getChatMessages(this.profileInfo.id);
+    if (allMessages.length === 0) {
+      return;
+    }
+    const lastMessage = allMessages[allMessages.length - 1];
 
     this.unreadCount = await this._chatMeta.getUnreadCount(otherID);
-    await this._setLastMessagePreview();
-    await this._setLastMessageTime();
+    await this._setLastMessagePreview(lastMessage);
+    await this._setLastMessageTime(lastMessage);
 
     this._rosenBridge.listen(async (message) => {
       this.unreadCount = await this._chatMeta.getUnreadCount(otherID);
-      this.allMessages.push(message);
-      await this._setLastMessagePreview();
-      await this._setLastMessageTime();
+      await this._setLastMessagePreview(message);
+      await this._setLastMessageTime(message);
+    });
+
+    this.inputEvents?.subscribe(async (message) => {
+      await this._setLastMessagePreview(message);
+      await this._setLastMessageTime(message);
     });
   }
 
-  private async _setLastMessagePreview(): Promise<void> {
-    if (!this.profileInfo) {
-      return;
-    }
-    if (this.allMessages.length === 0) {
-      return;
-    }
-
-    const lastMessage = this.allMessages[this.allMessages.length - 1];
+  private async _setLastMessagePreview(message: RosenBridgeMessageDTO): Promise<void> {
     const ownID = (await this._authService.getSessionInfo()).id;
-
-    this.lastMessagePreview = (lastMessage.senderID === ownID ? 'You: ' : '') + lastMessage.content || '';
+    this.lastMessagePreview = (message.senderID === ownID ? 'You: ' : '') + message.content || '';
   }
 
-  private async _setLastMessageTime(): Promise<void> {
-    if (!this.profileInfo) {
-      return;
-    }
-    if (this.allMessages.length === 0) {
-      return;
-    }
-
-    const lastMessage = this.allMessages[this.allMessages.length - 1];
-    this.lastMessageTime = this._timeFormatter.elapsedTimePretty(new Date(lastMessage.sentAtMS));
+  private async _setLastMessageTime(message: RosenBridgeMessageDTO): Promise<void> {
+    this.lastMessageTime = this._timeFormatter.elapsedTimePretty(new Date(message.sentAtMS));
   }
 }

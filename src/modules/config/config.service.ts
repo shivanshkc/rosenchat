@@ -6,6 +6,9 @@ export interface IConfig {
   backend: {
     baseURL: string;
   };
+  bridge: {
+    baseURL: string;
+  };
 }
 
 @Injectable()

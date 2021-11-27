@@ -19,7 +19,7 @@
 </mat-toolbar>
 
 <div class="chat-area">
-  <div class="message-card-wrapper" *ngFor="let message of profileInfo ? rosenBridge.getChatMessages(profileInfo.id) : []">
+  <div class="message-card-wrapper" *ngFor="let message of allMessages">
     <app-single-message-card
       [message]="message"
       [ngClass]="message.senderID === profileInfo?.id || '' ? 'message-by-contact' : 'message-by-me'"
