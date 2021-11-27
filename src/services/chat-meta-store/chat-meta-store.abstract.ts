@@ -22,7 +22,7 @@ export abstract class AbstractChatMetaStoreService {
    *
    * @param id - The ID of the user for whom the count should be fetched.
    */
-  public abstract getUnreadCount(id: string): number;
+  public abstract getUnreadCount(id: string): Promise<number>;
 
   /**
    * @description incrementUnreadCount increments the unread message count of
@@ -31,5 +31,5 @@ export abstract class AbstractChatMetaStoreService {
    * @param id - The ID of the user whose count is to be incremented.
    * @param amount - The amount by which the count should be incremented.
    */
-  public abstract incrementUnreadCount(id: string, amount: number): void;
+  public abstract incrementUnreadCount(id: string, amount: number): Promise<void>;
 }

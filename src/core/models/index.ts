@@ -77,3 +77,25 @@ export interface ConfirmDialogDataDTO {
 
   callback?: (ok: boolean) => void;
 }
+
+/**
+ * @description BackendUserInfoDTO is the schema of the user info received from the backend.
+ */
+export interface BackendUserInfoDTO {
+  _id: string;
+  email: string;
+  first_name: string;
+  last_name: string;
+  picture_link: string;
+}
+
+/**
+ * @description BackendErrorDTO is the schema of an error from the backend.
+ */
+export interface BackendErrorDTO {
+  error: {
+    status_code: number;
+    custom_code: string;
+    errors: string[];
+  };
+}

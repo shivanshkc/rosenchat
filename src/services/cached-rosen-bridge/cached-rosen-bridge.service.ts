@@ -8,15 +8,11 @@ import { AbstractCachedRosenBridgeService } from './cached-rosen-bridge.abstract
   providedIn: 'root',
 })
 export class CachedRosenBridgeService implements AbstractCachedRosenBridgeService {
-  private tempChatMessages: Record<string, RosenBridgeMessageDTO[]> = {
-    VyomID: [{ content: 'Hi there', senderID: 'VyomID', sentAtMS: Date.now(), receiverIDs: ['ShivanshID'] }],
-  };
-
   constructor(private readonly _rosenBridge: AbstractRosenBridgeService) {}
 
   public getChatMessages(userID: string): RosenBridgeMessageDTO[] {
     console.debug('Inside CachedRosenBridgeService.getChatMessages with userID:', userID);
-    return this.tempChatMessages[userID];
+    return [];
   }
 
   public clearCache(): void {
@@ -34,7 +30,7 @@ export class CachedRosenBridgeService implements AbstractCachedRosenBridgeServic
 
   public getChatList(): string[] {
     console.debug('Inside CachedRosenBridgeService.getAllChats');
-    return ['VyomID'];
+    return [];
   }
 
   public async connect(address: string, userID: string): Promise<void> {
@@ -50,7 +46,6 @@ export class CachedRosenBridgeService implements AbstractCachedRosenBridgeServic
   }
 
   public async send(message: RosenBridgeMessageDTO): Promise<void> {
-    this.tempChatMessages[message.receiverIDs[0]].push(message);
     return this._rosenBridge.send(message);
   }
 }

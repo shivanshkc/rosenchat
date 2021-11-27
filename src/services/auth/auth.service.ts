@@ -20,12 +20,11 @@ export class AuthService implements AbstractAuthService {
   public async startLogin(provider: OAuthProvider): Promise<void> {
     const { backend } = await this._conf.get();
     window.location.href = `${backend.baseURL}/api/auth/${provider}`;
-    ``;
   }
 
   public async finishLogin(provider: OAuthProvider, idToken: string): Promise<void> {
     const { email } = jwtDecode(idToken) as { email: string };
-    const id = await AuthService._sha256Hex(email);
+    const id = await this.sha256Hex(email);
 
     const sessionInfo: SessionInfoDTO = { id, email, provider, idToken };
     await firstValueFrom(this._storage.set(this._sessionInfoKey, sessionInfo));
@@ -37,7 +36,6 @@ export class AuthService implements AbstractAuthService {
   }
 
   public async logout(): Promise<void> {
-    console.info('Hit!');
     await firstValueFrom(this._storage.delete(this._sessionInfoKey));
     await this._router.navigate(['/landing']);
   }
@@ -46,7 +44,7 @@ export class AuthService implements AbstractAuthService {
     return firstValueFrom(this._storage.get(this._sessionInfoKey) as Observable<SessionInfoDTO>);
   }
 
-  private static async _sha256Hex(input: string): Promise<string> {
+  public async sha256Hex(input: string): Promise<string> {
     // Encoding as UTF-8.
     const buffer = new TextEncoder().encode(input);
 

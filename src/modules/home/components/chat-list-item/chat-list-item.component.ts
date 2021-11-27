@@ -34,12 +34,12 @@ export class ChatListItemComponent implements OnInit {
     const otherID = this.profileInfo.id;
     this.allMessages.push(...this._rosenBridge.getChatMessages(otherID));
 
-    this.unreadCount = this._chatMeta.getUnreadCount(otherID);
+    this.unreadCount = await this._chatMeta.getUnreadCount(otherID);
     await this._setLastMessagePreview();
     await this._setLastMessageTime();
 
     this._rosenBridge.listen(async (message) => {
-      this.unreadCount = this._chatMeta.getUnreadCount(otherID);
+      this.unreadCount = await this._chatMeta.getUnreadCount(otherID);
       this.allMessages.push(message);
       await this._setLastMessagePreview();
       await this._setLastMessageTime();

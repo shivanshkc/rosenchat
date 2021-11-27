@@ -38,4 +38,10 @@ export abstract class AbstractAuthService {
    * @description getSessionInfo provides the info on the current session.
    */
   public abstract getSessionInfo(): Promise<SessionInfoDTO>;
+
+  /**
+   * @description sha256Hex provides a SHA256 hash in hex form of the provided string.
+   * @param input - String to be hashed.
+   */
+  public abstract sha256Hex(input: string): Promise<string>;
 }

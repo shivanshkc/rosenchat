@@ -46,8 +46,9 @@ export class ChatListComponent implements OnInit {
       return;
     }
 
-    const userID = this.searchOrAddInput;
+    const userEmail = this.searchOrAddInput;
     this.searchOrAddInput = '';
+    const userID = await this._authService.sha256Hex(userEmail);
 
     this.isLoading = true;
     const [errProfile, profile] = await tc(this._rosenchat.getProfileInfo(userID));
