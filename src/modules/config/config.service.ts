@@ -3,7 +3,9 @@ import { Injectable } from '@angular/core';
 import { firstValueFrom } from 'rxjs';
 
 export interface IConfig {
-  key: string;
+  backend: {
+    baseURL: string;
+  };
 }
 
 @Injectable()

@@ -28,7 +28,7 @@ export class InputComponent {
       return;
     }
 
-    const currentUserID = this._authService.getSessionInfo().id;
+    const currentUserID = (await this._authService.getSessionInfo()).id;
     const message: RosenBridgeMessageDTO = {
       content: this.mainInput,
       receiverIDs: [currentChat],

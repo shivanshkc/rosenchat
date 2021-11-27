@@ -1,1 +1,5 @@
-{}
+{
+  "backend": {
+    "baseURL": "http://rc.ledgerkeep.com"
+  }
+}

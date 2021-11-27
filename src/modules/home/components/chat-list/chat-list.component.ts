@@ -93,7 +93,7 @@ export class ChatListComponent implements OnInit {
   }
 
   private async _setSelfProfileInfo(): Promise<void> {
-    const { id: userID } = this._authService.getSessionInfo();
+    const { id: userID } = await this._authService.getSessionInfo();
 
     const [err, profileInfo] = await tc(this._rosenchat.getProfileInfo(userID));
     if (err) {
