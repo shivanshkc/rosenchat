@@ -1,8 +1,8 @@
 {
   "backend": {
-    "baseURL": "http://rc.ledgerkeep.com"
+    "baseURL": "http://backend.rosenchat.com"
   },
   "bridge": {
-    "baseURL": "ws://rb.ledgerkeep.com"
+    "baseURL": "ws://bridge.rosenchat.com"
   }
 }

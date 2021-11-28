@@ -41,13 +41,18 @@ export class HomeComponent implements OnInit {
   public inMessageEvent: Subject<RosenBridgeMessageDTO> = new Subject<RosenBridgeMessageDTO>();
   public chatSelectEvent: Subject<ProfileInfoDTO> = new Subject<ProfileInfoDTO>();
 
+  private readonly _inMessageAudio = new Audio('assets/audio/notification.mp3');
+
   constructor(
     private readonly _conf: ConfigService,
     private readonly _log: LoggerService,
     private readonly _authService: AbstractAuthService,
     private readonly _chatMetaStore: AbstractChatMetaStoreService,
     private readonly _rosenbridge: AbstractCachedRosenBridgeService,
-  ) {}
+  ) {
+    // this._inMessageAudio.muted = true;
+    this._inMessageAudio.load();
+  }
 
   async ngOnInit(): Promise<void> {
     const { bridge } = await this._conf.get();
@@ -60,6 +65,7 @@ export class HomeComponent implements OnInit {
     }
 
     this._rosenbridge.listen((message) => {
+      this._inMessageAudio.play();
       this.inMessageEvent.next(message);
     });
   }
