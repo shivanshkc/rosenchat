@@ -14,12 +14,35 @@
 .chat-area {
   // Take full width of parent.
   width: 100%;
-  // Height as per toolbar.
+  // Height as per toolbar and margin.
   height: calc(100% - 64px - 5px);
+  max-height: calc(100% - 64px - 5px);
   // Top spacing.
   margin-top: 5px;
   // Cool background.
   background: rgb(233, 231, 246);
+  // Making chat scrollable.
+  overflow: auto;
+  // Some space at the bottom of the scroll end.
+  padding-bottom: 10px;
+
+  // Scrollbar styling for firefox.
+  scrollbar-color: whitesmoke white;
+  scrollbar-width: thin;
+}
+
+// For the chat-area scrollbar in browsers other than firefox.
+.chat-area::-webkit-scrollbar {
+  // Making the background invisible and thinner.
+  background: white;
+  width: 4px;
+}
+
+// For the chat-area in browsers other than firefox.
+.chat-area::-webkit-scrollbar-thumb {
+  // Making the scroller prettier.
+  background: whitesmoke;
+  border-radius: 2px;
 }
 
 // For the ng-for div of messages.

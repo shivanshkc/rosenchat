@@ -14,7 +14,9 @@ import { TimeFormatterService } from '../../../../services/time-formatter/time-f
 })
 export class ChatListItemComponent implements OnInit {
   @Input() profileInfo: ProfileInfoDTO | undefined;
-  @Input() inputEvents: Subject<RosenBridgeMessageDTO> | undefined;
+  @Input() inMessageEvent: Subject<RosenBridgeMessageDTO> | undefined;
+  @Input() outMessageEvent: Subject<RosenBridgeMessageDTO> | undefined;
+  @Input() chatSelectEvent: Subject<ProfileInfoDTO> | undefined;
 
   public lastMessagePreview = '';
   public lastMessageTime = '';
@@ -28,28 +30,45 @@ export class ChatListItemComponent implements OnInit {
   ) {}
 
   public async ngOnInit(): Promise<void> {
-    if (!this.profileInfo) {
-      return;
+    if (this.profileInfo) {
+      this.unreadCount = await this._chatMeta.getUnreadCount(this.profileInfo.id);
+
+      const allMessages = await this._rosenBridge.getChatMessages(this.profileInfo.id);
+      if (allMessages.length !== 0) {
+        const lastMessage = allMessages[allMessages.length - 1];
+        await this._setLastMessagePreview(lastMessage);
+        await this._setLastMessageTime(lastMessage);
+      }
     }
 
-    const otherID = this.profileInfo.id;
-    const allMessages = await this._rosenBridge.getChatMessages(this.profileInfo.id);
-    if (allMessages.length === 0) {
-      return;
-    }
-    const lastMessage = allMessages[allMessages.length - 1];
+    // Updating unread count on chat-selects.
+    this.chatSelectEvent?.subscribe(async (selected: ProfileInfoDTO) => {
+      if (!this.profileInfo || this.profileInfo.id !== selected.id) {
+        return;
+      }
+      this.unreadCount = 0;
+      await this._chatMeta.setUnreadCount(this.profileInfo.id, this.unreadCount);
+    });
 
-    this.unreadCount = await this._chatMeta.getUnreadCount(otherID);
-    await this._setLastMessagePreview(lastMessage);
-    await this._setLastMessageTime(lastMessage);
-
-    this._rosenBridge.listen(async (message) => {
-      this.unreadCount = await this._chatMeta.getUnreadCount(otherID);
+    // Updating last message preview on input events.
+    this.outMessageEvent?.subscribe(async (message) => {
+      if (!this.profileInfo || message.receiverIDs[0] !== this.profileInfo.id) {
+        return;
+      }
       await this._setLastMessagePreview(message);
       await this._setLastMessageTime(message);
     });
 
-    this.inputEvents?.subscribe(async (message) => {
+    this.inMessageEvent?.subscribe(async (message) => {
+      if (!this.profileInfo || this.profileInfo.id !== message.senderID) {
+        return;
+      }
+
+      if (this._chatMeta.getCurrentActiveChat() !== this.profileInfo.id) {
+        this.unreadCount++;
+        await this._chatMeta.setUnreadCount(this.profileInfo.id, this.unreadCount);
+      }
+
       await this._setLastMessagePreview(message);
       await this._setLastMessageTime(message);
     });

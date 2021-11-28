@@ -54,7 +54,6 @@ export class RosenBridgeService implements AbstractRosenBridgeService {
       }, this._pingIntervalMS);
 
       this._conn.subscribe((message) => {
-        console.info('Message from RosenBridge:', message);
         this._handlers.forEach((h) => h(message));
       });
     });
@@ -86,8 +85,6 @@ export class RosenBridgeService implements AbstractRosenBridgeService {
   }
 
   public async send(message: RosenBridgeMessageDTO): Promise<void> {
-    console.info('Sending to Rosen:', message);
-
     const messageObj = { message: JSON.stringify(message), receivers: message.receiverIDs };
     this._conn?.next(messageObj as unknown as RosenBridgeMessageDTO);
   }

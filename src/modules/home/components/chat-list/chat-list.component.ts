@@ -18,7 +18,9 @@ import { AbstractRosenchatService } from '../../../../services/rosenchat/rosench
   styleUrls: ['./chat-list.component.scss'],
 })
 export class ChatListComponent implements OnInit {
-  @Input() inputEvents: Subject<RosenBridgeMessageDTO> | undefined;
+  @Input() outMessageEvent: Subject<RosenBridgeMessageDTO> | undefined;
+  @Input() inMessageEvent: Subject<RosenBridgeMessageDTO> | undefined;
+  @Output() chatSelectEvent = new EventEmitter<ProfileInfoDTO>();
 
   public title = 'rosenchat';
 
@@ -26,8 +28,6 @@ export class ChatListComponent implements OnInit {
   public searchOrAddInput = '';
   public selfProfileInfo: ProfileInfoDTO | undefined;
   public chatListData: ProfileInfoDTO[] = [];
-
-  @Output() chatSelect = new EventEmitter<ProfileInfoDTO>();
 
   constructor(
     private readonly _authService: AbstractAuthService,
@@ -40,26 +40,10 @@ export class ChatListComponent implements OnInit {
 
   async ngOnInit(): Promise<void> {
     this.isLoading = true;
-    await Promise.all([this._setSelfProfileInfo(), this._setChatListData()]);
+    await Promise.all([this._setInitialOwnProfile(), this._setInitialChatListData()]);
     this.isLoading = false;
 
-    this._rosenBridge.listen(async (message) => {
-      const sender = message.senderID;
-      for (const profile of this.chatListData) {
-        if (profile.id === sender) {
-          return;
-        }
-      }
-
-      const [err, profile] = await tc(this._rosenchat.getProfileInfo(sender));
-      if (err || !profile) {
-        this._log.error({ snack: true }, err?.message || 'Failed to fetch user info.');
-        this.chatListData.push({ id: sender, pictureLink: '', lastName: 'Unknown', firstName: sender, email: '' });
-        return;
-      }
-
-      this.chatListData.push(profile);
-    });
+    this.inMessageEvent?.subscribe((message) => this._updateChatList(message));
   }
 
   public async onAddClick(): Promise<void> {
@@ -111,13 +95,13 @@ export class ChatListComponent implements OnInit {
 
   public onChatClick(info: ProfileInfoDTO): void {
     this.chatMeta.setCurrentActiveChat(info.id);
-    this.chatSelect.emit(info);
+    this.chatSelectEvent.emit(info);
   }
 
-  private async _setSelfProfileInfo(): Promise<void> {
-    const { id: userID } = await this._authService.getSessionInfo();
+  private async _setInitialOwnProfile(): Promise<void> {
+    const { id: ownID } = await this._authService.getSessionInfo();
 
-    const [err, profileInfo] = await tc(this._rosenchat.getProfileInfo(userID));
+    const [err, profileInfo] = await tc(this._rosenchat.getProfileInfo(ownID));
     if (err) {
       this._log.error({ snack: true }, err.message);
       return;
@@ -126,19 +110,47 @@ export class ChatListComponent implements OnInit {
     this.selfProfileInfo = profileInfo;
   }
 
-  private async _setChatListData(): Promise<void> {
+  private async _setInitialChatListData(): Promise<void> {
     const promises: Promise<ProfileInfoDTO>[] = [];
-    (await this._rosenBridge.getChatList()).forEach((userID: string) => {
-      promises.push(this._rosenchat.getProfileInfo(userID));
+
+    const [errChatList, chatList] = await tc(this._rosenBridge.getChatList());
+    if (errChatList || !chatList) {
+      this._log.error({ snack: true }, errChatList?.message || 'Failed to get chat list.');
+      return;
+    }
+
+    chatList.forEach((otherID: string) => {
+      promises.push(this._rosenchat.getProfileInfo(otherID));
     });
 
-    const [err, allProfiles] = await tc(Promise.all(promises));
-    if (err || !allProfiles) {
-      this._log.error({ snack: true }, err?.message || 'Failed to load profiles.');
+    const [errProfiles, allProfiles] = await tc(Promise.all(promises));
+    if (errProfiles || !allProfiles) {
+      this._log.error({ snack: true }, errProfiles?.message || 'Failed to load profiles.');
       return;
     }
 
     this.chatListData = allProfiles;
+  }
+
+  private async _updateChatList(message: RosenBridgeMessageDTO): Promise<void> {
+    const { senderID } = message;
+    for (const otherProfile of this.chatListData) {
+      if (otherProfile.id === senderID) {
+        // This person is already in the chat.
+        return;
+      }
+    }
+
+    // This person is not already in the chat list, so getting their profile info.
+    const [err, profile] = await tc(this._rosenchat.getProfileInfo(senderID));
+    if (err || !profile) {
+      this._log.error({ snack: true }, err?.message || 'Failed to fetch user info.');
+      this.chatListData.push({ id: senderID, pictureLink: '', lastName: 'Unknown', firstName: senderID.slice(10), email: '' });
+      return;
+    }
+
+    await this.chatMeta.setUnreadCount(senderID, 1);
+    this.chatListData.push(profile);
   }
 
   // Below members are to get screen resize updates.

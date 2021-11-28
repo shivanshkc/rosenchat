@@ -7,11 +7,6 @@ import { AbstractRosenBridgeService } from '../rosen-bridge/rosen-bridge.abstrac
  */
 export abstract class AbstractCachedRosenBridgeService implements AbstractRosenBridgeService {
   /**
-   * @description clearCache clears any persisted cache.
-   */
-  public abstract clearCache(): Promise<void>;
-
-  /**
    * @description getLastMessage provides the last message in the chat with the
    * provided userID.
    *

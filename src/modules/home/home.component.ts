@@ -35,10 +35,11 @@ import { ConfigService } from '../config/config.service';
   ],
 })
 export class HomeComponent implements OnInit {
-  // This variable is assigned when the chatSelect event is received from the ChatList component.
   public currentProfileInfo: ProfileInfoDTO | undefined;
-  public inputEvents: Subject<RosenBridgeMessageDTO> = new Subject<RosenBridgeMessageDTO>();
-  public chatSelectEvents: Subject<ProfileInfoDTO> = new Subject<ProfileInfoDTO>();
+
+  public outMessageEvent: Subject<RosenBridgeMessageDTO> = new Subject<RosenBridgeMessageDTO>();
+  public inMessageEvent: Subject<RosenBridgeMessageDTO> = new Subject<RosenBridgeMessageDTO>();
+  public chatSelectEvent: Subject<ProfileInfoDTO> = new Subject<ProfileInfoDTO>();
 
   constructor(
     private readonly _conf: ConfigService,
@@ -55,7 +56,12 @@ export class HomeComponent implements OnInit {
     const [err] = await tc(this._rosenbridge.connect(bridge.baseURL, sessionInfo.id));
     if (err) {
       this._log.error({ snack: true }, err?.message || err);
+      return;
     }
+
+    this._rosenbridge.listen((message) => {
+      this.inMessageEvent.next(message);
+    });
   }
 
   public getLayoutMode(): LayoutMode {
@@ -66,13 +72,13 @@ export class HomeComponent implements OnInit {
     return isAnyChatSelected ? LayoutMode.ChatBoxOpen : LayoutMode.ChatListOpen;
   }
 
-  public onChatSelect(selected: ProfileInfoDTO): void {
+  public onChatSelectEvent(selected: ProfileInfoDTO): void {
     this.currentProfileInfo = selected;
-    this.chatSelectEvents.next(selected);
+    this.chatSelectEvent.next(selected);
   }
 
-  public onSendEvent(message: RosenBridgeMessageDTO): void {
-    this.inputEvents.next(message);
+  public onOutMessageEvent(message: RosenBridgeMessageDTO): void {
+    this.outMessageEvent.next(message);
   }
 
   // Below members are to get screen resize updates.

@@ -2,6 +2,7 @@ import { Component, HostListener, Input, OnInit } from '@angular/core';
 import { Subject } from 'rxjs';
 
 import { ProfileInfoDTO, RosenBridgeMessageDTO } from '../../../../core/models';
+import { AbstractAuthService } from '../../../../services/auth/auth.abstract';
 import { AbstractCachedRosenBridgeService } from '../../../../services/cached-rosen-bridge/cached-rosen-bridge.abstract';
 import { AbstractChatMetaStoreService } from '../../../../services/chat-meta-store/chat-meta-store.abstract';
 import { AbstractLoggerService } from '../../../../services/logger/logger.abstract';
@@ -13,29 +14,44 @@ import { AbstractLoggerService } from '../../../../services/logger/logger.abstra
 })
 export class ChatBoxComponent implements OnInit {
   @Input() public profileInfo: ProfileInfoDTO | undefined;
-  @Input() inputEvents: Subject<RosenBridgeMessageDTO> | undefined;
-  @Input() chatSelectEvents: Subject<ProfileInfoDTO> | undefined;
+  @Input() inMessageEvent: Subject<RosenBridgeMessageDTO> | undefined;
+  @Input() outMessageEvent: Subject<RosenBridgeMessageDTO> | undefined;
+  @Input() chatSelectEvent: Subject<ProfileInfoDTO> | undefined;
 
   public allMessages: RosenBridgeMessageDTO[] = [];
 
   constructor(
+    private readonly _authService: AbstractAuthService,
     public readonly chatMeta: AbstractChatMetaStoreService,
     private readonly _rosenBridge: AbstractCachedRosenBridgeService,
     private readonly _log: AbstractLoggerService,
   ) {}
 
   async ngOnInit(): Promise<void> {
-    this.chatSelectEvents?.subscribe(async (profile) => {
+    const ownID = (await this._authService.getSessionInfo()).id;
+
+    this.chatSelectEvent?.subscribe(async (profile) => {
       this.profileInfo = profile;
-
       this.allMessages = await this._rosenBridge.getChatMessages(this.profileInfo.id);
-      this._rosenBridge.listen((message) => {
-        this.allMessages.push(message);
-      });
+    });
 
-      this.inputEvents?.subscribe(async (message) => {
+    this.outMessageEvent?.subscribe(async (message) => {
+      if (message.senderID === this.profileInfo?.id || message.senderID === ownID) {
         this.allMessages.push(message);
-      });
+      }
+    });
+
+    this.inMessageEvent?.subscribe(async (message) => {
+      // If no chat is active or the message is not for the active chat then do nothing.
+      if (!this.profileInfo || message.senderID !== this.profileInfo.id) {
+        return;
+      }
+      if (message.senderID === message.receiverIDs[0]) {
+        console.info('Message to self (😢)');
+        return;
+      }
+      // Push the message to the chat box.
+      this.allMessages.push(message);
     });
   }
 

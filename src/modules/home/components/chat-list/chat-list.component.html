@@ -27,7 +27,14 @@
 
 <div class="chat-list-wrapper">
   <div class="ng-for-div" *ngFor="let info of chatListData | chatListFilter: searchOrAddInput">
-    <app-chat-list-item matRipple [profileInfo]="info" (click)="onChatClick(info)" [inputEvents]="inputEvents"></app-chat-list-item>
+    <app-chat-list-item
+      matRipple
+      [profileInfo]="info"
+      (click)="onChatClick(info)"
+      [inMessageEvent]="inMessageEvent"
+      [outMessageEvent]="outMessageEvent"
+      [chatSelectEvent]="chatSelectEvent"
+    ></app-chat-list-item>
     <mat-divider></mat-divider>
   </div>
 </div>

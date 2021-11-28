@@ -1,6 +1,5 @@
 <app-round-photo [src]="profileInfo?.pictureLink || 'assets/png/profile-photo-ph.png'" alt="photo" size="55px"></app-round-photo>
 
-<!-- Todo: If the name or the last message is too long, then they push the right-div further right even after adding ellipsis. -->
 <div class="middle-div">
   <div class="name-div ellipsis font-light">{{ profileInfo?.firstName || profileInfo?.email || 'Loading...' }}</div>
   <div class="last-message-div ellipsis font-light">{{ lastMessagePreview }}</div>

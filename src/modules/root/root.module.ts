@@ -9,6 +9,8 @@ import { AbstractAuthService } from '../../services/auth/auth.abstract';
 import { AuthService } from '../../services/auth/auth.service';
 import { AbstractLoggerService } from '../../services/logger/logger.abstract';
 import { LoggerService } from '../../services/logger/logger.service';
+import { AbstractRosenBridgeService } from '../../services/rosen-bridge/rosen-bridge.abstract';
+import { RosenBridgeService } from '../../services/rosen-bridge/rosen-bridge.service';
 import { SharedModule } from '../shared/shared.module';
 import { RootComponent } from './root.component';
 import { routes } from './root.router';
@@ -22,8 +24,9 @@ const serviceWorkerModule = ServiceWorkerModule.register('ngsw-worker.js', {
   declarations: [RootComponent],
   imports: [BrowserAnimationsModule, BrowserModule, RouterModule.forRoot(routes), SharedModule, serviceWorkerModule],
   providers: [
-    { provide: AbstractAuthService, useClass: AuthService },
     { provide: AbstractLoggerService, useClass: LoggerService },
+    { provide: AbstractAuthService, useClass: AuthService },
+    { provide: AbstractRosenBridgeService, useClass: RosenBridgeService },
   ],
   bootstrap: [RootComponent],
 })

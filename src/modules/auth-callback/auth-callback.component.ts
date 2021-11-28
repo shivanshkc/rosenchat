@@ -32,8 +32,13 @@ export class AuthCallbackComponent implements OnInit {
 
     const idToken = queryMap.get('id_token');
     const provider = queryMap.get('provider');
-    if (!idToken || !provider || !Object.values(OAuthProvider).includes(provider as OAuthProvider)) {
-      this._log.error({ snack: true }, 'Invalid session info from backend.');
+    if (!idToken || !provider) {
+      this._log.error({ snack: true }, 'Insufficient session info from backend.');
+      await this._router.navigate(['/landing']);
+      return;
+    }
+    if (!Object.values(OAuthProvider).includes(provider as OAuthProvider)) {
+      this._log.error({ snack: true }, 'Unknown OAuth provider from backend.');
       await this._router.navigate(['/landing']);
       return;
     }

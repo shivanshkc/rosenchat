@@ -14,7 +14,7 @@ import { AbstractLoggerService } from '../../../../services/logger/logger.abstra
 })
 export class InputComponent {
   public mainInput = '';
-  @Output() send = new EventEmitter();
+  @Output() outMessageEvent = new EventEmitter<RosenBridgeMessageDTO>();
 
   constructor(
     private readonly _log: AbstractLoggerService,
@@ -25,10 +25,12 @@ export class InputComponent {
 
   public async onEnter(): Promise<void> {
     const currentChat = this._chatMetaStore.getCurrentActiveChat();
-    if (!currentChat) {
+    // If no chat is active, input does nothing.
+    if (!currentChat || !this.mainInput) {
       return;
     }
 
+    // Preparing the Message DTO.
     const currentUserID = (await this._authService.getSessionInfo()).id;
     const message: RosenBridgeMessageDTO = {
       content: this.mainInput,
@@ -37,11 +39,11 @@ export class InputComponent {
       sentAtMS: Date.now(),
     };
 
-    // The mainInput is reset immediately. If there's any error,
-    // it should be shown elsewhere and not in the input field.
+    // Emptying the input component.
     this.mainInput = '';
+    this.outMessageEvent.emit(message);
 
-    this.send.emit(message);
+    // Sending the message to RosenBridge.
     const [err] = await tc(this._cachedRosenBridge.send(message));
     if (err) {
       this._log.error({ snack: true }, err.message);

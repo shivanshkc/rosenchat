@@ -10,14 +10,18 @@
         <div class="container-fluid inner-container">
           <div class="row first-row">
             <div class="chat-list-wrapper" [@chatListOpenClose]="getLayoutMode()">
-              <app-chat-list (chatSelect)="onChatSelect($event)" [inputEvents]="inputEvents"></app-chat-list>
+              <app-chat-list
+                (chatSelectEvent)="onChatSelectEvent($event)"
+                [outMessageEvent]="outMessageEvent"
+                [inMessageEvent]="inMessageEvent"
+              ></app-chat-list>
             </div>
             <div class="chat-box-wrapper" [@chatBoxOpenClose]="getLayoutMode()">
-              <app-chat-box [profileInfo]="currentProfileInfo" [inputEvents]="inputEvents" [chatSelectEvents]="chatSelectEvents"></app-chat-box>
+              <app-chat-box [inMessageEvent]="inMessageEvent" [outMessageEvent]="outMessageEvent" [chatSelectEvent]="chatSelectEvent"></app-chat-box>
             </div>
           </div>
           <div class="row second-row mat-elevation-z8">
-            <app-input class="w-100" (send)="onSendEvent($event)"></app-input>
+            <app-input class="w-100" (outMessageEvent)="onOutMessageEvent($event)"></app-input>
           </div>
         </div>
       </mat-card>
