@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Output } from '@angular/core';
 
-import { RosenBridgeMessageDTO } from '../../../../core/models';
+import { RBOutgoingMessageDTO } from '../../../../core/models';
 import { tc } from '../../../../core/utils';
 import { AbstractAuthService } from '../../../../services/auth/auth.abstract';
 import { AbstractCachedRosenBridgeService } from '../../../../services/cached-rosen-bridge/cached-rosen-bridge.abstract';
@@ -14,7 +14,7 @@ import { AbstractLoggerService } from '../../../../services/logger/logger.abstra
 })
 export class InputComponent {
   public mainInput = '';
-  @Output() outMessageEvent = new EventEmitter<RosenBridgeMessageDTO>();
+  @Output() outMessageEvent = new EventEmitter<RBOutgoingMessageDTO>();
 
   constructor(
     private readonly _log: AbstractLoggerService,
@@ -32,10 +32,10 @@ export class InputComponent {
 
     // Preparing the Message DTO.
     const currentUserID = (await this._authService.getSessionInfo()).id;
-    const message: RosenBridgeMessageDTO = {
-      content: this.mainInput,
-      receiverIDs: [currentChat],
-      senderID: currentUserID,
+    const message: RBOutgoingMessageDTO = {
+      sender_id: currentUserID,
+      receiver_ids: [currentChat],
+      message: this.mainInput,
       sentAtMS: Date.now(),
     };
 

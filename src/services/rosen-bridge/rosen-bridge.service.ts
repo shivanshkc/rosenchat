@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { webSocket, WebSocketSubject, WebSocketSubjectConfig } from 'rxjs/webSocket';
+import { RBIncomingMessageDTO, RBInOutMessage, RBMessageDTO, RBOutgoingMessageDTO } from 'src/core/models';
 
-import { RosenBridgeMessageDTO } from '../../core/models';
 import { tc } from '../../core/utils';
 import { AbstractLoggerService } from '../logger/logger.abstract';
 import { AbstractRosenBridgeService } from './rosen-bridge.abstract';
@@ -10,11 +10,11 @@ import { AbstractRosenBridgeService } from './rosen-bridge.abstract';
   providedIn: 'root',
 })
 export class RosenBridgeService implements AbstractRosenBridgeService {
-  private _conn: WebSocketSubject<RosenBridgeMessageDTO> | undefined;
+  private _conn: WebSocketSubject<RBMessageDTO<RBInOutMessage>> | undefined;
   private _isConnected = false;
   private _pingInterval: NodeJS.Timeout | undefined;
   private _pingIntervalMS = 55000;
-  private _handlers: ((message: RosenBridgeMessageDTO) => void)[] = [];
+  private _handlers: ((message: RBIncomingMessageDTO) => void)[] = [];
 
   constructor(private readonly _log: AbstractLoggerService) {}
 
@@ -24,8 +24,8 @@ export class RosenBridgeService implements AbstractRosenBridgeService {
     }
 
     const connPromise = new Promise<void>((resolve, reject) => {
-      const options: WebSocketSubjectConfig<RosenBridgeMessageDTO> = {
-        url: `${address}/api/users/${userID}/connection`,
+      const options: WebSocketSubjectConfig<RBMessageDTO<RBInOutMessage>> = {
+        url: `${address}/api/bridge?client_id=${userID}`,
         openObserver: {
           next: () => resolve(),
           complete: () => resolve(),
@@ -50,11 +50,11 @@ export class RosenBridgeService implements AbstractRosenBridgeService {
       this._conn = webSocket(options);
 
       this._pingInterval = setInterval(() => {
-        this._conn?.next({} as unknown as RosenBridgeMessageDTO);
+        this._conn?.next({} as unknown as RBMessageDTO<RBOutgoingMessageDTO>);
       }, this._pingIntervalMS);
 
       this._conn.subscribe((message) => {
-        this._handlers.forEach((h) => h(message));
+        this._handlers.forEach((h) => h(message.message));
       });
     });
 
@@ -80,12 +80,11 @@ export class RosenBridgeService implements AbstractRosenBridgeService {
     this._log.info({ snack: true }, 'Disconnected from RosenBridge.');
   }
 
-  public async listen(handler: (message: RosenBridgeMessageDTO) => void): Promise<void> {
+  public async listen(handler: (message: RBIncomingMessageDTO) => void): Promise<void> {
     this._handlers.push(handler);
   }
 
-  public async send(message: RosenBridgeMessageDTO): Promise<void> {
-    const messageObj = { message: JSON.stringify(message), receivers: message.receiverIDs };
-    this._conn?.next(messageObj as unknown as RosenBridgeMessageDTO);
+  public async send(message: RBOutgoingMessageDTO): Promise<void> {
+    this._conn?.next({ type: 'OUTGOING_MESSAGE_REQ', request_id: `${Date.now()}`, message });
   }
 }

@@ -22,7 +22,7 @@
   <div class="message-card-wrapper" *ngFor="let message of allMessages">
     <app-single-message-card
       [message]="message"
-      [ngClass]="message.senderID === profileInfo?.id || '' ? 'message-by-contact' : 'message-by-me'"
+      [ngClass]="message.sender_id === profileInfo?.id || '' ? 'message-by-contact' : 'message-by-me'"
     ></app-single-message-card>
   </div>
 </div>

@@ -1,7 +1,7 @@
 import { Component, Input } from '@angular/core';
 
 import { TimeFormatterService } from '../../../services/time-formatter/time-formatter.service';
-import { RosenBridgeMessageDTO } from '../../models';
+import { RBInOutMessage } from '../../models';
 
 @Component({
   selector: 'app-single-message-card',
@@ -9,7 +9,7 @@ import { RosenBridgeMessageDTO } from '../../models';
   styleUrls: ['./single-message-card.component.scss'],
 })
 export class SingleMessageCardComponent {
-  @Input() message: RosenBridgeMessageDTO | undefined;
+  @Input() message: RBInOutMessage | undefined;
 
   constructor(private readonly _timeFormatter: TimeFormatterService) {}
 

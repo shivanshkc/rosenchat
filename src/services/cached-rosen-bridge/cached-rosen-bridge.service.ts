@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { StorageMap } from '@ngx-pwa/local-storage';
 import { firstValueFrom, toArray } from 'rxjs';
 
-import { RosenBridgeMessageDTO } from '../../core/models';
+import { RBIncomingMessageDTO, RBInOutMessage, RBOutgoingMessageDTO } from '../../core/models';
 import { AbstractAuthService } from '../auth/auth.abstract';
 import { AbstractRosenBridgeService } from '../rosen-bridge/rosen-bridge.abstract';
 import { AbstractCachedRosenBridgeService } from './cached-rosen-bridge.abstract';
@@ -21,27 +21,27 @@ export class CachedRosenBridgeService implements AbstractCachedRosenBridgeServic
     // This listener caches the incoming messages.
     this._rosenBridge.listen(async (message) => {
       const sessionInfo = await this._authService.getSessionInfo();
-      const key = `${this._chatStorageKeyPrefix}:${sessionInfo.id}:${message.senderID}`;
+      const key = `${this._chatStorageKeyPrefix}:${sessionInfo.id}:${message.sender_id}`;
 
-      const chatMessages = ((await firstValueFrom(this._storage.get(key))) as RosenBridgeMessageDTO[]) || [];
+      const chatMessages = ((await firstValueFrom(this._storage.get(key))) as RBInOutMessage[]) || [];
       chatMessages.push(message);
 
       await firstValueFrom(this._storage.set(key, chatMessages));
     });
   }
 
-  public async getChatMessages(userID: string): Promise<RosenBridgeMessageDTO[]> {
+  public async getChatMessages(userID: string): Promise<RBInOutMessage[]> {
     const sessionInfo = await this._authService.getSessionInfo();
     const key = `${this._chatStorageKeyPrefix}:${sessionInfo.id}:${userID}`;
 
-    return ((await firstValueFrom(this._storage.get(key))) as RosenBridgeMessageDTO[]) || [];
+    return ((await firstValueFrom(this._storage.get(key))) as RBInOutMessage[]) || [];
   }
 
-  public async getLastMessage(userID: string): Promise<RosenBridgeMessageDTO | undefined> {
+  public async getLastMessage(userID: string): Promise<RBInOutMessage | undefined> {
     const sessionInfo = await this._authService.getSessionInfo();
     const key = `${this._chatStorageKeyPrefix}:${sessionInfo.id}:${userID}`;
 
-    const messages = (await firstValueFrom(this._storage.get(key))) as RosenBridgeMessageDTO[];
+    const messages = (await firstValueFrom(this._storage.get(key))) as RBInOutMessage[];
     if (!messages || messages.length === 0) {
       return undefined;
     }
@@ -75,17 +75,17 @@ export class CachedRosenBridgeService implements AbstractCachedRosenBridgeServic
     return this._rosenBridge.disconnect();
   }
 
-  public listen(handler: (message: RosenBridgeMessageDTO) => void): void {
+  public listen(handler: (message: RBIncomingMessageDTO) => void): void {
     return this._rosenBridge.listen(handler);
   }
 
-  public async send(message: RosenBridgeMessageDTO): Promise<void> {
+  public async send(message: RBOutgoingMessageDTO): Promise<void> {
     const sessionInfo = await this._authService.getSessionInfo();
-    const key = `${this._chatStorageKeyPrefix}:${sessionInfo.id}:${message.receiverIDs[0]}`;
+    const key = `${this._chatStorageKeyPrefix}:${sessionInfo.id}:${message.receiver_ids[0]}`;
 
     await this._rosenBridge.send(message);
 
-    const chatMessages = ((await firstValueFrom(this._storage.get(key))) as RosenBridgeMessageDTO[]) || [];
+    const chatMessages = ((await firstValueFrom(this._storage.get(key))) as RBInOutMessage[]) || [];
     chatMessages.push(message);
     await firstValueFrom(this._storage.set(key, chatMessages));
   }

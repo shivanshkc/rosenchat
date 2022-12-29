@@ -4,7 +4,14 @@ import { Subject } from 'rxjs';
 
 import { AddUserDialogComponent } from '../../../../core/components/add-user-dialog/add-user-dialog.component';
 import { ConfirmDialogComponent } from '../../../../core/components/confirm-dialog/confirm-dialog.component';
-import { AddUserDialogDataDTO, ConfirmDialogDataDTO, ProfileInfoDTO, RosenBridgeMessageDTO } from '../../../../core/models';
+import {
+  AddUserDialogDataDTO,
+  ConfirmDialogDataDTO,
+  ProfileInfoDTO,
+  RBIncomingMessageDTO,
+  RBInOutMessage,
+  RBOutgoingMessageDTO,
+} from '../../../../core/models';
 import { tc } from '../../../../core/utils';
 import { AbstractAuthService } from '../../../../services/auth/auth.abstract';
 import { AbstractCachedRosenBridgeService } from '../../../../services/cached-rosen-bridge/cached-rosen-bridge.abstract';
@@ -18,8 +25,8 @@ import { AbstractRosenchatService } from '../../../../services/rosenchat/rosench
   styleUrls: ['./chat-list.component.scss'],
 })
 export class ChatListComponent implements OnInit {
-  @Input() outMessageEvent: Subject<RosenBridgeMessageDTO> | undefined;
-  @Input() inMessageEvent: Subject<RosenBridgeMessageDTO> | undefined;
+  @Input() outMessageEvent: Subject<RBOutgoingMessageDTO> | undefined;
+  @Input() inMessageEvent: Subject<RBIncomingMessageDTO> | undefined;
   @Output() chatSelectEvent = new EventEmitter<ProfileInfoDTO>();
 
   public title = 'rosenchat';
@@ -132,24 +139,24 @@ export class ChatListComponent implements OnInit {
     this.chatListData = allProfiles;
   }
 
-  private async _updateChatList(message: RosenBridgeMessageDTO): Promise<void> {
-    const { senderID } = message;
+  private async _updateChatList(message: RBInOutMessage): Promise<void> {
+    const { sender_id } = message;
     for (const otherProfile of this.chatListData) {
-      if (otherProfile.id === senderID) {
+      if (otherProfile.id === sender_id) {
         // This person is already in the chat.
         return;
       }
     }
 
     // This person is not already in the chat list, so getting their profile info.
-    const [err, profile] = await tc(this._rosenchat.getProfileInfo(senderID));
+    const [err, profile] = await tc(this._rosenchat.getProfileInfo(sender_id));
     if (err || !profile) {
       this._log.error({ snack: true }, err?.message || 'Failed to fetch user info.');
-      this.chatListData.push({ id: senderID, pictureLink: '', lastName: 'Unknown', firstName: senderID.slice(10), email: '' });
+      this.chatListData.push({ id: sender_id, pictureLink: '', lastName: 'Unknown', firstName: sender_id.slice(10), email: '' });
       return;
     }
 
-    await this.chatMeta.setUnreadCount(senderID, 1);
+    await this.chatMeta.setUnreadCount(sender_id, 1);
     this.chatListData.push(profile);
   }
 

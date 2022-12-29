@@ -25,15 +25,39 @@ export interface ProfileInfoDTO {
 }
 
 /**
- * @description RosenBridgeMessageDTO is the schema of a message sent
- * through RosenBridge.
+ * @description RBMessageDTO is the schema of any message sent through rosenbridge.
  */
-export interface RosenBridgeMessageDTO {
-  senderID: string;
-  receiverIDs: string[];
-  content: string;
+export interface RBMessageDTO<T> {
+  type: string;
+  request_id: string;
+  message: T;
+}
+
+/**
+ * @description RBIncomingMessageDTO is the schema of an incoming rosenbridge message.
+ */
+export interface RBIncomingMessageDTO {
+  sender_id: string;
+  message: string;
+
   sentAtMS: number;
 }
+
+/**
+ * @description RBOutgoingMessageDTO is the schema of an outgoing rosenbridge message.
+ */
+export interface RBOutgoingMessageDTO {
+  sender_id: string;
+  receiver_ids: string[];
+  message: string;
+
+  sentAtMS: number;
+}
+
+/**
+ * @description RBInOutMessage supports both incoming and outgoing rosenbridge message types.
+ */
+export type RBInOutMessage = RBOutgoingMessageDTO | RBIncomingMessageDTO;
 
 /**
  * @description LoggingOptionsDTO is the schema for logging options.

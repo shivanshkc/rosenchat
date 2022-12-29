@@ -1,4 +1,4 @@
-import { RosenBridgeMessageDTO } from '../../core/models';
+import { RBIncomingMessageDTO, RBOutgoingMessageDTO } from '../../core/models';
 
 /**
  * @description AbstractRosenBridgeService represents an abstract
@@ -25,12 +25,12 @@ export abstract class AbstractRosenBridgeService {
    * @param handler - Handler is a function that can handle an incoming
    * RosenBridge message.
    */
-  public abstract listen(handler: (message: RosenBridgeMessageDTO) => void): void;
+  public abstract listen(handler: (message: RBIncomingMessageDTO) => void): void;
 
   /**
    * @description send sends a message to RosenBridge.
    *
    * @param message - Message is the data that will be sent to RosenBridge.
    */
-  public abstract send(message: RosenBridgeMessageDTO): Promise<void>;
+  public abstract send(message: RBOutgoingMessageDTO): Promise<void>;
 }

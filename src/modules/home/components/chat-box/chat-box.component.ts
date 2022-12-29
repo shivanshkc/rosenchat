@@ -1,7 +1,7 @@
 import { Component, HostListener, Input, OnInit } from '@angular/core';
 import { Subject } from 'rxjs';
 
-import { ProfileInfoDTO, RosenBridgeMessageDTO } from '../../../../core/models';
+import { ProfileInfoDTO, RBIncomingMessageDTO, RBInOutMessage, RBOutgoingMessageDTO } from '../../../../core/models';
 import { AbstractAuthService } from '../../../../services/auth/auth.abstract';
 import { AbstractCachedRosenBridgeService } from '../../../../services/cached-rosen-bridge/cached-rosen-bridge.abstract';
 import { AbstractChatMetaStoreService } from '../../../../services/chat-meta-store/chat-meta-store.abstract';
@@ -14,11 +14,11 @@ import { AbstractLoggerService } from '../../../../services/logger/logger.abstra
 })
 export class ChatBoxComponent implements OnInit {
   @Input() public profileInfo: ProfileInfoDTO | undefined;
-  @Input() inMessageEvent: Subject<RosenBridgeMessageDTO> | undefined;
-  @Input() outMessageEvent: Subject<RosenBridgeMessageDTO> | undefined;
+  @Input() inMessageEvent: Subject<RBIncomingMessageDTO> | undefined;
+  @Input() outMessageEvent: Subject<RBOutgoingMessageDTO> | undefined;
   @Input() chatSelectEvent: Subject<ProfileInfoDTO> | undefined;
 
-  public allMessages: RosenBridgeMessageDTO[] = [];
+  public allMessages: RBInOutMessage[] = [];
 
   constructor(
     private readonly _authService: AbstractAuthService,
@@ -36,17 +36,17 @@ export class ChatBoxComponent implements OnInit {
     });
 
     this.outMessageEvent?.subscribe(async (message) => {
-      if (message.senderID === this.profileInfo?.id || message.senderID === ownID) {
+      if (message.sender_id === this.profileInfo?.id || message.sender_id === ownID) {
         this.allMessages.push(message);
       }
     });
 
     this.inMessageEvent?.subscribe(async (message) => {
       // If no chat is active or the message is not for the active chat then do nothing.
-      if (!this.profileInfo || message.senderID !== this.profileInfo.id) {
+      if (!this.profileInfo || message.sender_id !== this.profileInfo.id) {
         return;
       }
-      if (message.senderID === message.receiverIDs[0]) {
+      if (message.sender_id === ownID) {
         console.info('Message to self (😢)');
         return;
       }

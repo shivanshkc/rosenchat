@@ -3,7 +3,7 @@ import { Component, HostListener, OnInit } from '@angular/core';
 import { Subject } from 'rxjs';
 
 import { HomeComponentLayoutMode as LayoutMode } from '../../core/enums';
-import { ProfileInfoDTO, RosenBridgeMessageDTO } from '../../core/models';
+import { ProfileInfoDTO, RBIncomingMessageDTO, RBOutgoingMessageDTO } from '../../core/models';
 import { tc } from '../../core/utils';
 import { AbstractAuthService } from '../../services/auth/auth.abstract';
 import { AbstractCachedRosenBridgeService } from '../../services/cached-rosen-bridge/cached-rosen-bridge.abstract';
@@ -37,9 +37,9 @@ import { ConfigService } from '../config/config.service';
 export class HomeComponent implements OnInit {
   public currentProfileInfo: ProfileInfoDTO | undefined;
 
-  public outMessageEvent: Subject<RosenBridgeMessageDTO> = new Subject<RosenBridgeMessageDTO>();
-  public inMessageEvent: Subject<RosenBridgeMessageDTO> = new Subject<RosenBridgeMessageDTO>();
-  public chatSelectEvent: Subject<ProfileInfoDTO> = new Subject<ProfileInfoDTO>();
+  public outMessageEvent = new Subject<RBOutgoingMessageDTO>();
+  public inMessageEvent = new Subject<RBIncomingMessageDTO>();
+  public chatSelectEvent = new Subject<ProfileInfoDTO>();
 
   private readonly _inMessageAudio = new Audio('assets/audio/notification.mp3');
 
@@ -83,7 +83,7 @@ export class HomeComponent implements OnInit {
     this.chatSelectEvent.next(selected);
   }
 
-  public onOutMessageEvent(message: RosenBridgeMessageDTO): void {
+  public onOutMessageEvent(message: RBOutgoingMessageDTO): void {
     this.outMessageEvent.next(message);
   }
 
