@@ -30,7 +30,7 @@ export interface ProfileInfoDTO {
 export interface RBMessageDTO<T> {
   type: string;
   request_id: string;
-  message: T;
+  body: T;
 }
 
 /**
@@ -118,8 +118,7 @@ export interface BackendUserInfoDTO {
  */
 export interface BackendErrorDTO {
   error: {
-    status_code: number;
-    custom_code: string;
-    errors: string[];
+    code: string;
+    reason: string;
   };
 }

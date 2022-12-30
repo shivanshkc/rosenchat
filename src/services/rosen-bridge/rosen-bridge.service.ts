@@ -12,8 +12,11 @@ import { AbstractRosenBridgeService } from './rosen-bridge.abstract';
 export class RosenBridgeService implements AbstractRosenBridgeService {
   private _conn: WebSocketSubject<RBMessageDTO<RBInOutMessage>> | undefined;
   private _isConnected = false;
-  private _pingInterval: NodeJS.Timeout | undefined;
-  private _pingIntervalMS = 55000;
+
+  // TODO: To enable pinging, uncomment these declarations and relevant code in the connect and disconnect methods.
+  // private _pingInterval: NodeJS.Timeout | undefined;
+  // private _pingIntervalMS = 55000;
+
   private _handlers: ((message: RBIncomingMessageDTO) => void)[] = [];
 
   constructor(private readonly _log: AbstractLoggerService) {}
@@ -49,12 +52,24 @@ export class RosenBridgeService implements AbstractRosenBridgeService {
       console.info('RosenBridge connection in progress...');
       this._conn = webSocket(options);
 
-      this._pingInterval = setInterval(() => {
-        this._conn?.next({} as unknown as RBMessageDTO<RBOutgoingMessageDTO>);
-      }, this._pingIntervalMS);
+      // this._pingInterval = setInterval(() => {
+      //   const dummyMessage: RBOutgoingMessageDTO = { sender_id: 'IGNORABLE', receiver_ids: ['IGNORABLE'], message: '', sentAtMS: 0 };
+      //   this._conn?.next({ type: 'OUTGOING_MESSAGE_REQ', request_id: `${Date.now()}`, body: dummyMessage });
+      // }, this._pingIntervalMS);
 
       this._conn.subscribe((message) => {
-        this._handlers.forEach((h) => h(message.message));
+        if (message.type === 'OUTGOING_MESSAGE_RES') {
+          const codeAndReason = message.body as unknown as { code: string; reason: string };
+          if (codeAndReason.code === 'OK') return;
+
+          this._log.error({ snack: true }, codeAndReason.reason || 'Error in Rosenbridge.');
+          return;
+        }
+
+        if (message?.body?.sender_id === 'IGNORABLE') return;
+
+        message.body.sentAtMS = Date.now();
+        this._handlers.forEach((h) => h(message.body));
       });
     });
 
@@ -72,9 +87,10 @@ export class RosenBridgeService implements AbstractRosenBridgeService {
       this._conn.complete();
       this._conn = undefined;
     }
-    if (this._pingInterval) {
-      clearInterval(this._pingInterval);
-    }
+
+    // if (this._pingInterval) {
+    //   clearInterval(this._pingInterval);
+    // }
 
     this._isConnected = false;
     this._log.info({ snack: true }, 'Disconnected from RosenBridge.');
@@ -85,6 +101,6 @@ export class RosenBridgeService implements AbstractRosenBridgeService {
   }
 
   public async send(message: RBOutgoingMessageDTO): Promise<void> {
-    this._conn?.next({ type: 'OUTGOING_MESSAGE_REQ', request_id: `${Date.now()}`, message });
+    this._conn?.next({ type: 'OUTGOING_MESSAGE_REQ', request_id: `${Date.now()}`, body: message });
   }
 }

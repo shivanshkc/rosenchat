@@ -3,7 +3,6 @@ import { Injectable } from '@angular/core';
 import { StorageMap } from '@ngx-pwa/local-storage';
 import { firstValueFrom } from 'rxjs';
 
-import { backendErrorCode2Message } from '../../core/maps';
 import { BackendErrorDTO, BackendUserInfoDTO, ProfileInfoDTO } from '../../core/models';
 import { tc } from '../../core/utils';
 import { ConfigService } from '../../modules/config/config.service';
@@ -29,11 +28,11 @@ export class RosenchatService implements AbstractRosenchatService {
 
     const [err, response] = await tc(firstValueFrom(this._http.get(endpoint)));
     if (err || !response) {
-      const customCode = (err as unknown as BackendErrorDTO)?.error?.custom_code;
-      throw new Error(backendErrorCode2Message[customCode] || 'Please try again later.');
+      const reason = (err as unknown as BackendErrorDTO)?.error?.reason;
+      throw new Error(reason || 'Please try again later.');
     }
 
-    const { data } = response as { data: BackendUserInfoDTO };
+    const data = response as BackendUserInfoDTO;
     profile = { id: data._id, email: data.email, firstName: data.first_name, lastName: data.last_name, pictureLink: data.picture_link };
     await firstValueFrom(this._storage.set(key, profile));
 
