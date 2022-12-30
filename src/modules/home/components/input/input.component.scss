@@ -1,0 +1,6 @@
+// For mat-form-field insides.
+::ng-deep .mat-form-field-wrapper {
+  // Magically removed the bottom space from mat-form-field on small screens.
+  margin-bottom: -1.25em !important;
+  padding-bottom: 0;
+}

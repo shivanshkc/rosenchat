@@ -1,0 +1,6 @@
+<mat-form-field appearance="outline" class="w-100">
+  <input matInput autocomplete="off" placeholder="Commands and messages go here." [(ngModel)]="mainInput" (keyup.enter)="onEnter()" />
+  <button matSuffix mat-icon-button (click)="onEnter()">
+    <mat-icon>send</mat-icon>
+  </button>
+</mat-form-field>

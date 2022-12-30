@@ -1,0 +1,40 @@
+<!-- This toolbar's color changes as per screen size. -->
+<mat-toolbar class="mat-elevation-z2" [color]="isSmallScreen() ? 'primary' : undefined">
+  <app-round-photo
+    [src]="selfProfileInfo?.pictureLink || 'assets/png/profile-photo-ph.png'"
+    alt="photo"
+    [size]="isSmallScreen() ? '40px' : '50px'"
+  ></app-round-photo>
+
+  <span class="toolbar-title">{{ title }}</span>
+  <span class="spacer"></span>
+
+  <button mat-icon-button (click)="onLogoutClick()">
+    <mat-icon>logout</mat-icon>
+  </button>
+</mat-toolbar>
+
+<mat-progress-bar mode="indeterminate" color="accent" *ngIf="isLoading"></mat-progress-bar>
+
+<div class="search-input-wrapper mat-elevation-z2">
+  <mat-form-field appearance="outline" class="w-100">
+    <input matInput [(ngModel)]="searchOrAddInput" (keyup.enter)="onAddClick()" autocomplete="off" placeholder="Search or start a new chat." />
+    <button matSuffix mat-icon-button (click)="onAddClick()">
+      <mat-icon>add</mat-icon>
+    </button>
+  </mat-form-field>
+</div>
+
+<div class="chat-list-wrapper">
+  <div class="ng-for-div" *ngFor="let info of chatListData | chatListFilter: searchOrAddInput">
+    <app-chat-list-item
+      matRipple
+      [profileInfo]="info"
+      (click)="onChatClick(info)"
+      [inMessageEvent]="inMessageEvent"
+      [outMessageEvent]="outMessageEvent"
+      [chatSelectEvent]="chatSelectEvent"
+    ></app-chat-list-item>
+    <mat-divider></mat-divider>
+  </div>
+</div>

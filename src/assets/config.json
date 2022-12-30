@@ -1,1 +1,8 @@
-{}
+{
+  "backend": {
+    "baseURL": "http://localhost:8080"
+  },
+  "bridge": {
+    "baseURL": "ws://localhost:8081"
+  }
+}

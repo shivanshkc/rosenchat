@@ -1,0 +1,12 @@
+<app-round-photo [src]="profileInfo?.pictureLink || 'assets/png/profile-photo-ph.png'" alt="photo" size="55px"></app-round-photo>
+
+<div class="middle-div">
+  <div class="name-div ellipsis font-light">{{ profileInfo?.firstName || profileInfo?.email || 'Loading...' }}</div>
+  <div class="last-message-div ellipsis font-light">{{ lastMessagePreview }}</div>
+</div>
+
+<div class="right-div">
+  <div class="time-div font-light text-end">{{ lastMessageTime }}</div>
+  <br />
+  <div class="badge-div" matBadgeColor="accent" [matBadge]="unreadCount" [matBadgeHidden]="unreadCount === 0" matBadgePosition="below after"></div>
+</div>

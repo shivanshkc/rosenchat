@@ -4,22 +4,14 @@
     "project": "tsconfig.json",
     "sourceType": "module"
   },
-  "plugins": [
-    "@typescript-eslint/eslint-plugin",
-    "import",
-    "unused-imports",
-    "simple-import-sort"
-  ],
-  "extends": [
-    "plugin:@typescript-eslint/recommended",
-    "plugin:prettier/recommended"
-  ],
+  "plugins": ["@typescript-eslint/eslint-plugin", "import", "unused-imports", "simple-import-sort"],
+  "extends": ["plugin:@typescript-eslint/recommended", "plugin:prettier/recommended"],
   "root": true,
   "env": {
     "node": true,
     "jest": true
   },
-  "ignorePatterns": [".eslintrc.json", "environment.prod.ts"],
+  "ignorePatterns": [".eslintrc.json", "environment.prod.ts", "dist/**"],
   "rules": {
     /* Functions should always have a return type, even for void. */
     "@typescript-eslint/explicit-function-return-type": "error",
@@ -79,8 +71,6 @@
     "func-call-spacing": ["error", "never"],
     /* Functions should be declared as expressions. */
     "func-style": ["error", "expression"],
-    /* Maximum number of params in a function. */
-    "max-params": ["error", 4],
     /* Duplicate else-if not allowed. */
     "no-dupe-else-if": "error",
     /* Duplicate case not allowed. */
