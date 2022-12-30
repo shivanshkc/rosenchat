@@ -12,7 +12,7 @@
     "lint:check": "eslint .",
     "lint": "eslint --fix .",
     "build-image": "docker build -t rosenchat:latest .",
-    "build-container": "docker run -d -p 4200:8080 --name rosenchat -v $PWD/src/assets/config.json:/project/dist/assets/config.json rosenchat:latest"
+    "build-container": "docker run -d -p 4200:8080 --name rosenchat -v $PWD/src/assets/conf/config.json:/project/dist/assets/conf/config.json rosenchat:latest"
   },
   "private": true,
   "dependencies": {
