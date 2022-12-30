@@ -13,7 +13,7 @@ export interface IConfig {
 
 @Injectable()
 export class ConfigService {
-  private readonly CONFIG_URL = 'assets/config.json';
+  private readonly CONFIG_URL = 'assets/conf/config.json';
   private isLoaded = false;
   private configs?: IConfig;
 
