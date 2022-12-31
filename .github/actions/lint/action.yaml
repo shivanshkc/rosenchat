@@ -12,5 +12,5 @@ runs:
 
     # Running linting checkers.
     - name: Running linting checkers.
-      run: npm ci && npm run pretty:check && npm run lint:check
+      run: npm ci && npm run lint:check
       shell: bash

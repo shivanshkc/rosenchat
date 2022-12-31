@@ -1,5 +1,5 @@
 # Configuration
-src/assets/conf/config.json
+src/assets/secrets/config.json
 
 # Compiled output
 /dist

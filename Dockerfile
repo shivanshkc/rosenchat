@@ -1,10 +1,10 @@
 #------------------------------------------------------------------
 FROM node:18 as builder
 
-# Create and change to the 'project' directory.
-WORKDIR /project
+# Create and change to the 'source' directory.
+WORKDIR /source
 
-# Install project dependencies.
+# Install dependencies.
 COPY package.json package-lock.json ./
 RUN npm ci
 
@@ -18,8 +18,8 @@ RUN npm run build
 FROM nginx:1.21.6-alpine
 
 # Copy the files to the production image from the builder stage.
-COPY --from=builder /project/dist /project/dist
+COPY --from=builder /source/dist/rosenchat /dist
 # NGINX configuration to serve the SPA.
-COPY --from=builder /project/nginx/default.conf /etc/nginx/conf.d/default.conf
+COPY --from=builder /source/nginx/default.conf /etc/nginx/conf.d/default.conf
 
 #-------------------------------------------------------------------
