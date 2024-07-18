@@ -1,3 +1,10 @@
+## [1.1.2](https://github.com/shivanshkc/rosenchat/compare/v1.1.1...v1.1.2) (2024-07-18)
+
+
+### Bug Fixes
+
+* **core:** redirect_uri another fix ([b59ece6](https://github.com/shivanshkc/rosenchat/commit/b59ece61acd907ee07bb54660aa2b78e7f6cc94b))
+
 ## [1.1.1](https://github.com/shivanshkc/rosenchat/compare/v1.1.0...v1.1.1) (2024-07-18)
 
 ### Bug Fixes
