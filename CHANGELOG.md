@@ -1,9 +1,8 @@
 # [1.1.0](https://github.com/shivanshkc/rosenchat/compare/v1.0.3...v1.1.0) (2024-07-18)
 
-
 ### Features
 
-* **core:** change as per the new authorizer ([e9d335b](https://github.com/shivanshkc/rosenchat/commit/e9d335b5df9e680dd1371107a555e52ca75eeec4))
+- **core:** change as per the new authorizer ([e9d335b](https://github.com/shivanshkc/rosenchat/commit/e9d335b5df9e680dd1371107a555e52ca75eeec4))
 
 ## [1.0.3](https://github.com/shivanshkc/rosenchat/compare/v1.0.2...v1.0.3) (2024-07-18)
 

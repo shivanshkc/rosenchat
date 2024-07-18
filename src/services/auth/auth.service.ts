@@ -25,7 +25,7 @@ export class AuthService implements AbstractAuthService {
 
   public async startLogin(provider: OAuthProvider): Promise<void> {
     const { backend } = await this._conf.get();
-    window.location.href = `${backend.baseURL}/api/auth/${provider}?redirect_uri=http://localhost:4200/auth/callback`;
+    window.location.href = `${backend.baseURL}/api/auth/${provider}?redirect_uri=${location.href}/auth/callback`;
   }
 
   public async finishLogin(provider: OAuthProvider, idToken: string): Promise<void> {
