@@ -6,7 +6,6 @@ import { OAuthProvider } from '../enums';
  * @description SessionInfoDTO is the schema for a user's session info.
  */
 export interface SessionInfoDTO {
-  id: string;
   email: string;
   provider: OAuthProvider;
   idToken: string;
@@ -16,7 +15,6 @@ export interface SessionInfoDTO {
  * @description ProfileInfoDTO is the schema for a user's profile info.
  */
 export interface ProfileInfoDTO {
-  id: string;
   email: string;
 
   firstName: string;

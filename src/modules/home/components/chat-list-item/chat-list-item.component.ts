@@ -31,9 +31,9 @@ export class ChatListItemComponent implements OnInit {
 
   public async ngOnInit(): Promise<void> {
     if (this.profileInfo) {
-      this.unreadCount = await this._chatMeta.getUnreadCount(this.profileInfo.id);
+      this.unreadCount = await this._chatMeta.getUnreadCount(this.profileInfo.email);
 
-      const allMessages = await this._rosenBridge.getChatMessages(this.profileInfo.id);
+      const allMessages = await this._rosenBridge.getChatMessages(this.profileInfo.email);
       if (allMessages.length !== 0) {
         const lastMessage = allMessages[allMessages.length - 1];
         await this._setLastMessagePreview(lastMessage);
@@ -43,16 +43,16 @@ export class ChatListItemComponent implements OnInit {
 
     // Updating unread count on chat-selects.
     this.chatSelectEvent?.subscribe(async (selected: ProfileInfoDTO) => {
-      if (!this.profileInfo || this.profileInfo.id !== selected.id) {
+      if (!this.profileInfo || this.profileInfo.email !== selected.email) {
         return;
       }
       this.unreadCount = 0;
-      await this._chatMeta.setUnreadCount(this.profileInfo.id, this.unreadCount);
+      await this._chatMeta.setUnreadCount(this.profileInfo.email, this.unreadCount);
     });
 
     // Updating last message preview on input events.
     this.outMessageEvent?.subscribe(async (message) => {
-      if (!this.profileInfo || message.receiver_ids[0] !== this.profileInfo.id) {
+      if (!this.profileInfo || message.receiver_ids[0] !== this.profileInfo.email) {
         return;
       }
       await this._setLastMessagePreview(message);
@@ -60,13 +60,13 @@ export class ChatListItemComponent implements OnInit {
     });
 
     this.inMessageEvent?.subscribe(async (message) => {
-      if (!this.profileInfo || this.profileInfo.id !== message.sender_id) {
+      if (!this.profileInfo || this.profileInfo.email !== message.sender_id) {
         return;
       }
 
-      if (this._chatMeta.getCurrentActiveChat() !== this.profileInfo.id) {
+      if (this._chatMeta.getCurrentActiveChat() !== this.profileInfo.email) {
         this.unreadCount++;
-        await this._chatMeta.setUnreadCount(this.profileInfo.id, this.unreadCount);
+        await this._chatMeta.setUnreadCount(this.profileInfo.email, this.unreadCount);
       }
 
       await this._setLastMessagePreview(message);
@@ -75,7 +75,7 @@ export class ChatListItemComponent implements OnInit {
   }
 
   private async _setLastMessagePreview(message: RBInOutMessage): Promise<void> {
-    const ownID = (await this._authService.getSessionInfo()).id;
+    const ownID = (await this._authService.getSessionInfo()).email;
     this.lastMessagePreview = (message.sender_id === ownID ? 'You: ' : '') + message.message || '';
   }
 

@@ -25,14 +25,13 @@ export class AuthService implements AbstractAuthService {
 
   public async startLogin(provider: OAuthProvider): Promise<void> {
     const { backend } = await this._conf.get();
-    window.location.href = `${backend.baseURL}/api/auth/${provider}`;
+    window.location.href = `${backend.baseURL}/api/auth/${provider}?redirect_uri=http://localhost:4200/auth/callback`;
   }
 
   public async finishLogin(provider: OAuthProvider, idToken: string): Promise<void> {
     const { email } = jwtDecode(idToken) as { email: string };
-    const id = await this.genID(email);
 
-    const sessionInfo: SessionInfoDTO = { id, email, provider, idToken };
+    const sessionInfo: SessionInfoDTO = { email, provider, idToken };
     await firstValueFrom(this._storage.set(this._sessionInfoKey, sessionInfo));
   }
 
@@ -52,16 +51,6 @@ export class AuthService implements AbstractAuthService {
   }
 
   public async genID(email: string): Promise<string> {
-    // Encoding as UTF-8.
-    const buffer = new TextEncoder().encode(email);
-
-    // Hashing the message.
-    const hashBuffer = await crypto.subtle.digest('SHA-256', buffer);
-
-    // Converting ArrayBuffer to Array.
-    const hashArray = Array.from(new Uint8Array(hashBuffer));
-
-    // Converting bytes to hex string.
-    return hashArray.map((b) => b.toString(16).padStart(2, '0')).join('');
+    return email;
   }
 }

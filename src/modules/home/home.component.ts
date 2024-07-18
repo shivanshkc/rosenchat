@@ -58,7 +58,7 @@ export class HomeComponent implements OnInit {
     const { bridge } = await this._conf.get();
     const sessionInfo = await this._authService.getSessionInfo();
 
-    const [err] = await tc(this._rosenbridge.connect(bridge.baseURL, sessionInfo.id));
+    const [err] = await tc(this._rosenbridge.connect(bridge.baseURL, sessionInfo.email));
     if (err) {
       this._log.error({ snack: true }, err?.message || err);
       return;

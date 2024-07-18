@@ -31,7 +31,7 @@ export class InputComponent {
     }
 
     // Preparing the Message DTO.
-    const currentUserID = (await this._authService.getSessionInfo()).id;
+    const currentUserID = (await this._authService.getSessionInfo()).email;
     const message: RBOutgoingMessageDTO = {
       sender_id: currentUserID,
       receiver_ids: [currentChat],

@@ -9,5 +9,8 @@ import { SnackBarDataDTO } from '../../models';
   styleUrls: ['./snack-bar.component.scss'],
 })
 export class SnackBarComponent {
-  constructor(public snackBarRef: MatSnackBarRef<SnackBarComponent>, @Inject(MAT_SNACK_BAR_DATA) public data: SnackBarDataDTO) {}
+  constructor(
+    public snackBarRef: MatSnackBarRef<SnackBarComponent>,
+    @Inject(MAT_SNACK_BAR_DATA) public data: SnackBarDataDTO,
+  ) {}
 }

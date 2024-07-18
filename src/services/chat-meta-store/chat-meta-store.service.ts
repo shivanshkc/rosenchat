@@ -12,7 +12,10 @@ export class ChatMetaStoreService implements AbstractChatMetaStoreService {
   private readonly _unreadCountKey = 'unreadCount';
   private _currentChat = '';
 
-  constructor(private readonly _authService: AbstractAuthService, private readonly _storage: StorageMap) {}
+  constructor(
+    private readonly _authService: AbstractAuthService,
+    private readonly _storage: StorageMap,
+  ) {}
 
   public getCurrentActiveChat(): string {
     return this._currentChat;
@@ -29,7 +32,7 @@ export class ChatMetaStoreService implements AbstractChatMetaStoreService {
 
   public async setUnreadCount(id: string, amount: number): Promise<void> {
     const sessionInfo = await this._authService.getSessionInfo();
-    const key = `${this._unreadCountKey}:${sessionInfo.id}`;
+    const key = `${this._unreadCountKey}:${sessionInfo.email}`;
 
     const unreadCountMap = await this._getUnreadCountMap();
     unreadCountMap.set(id, amount);
@@ -39,7 +42,7 @@ export class ChatMetaStoreService implements AbstractChatMetaStoreService {
 
   private async _getUnreadCountMap(): Promise<Map<string, number>> {
     const sessionInfo = await this._authService.getSessionInfo();
-    const key = `${this._unreadCountKey}:${sessionInfo.id}`;
+    const key = `${this._unreadCountKey}:${sessionInfo.email}`;
 
     let unreadCountMap = (await firstValueFrom(this._storage.get(key))) as Map<string, number>;
     if (!unreadCountMap) {

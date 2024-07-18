@@ -101,14 +101,14 @@ export class ChatListComponent implements OnInit {
   }
 
   public onChatClick(info: ProfileInfoDTO): void {
-    this.chatMeta.setCurrentActiveChat(info.id);
+    this.chatMeta.setCurrentActiveChat(info.email);
     this.chatSelectEvent.emit(info);
   }
 
   private async _setInitialOwnProfile(): Promise<void> {
-    const { id: ownID } = await this._authService.getSessionInfo();
+    const { email } = await this._authService.getSessionInfo();
 
-    const [err, profileInfo] = await tc(this._rosenchat.getProfileInfo(ownID));
+    const [err, profileInfo] = await tc(this._rosenchat.getProfileInfo(email));
     if (err) {
       this._log.error({ snack: true }, err.message);
       return;
@@ -142,7 +142,7 @@ export class ChatListComponent implements OnInit {
   private async _updateChatList(message: RBInOutMessage): Promise<void> {
     const { sender_id } = message;
     for (const otherProfile of this.chatListData) {
-      if (otherProfile.id === sender_id) {
+      if (otherProfile.email === sender_id) {
         // This person is already in the chat.
         return;
       }
@@ -152,7 +152,7 @@ export class ChatListComponent implements OnInit {
     const [err, profile] = await tc(this._rosenchat.getProfileInfo(sender_id));
     if (err || !profile) {
       this._log.error({ snack: true }, err?.message || 'Failed to fetch user info.');
-      this.chatListData.push({ id: sender_id, pictureLink: '', lastName: 'Unknown', firstName: sender_id.slice(10), email: '' });
+      this.chatListData.push({ email: sender_id, pictureLink: '', lastName: 'Unknown', firstName: sender_id.slice(10) });
       return;
     }
 

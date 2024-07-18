@@ -26,7 +26,7 @@
 </div>
 
 <div class="chat-list-wrapper">
-  <div class="ng-for-div" *ngFor="let info of chatListData | chatListFilter : searchOrAddInput">
+  <div class="ng-for-div" *ngFor="let info of chatListData | chatListFilter: searchOrAddInput">
     <app-chat-list-item
       matRipple
       [profileInfo]="info"

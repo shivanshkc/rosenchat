@@ -28,22 +28,22 @@ export class ChatBoxComponent implements OnInit {
   ) {}
 
   async ngOnInit(): Promise<void> {
-    const ownID = (await this._authService.getSessionInfo()).id;
+    const ownID = (await this._authService.getSessionInfo()).email;
 
     this.chatSelectEvent?.subscribe(async (profile) => {
       this.profileInfo = profile;
-      this.allMessages = await this._rosenBridge.getChatMessages(this.profileInfo.id);
+      this.allMessages = await this._rosenBridge.getChatMessages(this.profileInfo.email);
     });
 
     this.outMessageEvent?.subscribe(async (message) => {
-      if (message.sender_id === this.profileInfo?.id || message.sender_id === ownID) {
+      if (message.sender_id === this.profileInfo?.email || message.sender_id === ownID) {
         this.allMessages.push(message);
       }
     });
 
     this.inMessageEvent?.subscribe(async (message) => {
       // If no chat is active or the message is not for the active chat then do nothing.
-      if (!this.profileInfo || message.sender_id !== this.profileInfo.id) {
+      if (!this.profileInfo || message.sender_id !== this.profileInfo.email) {
         return;
       }
       if (message.sender_id === ownID) {

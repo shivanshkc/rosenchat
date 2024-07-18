@@ -14,7 +14,10 @@ export class LandingComponent {
   public branding = 'rosenchat';
   public motto = 'A fresh take on chatting experience.';
 
-  constructor(private readonly _authService: AbstractAuthService, private readonly _log: AbstractLoggerService) {}
+  constructor(
+    private readonly _authService: AbstractAuthService,
+    private readonly _log: AbstractLoggerService,
+  ) {}
 
   /**
    * @description onGoogleLoginClick handles clicks on the Google login button.
