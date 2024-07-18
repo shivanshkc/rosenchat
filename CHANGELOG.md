@@ -1,3 +1,10 @@
+## [1.0.3](https://github.com/shivanshkc/rosenchat/compare/v1.0.2...v1.0.3) (2024-07-18)
+
+
+### Bug Fixes
+
+* **core:** vulnerability fixes and uuid usage ([80ef758](https://github.com/shivanshkc/rosenchat/commit/80ef758e470b3cd2778c5335f41f4954256c684c))
+
 ## [1.0.2](https://github.com/shivanshkc/rosenchat/compare/v1.0.1...v1.0.2) (2022-12-30)
 
 ### Bug Fixes
