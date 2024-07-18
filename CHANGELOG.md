@@ -1,9 +1,8 @@
 ## [1.0.2](https://github.com/shivanshkc/rosenchat/compare/v1.0.1...v1.0.2) (2022-12-30)
 
-
 ### Bug Fixes
 
-* **core:** waves background fix on landing page ([81dd13a](https://github.com/shivanshkc/rosenchat/commit/81dd13a9f44648d9bc0da598cb4dc913cd86debb))
+- **core:** waves background fix on landing page ([81dd13a](https://github.com/shivanshkc/rosenchat/commit/81dd13a9f44648d9bc0da598cb4dc913cd86debb))
 
 ## [1.0.1](https://github.com/shivanshkc/rosenchat/compare/v1.0.0...v1.0.1) (2022-12-30)
 

@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { webSocket, WebSocketSubject, WebSocketSubjectConfig } from 'rxjs/webSocket';
 import { RBIncomingMessageDTO, RBInOutMessage, RBMessageDTO, RBOutgoingMessageDTO } from 'src/core/models';
+import * as uuid from 'uuid';
 
 import { tc } from '../../core/utils';
 import { AbstractLoggerService } from '../logger/logger.abstract';
@@ -101,6 +102,6 @@ export class RosenBridgeService implements AbstractRosenBridgeService {
   }
 
   public async send(message: RBOutgoingMessageDTO): Promise<void> {
-    this._conn?.next({ type: 'OUTGOING_MESSAGE_REQ', request_id: `${Date.now()}`, body: message });
+    this._conn?.next({ type: 'OUTGOING_MESSAGE_REQ', request_id: uuid.v4(), body: message });
   }
 }
